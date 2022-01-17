@@ -32,11 +32,7 @@
 		createButton2 = $('#create2'),
 		htmlTextarea2 = $('#html2'),
 		cssTextarea2 = $('#css2'),
-		styles2
-
-
-		compareButton = $('#compare-button')
-
+		compareButton = $('#compare-button'),
 		styles2
 
 	restoreSettings();
@@ -271,16 +267,11 @@
 		loader.removeClass('processing');
 	}
 
-	const comparisons = [
-		"Font size : 12px || 14px",
-		"Border-radius : 2px || 3px"
-	];
+	// List of comparisons or something below
+	var comparisons = "What can I say? The elements match perfectly!"
 
 	function generateReport() {
-		document.getElementById('report').style.display = "block";
-
-		var report_list = document.getElementById('report-list');
-		comparisons.forEach (comparison => report_list.innerHTML += '<li>' + comparison + '</li>')
+		comparison.val(comparisons);
 		};
 	 
 })();
