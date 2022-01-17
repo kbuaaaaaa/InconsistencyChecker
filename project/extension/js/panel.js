@@ -29,7 +29,10 @@
 		borderRadiusWorkaround2 = new BorderRadiusWorkaround(),
 		createButton2 = $('#create2'),
 		htmlTextarea2 = $('#html2'),
-		cssTextarea2 = $('#css2')
+		cssTextarea2 = $('#css2'),
+
+		compareButton = $('#compare-button')
+
 
 	restoreSettings();
 
@@ -39,6 +42,8 @@
 	fixHTMLIndentationInput.on('change', persistSettingAndProcessSnapshot);
 	combineSameRulesInput.on('change', persistSettingAndProcessSnapshot);
 	includeAncestors.on('change', persistSettingAndProcessSnapshot);
+
+	compareButton.on('click', generateReport);
 
 	createButton1.on('click', makeFirstSnapshot);
 	createButton2.on('click', makeSecondSnapshot);
@@ -254,5 +259,18 @@
 
 		loader.removeClass('processing');
 	}
+
+	const comparisons = [
+		"Font size : 12px || 14px",
+		"Border-radius : 2px || 3px"
+	];
+
+	function generateReport() {
+		document.getElementById('report').style.display = "block";
+
+		var report_list = document.getElementById('report-list');
+		comparisons.forEach (comparison => report_list.innerHTML += '<li>' + comparison + '</li>')
+		};
+	 
 })();
 
