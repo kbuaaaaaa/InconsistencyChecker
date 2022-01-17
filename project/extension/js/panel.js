@@ -10,6 +10,7 @@
 		createButton1 = $('#create1'),
 		htmlTextarea1 = $('#html1'),
 		cssTextarea1 = $('#css1'),
+		styles1,
 
 		propertiesCleanUpInput = $('#properties-clean-up'),
 		removeDefaultValuesInput = $('#remove-default-values'),
@@ -19,6 +20,7 @@
 		includeAncestors = $('#include-ancestors'),
 		errorBox = $('#error-box'),
 		loader = $('#loader'),
+		comparison = $('#comparison'),
 		
 		secondSnapshot,
 		cssStringifier2 = new CSSStringifier(),
@@ -30,9 +32,12 @@
 		createButton2 = $('#create2'),
 		htmlTextarea2 = $('#html2'),
 		cssTextarea2 = $('#css2'),
+		styles2
+
 
 		compareButton = $('#compare-button')
 
+		styles2
 
 	restoreSettings();
 
@@ -47,6 +52,8 @@
 
 	createButton1.on('click', makeFirstSnapshot);
 	createButton2.on('click', makeSecondSnapshot);
+	// compare styles1 and styles2 (the CSS properties)
+	comparison.val("Here goes the comparison of styles!")
 	htmlTextarea1.on('click', function () {
 		$(this).select();
 	});
@@ -198,6 +205,8 @@
 		}
 		console.log(html);
 		htmlTextarea1.val(html);
+
+		styles1 = styles;
 		cssTextarea1.val(cssStringifier1.process(styles));
 
 		loader.removeClass('processing');
@@ -255,6 +264,8 @@
 		}
 
 		htmlTextarea2.val(html);
+
+		styles2 = styles;
 		cssTextarea2.val(cssStringifier2.process(styles));
 
 		loader.removeClass('processing');
