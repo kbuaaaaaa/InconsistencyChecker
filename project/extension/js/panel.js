@@ -280,13 +280,6 @@
 		loader.removeClass('processing');
 	}
 
-	// List of comparisons or something below
-	var comparisons = "What can I say? The elements match perfectly!"
-
-	function generateReport() {
-		comparison.val(comparisons);
-	};
-
 	function compareSnapshots(){
 		var dmp = new diff_match_patch();
 		var diffHTML = dmp.diff_main(firstHTML,secondHTML);
