@@ -49,14 +49,9 @@
 	removeWebkitPropertiesInput.on('change', persistSettingAndProcessSnapshot);
 	fixHTMLIndentationInput.on('change', persistSettingAndProcessSnapshot);
 	combineSameRulesInput.on('change', persistSettingAndProcessSnapshot);
-	includeAncestors.on('change', persistSettingAndProcessSnapshot);
-
-	compareButton.on('click', generateReport);
 
 	createButton1.on('click', makeFirstSnapshot);
 	createButton2.on('click', makeSecondSnapshot);
-	// compare styles1 and styles2 (the CSS properties)
-	comparison.val("Here goes the comparison of styles!")
 	compareButton.on('click', compareSnapshots);
 	detailButton.on('click', showDetail);
 

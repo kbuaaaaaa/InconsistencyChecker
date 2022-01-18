@@ -1276,33 +1276,28 @@
   
 
   /**
-   * Convert a diff array into a pretty HTML report.
+   * Convert a diff array into a report.
+   * This this not in the original library
    * @param {!Array.<!diff_match_patch.Diff>} diffs Array of diff tuples.
-   * @return {string} HTML representation.
+   * @return {string} Summary of differences.
    */
    diff_match_patch.prototype.differenceReport = function(diffs) {
     var report = '';
-    // var pattern_amp = /&/g;
-    // var pattern_lt = /</g;
-    // var pattern_gt = />/g;
-    // var pattern_para = /\n/g;
     var lastEqualIndex = 0;
     for (var x = 0; x < diffs.length; x++) {
       var op = diffs[x][0];    // Operation (insert, delete, equal)
       var data = diffs[x][1];  // Text of change.
-      // var text = data.replace(pattern_amp, '&amp;').replace(pattern_lt, '&lt;')
-      //     .replace(pattern_gt, '&gt;').replace(pattern_para, '&para;<br>');
       switch (op) {
         case DIFF_INSERT:
           //report += diffs[lastEqualIndex][1].split('\n').pop() + '\n';
-          report += '\tElement 2 : ' + data + '\n';
+          report += '\tElement 2 : ' + data + diffs[x+1][1].split('\n')[0] + '\n';
           break;
         case DIFF_DELETE:
-          report += diffs[lastEqualIndex][1].split('\n').pop() + '\n';
-          report += '\tElement 1 : ' + data + '\n';
+          report += diffs[x-1][1].split('\n').pop() + '\n';
+          report += '\tElement 1 : ' + data + diffs[x+2][1].split('\n')[0] + '\n';
           break;
         case DIFF_EQUAL:
-          lastEqualIndex = x;
+          //lastEqualIndex = x;
           break;
       }
     }
