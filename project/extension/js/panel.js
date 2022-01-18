@@ -32,8 +32,15 @@
 		createButton2 = $('#create2'),
 		htmlTextarea2 = $('#html2'),
 		cssTextarea2 = $('#css2'),
-		compareButton = $('#compare-button'),
-		styles2
+		styles2,
+
+		compareButton = $('#compare'),
+		detailButton = $('#detail'),
+		report = $('#report'),
+		firstHTML,
+		secondHTML,
+		firstCSS,
+		secondCSS
 
 	restoreSettings();
 
@@ -50,6 +57,9 @@
 	createButton2.on('click', makeSecondSnapshot);
 	// compare styles1 and styles2 (the CSS properties)
 	comparison.val("Here goes the comparison of styles!")
+	compareButton.on('click', compareSnapshots);
+	detailButton.on('click', showDetail);
+
 	htmlTextarea1.on('click', function () {
 		$(this).select();
 	});
@@ -200,10 +210,12 @@
 			});
 		}
 		console.log(html);
-		htmlTextarea1.val(html);
-
 		styles1 = styles;
-		cssTextarea1.val(cssStringifier1.process(styles));
+
+		firstHTML = html;
+		firstCSS = cssStringifier1.process(styles);
+		htmlTextarea1.val(firstHTML);
+		cssTextarea1.val(firstCSS);
 
 		loader.removeClass('processing');
 	}
@@ -259,10 +271,11 @@
 			});
 		}
 
-		htmlTextarea2.val(html);
-
 		styles2 = styles;
-		cssTextarea2.val(cssStringifier2.process(styles));
+		secondHTML = html;
+		secondCSS = cssStringifier2.process(styles)
+		htmlTextarea2.val(secondHTML);
+		cssTextarea2.val(secondCSS);
 
 		loader.removeClass('processing');
 	}
@@ -272,7 +285,27 @@
 
 	function generateReport() {
 		comparison.val(comparisons);
-		};
-	 
+	};
+
+	function compareSnapshots(){
+		var dmp = new diff_match_patch();
+		var diffHTML = dmp.diff_main(firstHTML,secondHTML);
+		var diffCSS = dmp.diff_main(firstCSS,secondCSS);
+		dmp.diff_cleanupSemantic(diffHTML);
+		dmp.diff_cleanupSemantic(diffCSS);
+		var dsHTML = dmp.diff_prettyHtml(diffHTML);
+		document.getElementById('outputHTML').innerHTML = dsHTML;
+		var dsCSS = dmp.diff_prettyHtml(diffCSS);
+		document.getElementById('outputCSS').innerHTML = dsCSS;
+		report.val(dmp.differenceReport(diffCSS));
+		document.getElementById('outputCSS').hidden = true;
+		document.getElementById('outputHTML').hidden = true;
+	}
+
+	function showDetail(){
+		document.getElementById('outputCSS').hidden = false;
+		document.getElementById('outputHTML').hidden = false;
+	}
+
 })();
 
