@@ -286,13 +286,18 @@
 		var dsCSS = dmp.diff_prettyHtml(diffCSS);
 		document.getElementById('outputCSS').innerHTML = dsCSS;
 		report.val(dmp.differenceReport(diffCSS));
-		document.getElementById('outputCSS').hidden = true;
-		document.getElementById('outputHTML').hidden = true;
 	}
 
 	function showDetail(){
-		document.getElementById('outputCSS').hidden = false;
-		document.getElementById('outputHTML').hidden = false;
+		var diff = document.getElementById("diff");
+		var button = document.getElementById("detail");
+		if (diff.hidden == true) {
+		  diff.hidden = false;
+		  button.childNodes[0].nodeValue = "Hide Detail";
+		} else {
+		  diff.hidden = true;
+		  button.childNodes[0].nodeValue = "Show Detail";
+		}
 	}
 
 })();
