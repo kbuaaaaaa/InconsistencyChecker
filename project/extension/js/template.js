@@ -1,12 +1,12 @@
 class Template{
-    constructor(){
-        this.type = "";
+    constructor(type = "", color = Color(), font = Font(), border = Border(), width = 0, height = 0){
+        this.type = type;
         //the ui/class name eg. Button, Card. This is for later when we have to run through the page to check elements
-        this.color = "";
-        this.font = Font();
-        this.border = "";
-        this.width = 0;
-        this.height = 0;
+        this.color = color;
+        this.font = font;
+        this.border = border;
+        this.width = width;
+        this.height = height;
     }
 }
 
