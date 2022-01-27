@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+</head>
+<body>
+
+    <div style="margin: 0 auto;width: 666px;margin-top: 200px;">
+        <div id="div_style">
+            <label for="">TempalteName
+                <input type="text" />
+            </label>
+        
+            <label for="">ElementClass
+                <input type="text" />
+            </label>
+            <label for="" style="margin-left: 20px;" onclick="add()">
+                Add
+            </label>
+        </div>
+        <br />
+        <div id="div_demo"></div>
+        <div id="div_demo2"></div>
+        <br />
+        <div>
+            <button onclick="save()" >Save</button>
+        </div>
+    </div>  
+    
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+
+<script id="SelectProperty" type="text/x-jquery-tmpl">
+    <div id="div_d${data.index}" class="select_div" >
+        <label for="">SelectProperty
+        <select name="" style="width: 153px;" class="select_property">
+                {{each(i,obj) data.list}}
+                    <option value="${obj}">${obj}</option>
+                {{/each}}
+            </select>
+        </label>
+
+        <label for="">PropertyValue
+            <input type="text" class="property_value"/>
+        </label>
+
+        <label for="" style="margin-left: 20px;" onclick="del(${data.index})">
+                Delete
+        </label>
+    </div>
+</script>
+<script>
+
+    //手动初始化数据
+    var data = {};
+    data.index = 1;
+    //class 列表
+    data.list = [
+        "border",
+        "border-color",
+        "color",
+        "background"
+    ]
+    //调用模板进行渲染
+    $("#SelectProperty").tmpl(data).appendTo('#div_demo');
+
+    //添加
+    function add(){
+        data.index++;
+        $("#SelectProperty").tmpl(data).appendTo('#div_demo2');
+    }
+    //删除
+    function del(id) {
+        $("#div_d"+ id).html('');
+    }
+    //保存
+    function save(){
+
+        for (let i = 0; i < data.list.length; i++) {
+            const element = data.list[i];
+            $('#div_style').css({ element: "" })
+        }
+
+       $(".select_div").each(function (index, domEle) {
+
+            var select_property = $(domEle).find('.select_property').val().toString();
+            var property_value = $(domEle).find('.property_value').val().toString();
+
+            if(property_value!=null&& property_value!=undefined&& property_value!=''){
+                $('#div_style').css({ select_property: property_value})
+            }
+
+        });
+    }
+
+
+</script>
+</html>
