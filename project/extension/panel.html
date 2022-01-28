@@ -102,6 +102,17 @@
             </div>
         </div>
     </div>
+    <input type="file" id="file-selector" accept=".json">
+    <script>
+        document.querySelector("#file-selector").addEventListener("change",function(){
+            const reader= new FileReader();
+            reader.addEventListener("load",()=>{
+                sessionStorage.setItem("json-file", reader.result);
+            })
+            reader.readAsDataURL(this.files[0])
+        })
+    </script>
+    
     <div class="row">
         <div class="column">
             <div class="col-xs-6">
