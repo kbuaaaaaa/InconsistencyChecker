@@ -10,6 +10,7 @@
 		createButton1 = $('#create1'),
 		htmlTextarea1 = $('#html1'),
 		cssTextarea1 = $('#css1'),
+		styles1,
 
 		propertiesCleanUpInput = $('#properties-clean-up'),
 		removeDefaultValuesInput = $('#remove-default-values'),
@@ -19,6 +20,7 @@
 		includeAncestors = $('#include-ancestors'),
 		errorBox = $('#error-box'),
 		loader = $('#loader'),
+		comparison = $('#comparison'),
 		
 		secondSnapshot,
 		cssStringifier2 = new CSSStringifier(),
@@ -29,7 +31,16 @@
 		borderRadiusWorkaround2 = new BorderRadiusWorkaround(),
 		createButton2 = $('#create2'),
 		htmlTextarea2 = $('#html2'),
-		cssTextarea2 = $('#css2')
+		cssTextarea2 = $('#css2'),
+		styles2,
+
+		compareButton = $('#compare'),
+		detailButton = $('#detail'),
+		report = $('#report'),
+		firstHTML,
+		secondHTML,
+		firstCSS,
+		secondCSS
 
 	restoreSettings();
 
@@ -38,10 +49,12 @@
 	removeWebkitPropertiesInput.on('change', persistSettingAndProcessSnapshot);
 	fixHTMLIndentationInput.on('change', persistSettingAndProcessSnapshot);
 	combineSameRulesInput.on('change', persistSettingAndProcessSnapshot);
-	includeAncestors.on('change', persistSettingAndProcessSnapshot);
 
 	createButton1.on('click', makeFirstSnapshot);
 	createButton2.on('click', makeSecondSnapshot);
+	compareButton.on('click', compareSnapshots);
+	detailButton.on('click', showDetail);
+
 	htmlTextarea1.on('click', function () {
 		$(this).select();
 	});
@@ -192,8 +205,12 @@
 			});
 		}
 		console.log(html);
-		htmlTextarea1.val(html);
-		cssTextarea1.val(cssStringifier1.process(styles));
+		styles1 = styles;
+
+		firstHTML = html;
+		firstCSS = cssStringifier1.process(styles);
+		htmlTextarea1.val(firstHTML);
+		cssTextarea1.val(firstCSS);
 
 		loader.removeClass('processing');
 	}
@@ -249,10 +266,39 @@
 			});
 		}
 
-		htmlTextarea2.val(html);
-		cssTextarea2.val(cssStringifier2.process(styles));
+		styles2 = styles;
+		secondHTML = html;
+		secondCSS = cssStringifier2.process(styles)
+		htmlTextarea2.val(secondHTML);
+		cssTextarea2.val(secondCSS);
 
 		loader.removeClass('processing');
 	}
+
+	function compareSnapshots(){
+		var dmp = new diff_match_patch();
+		var diffHTML = dmp.diff_main(firstHTML,secondHTML);
+		var diffCSS = dmp.diff_main(firstCSS,secondCSS);
+		dmp.diff_cleanupSemantic(diffHTML);
+		dmp.diff_cleanupSemantic(diffCSS);
+		var dsHTML = dmp.diff_prettyHtml(diffHTML);
+		document.getElementById('outputHTML').innerHTML = dsHTML;
+		var dsCSS = dmp.diff_prettyHtml(diffCSS);
+		document.getElementById('outputCSS').innerHTML = dsCSS;
+		report.val(dmp.differenceReport(diffCSS));
+	}
+
+	function showDetail(){
+		var diff = document.getElementById("diff");
+		var button = document.getElementById("detail");
+		if (diff.hidden == true) {
+		  diff.hidden = false;
+		  button.childNodes[0].nodeValue = "Hide Detail";
+		} else {
+		  diff.hidden = true;
+		  button.childNodes[0].nodeValue = "Show Detail";
+		}
+	}
+
 })();
 

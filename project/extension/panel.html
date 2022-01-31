@@ -14,13 +14,13 @@
     <div class="row" id='create-buttons'>
         <div class="column" id='create-column'>
             <div id='error-box'>
-                <div class='alert alert-danger'><p><span class="fui-cross"></span> <strong>Error!</strong> <span class='error-message'></span></p></div>
+                <div class='alert alert-danger'><p> <strong>Error!</strong> <span class='error-message'></span></p></div>
             </div>
             <div class="col-xs-6">
-                <button id='create1' class='btn btn-primary'><span class='fui-gear'></span> Choose the inspected element no.1</button>
+                <button id='create1' class='btn btn-primary'> Choose the inspected element no.1</button>
             </div>
             <div class="col-xs-6">
-                <button id='create2' class='btn btn-primary'><span class='fui-gear'></span> Choose the inspected element no.2</button>
+                <button id='create2' class='btn btn-primary'> Choose the inspected element no.2</button>
             </div>
         </div>
     </div>
@@ -36,8 +36,7 @@
                 <textarea id='html2' readonly class="form-control input-sm"></textarea>
             </div>
         </div>
-    </div>
-
+    </div>  
     <div class="row" id='css'>
 
         <div class="column" id='textareas-column-2'>
@@ -52,7 +51,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div hidden class="row">
         <div class="panel-group col-xs-12" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -95,6 +94,40 @@
         </div>
     </div>
 
+    <div class="row" id='compare-buttons'>
+        <div class="column" id='compare-column'>
+            <div class="col-xs-6">
+                <button id='compare' class='btn btn-primary'> Compare </button>
+                <button id='detail' class='btn btn-primary'> Show details </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="col-xs-6">
+                <span class="label label-warning">Report</span>
+                <textarea id='report' readonly class="form-control input-sm"></textarea>
+            </div>
+        </div>
+    </div>
+    <div hidden class="row" id="diff">
+        <div class="row" id="htmlDiff">
+            <div class="column">
+                <div class="col-xs-6">
+                    <label class="label label-warning">HTML Difference</label>
+                    <DIV id="outputHTML"></DIV>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="cssDiff">
+            <div class="column">
+                <div class="col-xs-6">
+                    <label class="label label-warning">CSS Difference</label>
+                    <DIV id="outputCSS"></DIV>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- <div class="row" id='export-buttons-row'>
         <div class="col-xs-4">
             <form action="http://codepen.io/pen/define" method="POST" target="_blank" id='codepen-form'>
@@ -149,6 +182,7 @@
 <script src='js/filters/WebkitPropertiesFilter.js'></script>
 <script src='js/tools/Snapshooter.js'></script>
 <script src='js/panel.js'></script>
+<script src='js/diff_match_patch.js'></script>
 
 <script src="https://platform.twitter.com/widgets.js"></script>
 
