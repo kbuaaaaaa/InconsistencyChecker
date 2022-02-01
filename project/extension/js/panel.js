@@ -48,6 +48,7 @@
 		data = {}
 
 		console = chrome.extension.getBackgroundPage().console;
+		template = Template()
 
 	restoreSettings();
 
@@ -374,25 +375,18 @@
 		property_div.appendChild(div);
     }
 
-
     function save(){
-
         for (let i = 0; i < data.list.length; i++) {
             const element = data.list[i];
             document.getElementById('template_div').css({ element: "" })
         }
-
 		document.getElementsByClassName("select_div").each(function (index, domEle) {
-
             var select_property = (domEle).find('.select_property').val().toString();
             var property_value = (domEle).find('.property_value').val().toString();
-
             if(property_value!=null&& property_value!=undefined&& property_value!=''){
-                document.getElementById('#template_div').css({ select_property: property_value})
+                document.getElementById('#template_div').css({ select_property : property_value})
             }
-
         });
     }
-
 })();
 
