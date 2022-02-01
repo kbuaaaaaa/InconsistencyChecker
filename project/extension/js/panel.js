@@ -326,6 +326,14 @@
 		document.getElementById("input_button").style.display = "none";
 	};
 
+
+    function del(id) {
+        const property_div = document.getElementById("property_div");
+		console.log(id);
+		const div = document.getElementById(id);
+		property_div.removeChild(div);
+    }
+
     function add(){
         data.index++;
 		var div = document.createElement("div");
@@ -351,28 +359,19 @@
 		property_input.type = "text";
 		property_input.className = "property_value";
 		property_input.style = "margin-left: 20px;";
-		
+
+		var delete_button = document.createElement("button");
+		delete_button.innerHTML = " Delete ";
+		delete_button.style = "margin-left: 20px;";
+		delete_button.onclick = () => del(div.id);
 
 		div.appendChild(select_label);
 		div.appendChild(select);
 		div.appendChild(property_label);
 		div.appendChild(property_input);
-		var element = document.getElementById("property_div");
-		element.append(div);
-    }
-
-//         <label for=\"\">Property Value
-//             <input type=\"text\" class=\"property_value\"/>
-//         </label>
-
-//         <label for=\"\" style=\"margin-left: 20px;\" onclick=\"del(${data.index})\">
-//                 Delete
-//         </label>
-//     </div>
-// </script>
-
-    function del(id) {
-        document.getElementById("div_d"+ id).html('');
+		div.appendChild(delete_button);
+		var property_div = document.getElementById("property_div");
+		property_div.appendChild(div);
     }
 
 
