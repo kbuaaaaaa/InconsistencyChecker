@@ -13,5 +13,5 @@
 		"scripts": ["js/background.js"],
 		"persistent": false
 	},
-	"content_security_policy": "script-src 'self' https://apis.google.com https://platform.twitter.com https://www.facebook.com; object-src 'self'"
+	"content_security_policy": "script-src 'self' 'unsafe-eval' https://apis.google.com https://platform.twitter.com https://www.facebook.com; object-src 'self'"
 }
