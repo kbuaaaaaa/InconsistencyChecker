@@ -40,7 +40,14 @@
 		firstHTML,
 		secondHTML,
 		firstCSS,
-		secondCSS
+		secondCSS,
+
+		addButton = $('#add_button'),
+		saveButton = $('#save_button'),
+		inputProperty = $('#input_button'),
+		data = {}
+
+		console = chrome.extension.getBackgroundPage().console;
 
 	restoreSettings();
 
@@ -54,6 +61,18 @@
 	createButton2.on('click', makeSecondSnapshot);
 	compareButton.on('click', compareSnapshots);
 	detailButton.on('click', showDetail);
+	saveButton.on('click', save);
+	addButton.on('click', add);
+	inputProperty.on('click',switch_to_add);
+
+	data.index = 0;
+	data.list = [
+		"font",
+		"width",
+		"height",
+		"border",
+		"color"
+	];
 
 	htmlTextarea1.on('click', function () {
 		$(this).select();
@@ -71,6 +90,7 @@
 	$('input[type="checkbox"]').each(function () {
 		$(this).checkbox();
 	});
+
 
 	/*
 	Settings - saving & restoring
@@ -299,6 +319,69 @@
 		  button.childNodes[0].nodeValue = "Show Detail";
 		}
 	}
+
+	function switch_to_add(){
+		add();
+		document.getElementById("add_and_save").hidden = false;
+		document.getElementById("input_button").style.display = "none";
+	};
+
+    function add(){
+        data.index++;
+		var div = document.createElement("div");
+		div.id = "property" + data.index;
+		div.className = "select_property";
+		var select_label = document.createElement("label");
+		select_label.innerHTML = "Select Property";
+		div.appendChild(select_label);
+		var element = document.getElementById("property_div");
+		element.append(div);
+
+    }
+
+	//<script id="SelectProperty" type="text">
+//     <div id=\"div_d${data.index}\" class=\"select_div\" >
+//         <label for=\"\">Select Property
+//         <select name=\"\" style=\"width: 153px;\" class=\"select_property\">
+//                 {{foreach(i,obj) data.list}}
+//                     <option value=\"{$obj}\">{$obj}</option>
+//                 {{/foreach}}
+//             </select>
+//         </label>
+
+//         <label for=\"\">Property Value
+//             <input type=\"text\" class=\"property_value\"/>
+//         </label>
+
+//         <label for=\"\" style=\"margin-left: 20px;\" onclick=\"del(${data.index})\">
+//                 Delete
+//         </label>
+//     </div>
+// </script>
+
+    function del(id) {
+        document.getElementById("div_d"+ id).html('');
+    }
+
+
+    function save(){
+
+        for (let i = 0; i < data.list.length; i++) {
+            const element = data.list[i];
+            document.getElementById('template_div').css({ element: "" })
+        }
+
+		document.getElementsByClassName("select_div").each(function (index, domEle) {
+
+            var select_property = (domEle).find('.select_property').val().toString();
+            var property_value = (domEle).find('.property_value').val().toString();
+
+            if(property_value!=null&& property_value!=undefined&& property_value!=''){
+                document.getElementById('#template_div').css({ select_property: property_value})
+            }
+
+        });
+    }
 
 })();
 

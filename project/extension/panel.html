@@ -139,13 +139,13 @@
             <label for="">Element Class
                 <input type="text" />
             </label>
-            <button id='add_button' class='btn btn-primary'> Add </button>
+            <button id='input_button' class='btn btn-primary'> Input Property </button>
         </div>
         <br />
-        <div id="initial_div"></div>
-        <div id="added_div"></div>
+        <div id="property_div"></div>
         <br />
-        <div>
+        <div hidden id="add_and_save">
+            <button id='add_button' class='btn btn-primary'> Add </button>
             <button id='save_button' class='btn btn-primary' > Save </button>
         </div>
     </div>  
@@ -190,25 +190,6 @@
     <div class='alert alert-warning'><p><span class="fui-time"></span> <strong>Please wait.</strong> Processing...</p></div>
 </div>
 
-<script id="SelectProperty" type="x-tmpl-mustache">
-    <div id="div_d${data.index}" class="select_div" >
-        <label for="">SelectProperty
-        <select name="" style="width: 153px;" class="select_property">
-                {{each(i,obj) data.list}}
-                    <option value="${obj}">${obj}</option>
-                {{/each}}
-            </select>
-        </label>
-
-        <label for="">PropertyValue
-            <input type="text" class="property_value"/>
-        </label>
-
-        <label for="" style="margin-left: 20px;" onclick="del(${data.index})">
-                Delete
-        </label>
-    </div>
-</script>
 <script src="css/js/bootstrap.min.js"></script>
 <script src="css/js/flatui-checkbox.js"></script>
 <script src='js/diff_match_patch.js'></script>
