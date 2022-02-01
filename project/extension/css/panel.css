@@ -105,3 +105,18 @@ iframe {
 		margin-top: 3px;
 		display: block;
 	}
+
+h1 {
+	font-size: 20px;
+	color: orange;
+	text-align: center;
+	padding-bottom: 1em;
+}
+
+.form-control {
+	border:rgb(2, 2, 42) 2px solid;
+}
+
+#add_and_save {
+	margin-left:20px;
+}
