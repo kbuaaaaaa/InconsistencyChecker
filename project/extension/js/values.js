@@ -55,28 +55,28 @@ const GENERIC_FAMILY = {
 };
 
 const BORDER_STYLE = {
-    None = "none",
+    Default : "none",
     //Default value. Specifies no border
-    Hidden = "hidden",
+    Hidden : "hidden",
     //The same as "none", except in border conflict resolution for table elements
-    Dotted = "dotted",
+    Dotted : "dotted",
     //Specifies a dotted border
-    Dashed = "dashed",
+    Dashed : "dashed",
     //Specifies a dashed border
-    Solid = "solid",
+    Solid : "solid",
     //Specifies a solid border
-    Double = "double",
+    Double : "double",
     //Specifies a double border
-    Groove = "groove",
+    Groove : "groove",
     //Specifies a 3D grooved border. The effect depends on the border-color value
-    Ridge = "ridge",
+    Ridge : "ridge",
     //Specifies a 3D ridged border. The effect depends on the border-color value
-    Inset = "inset",
+    Inset : "inset",
     //Specifies a 3D inset border. The effect depends on the border-color value
-    Outset = "outset",
+    Outset : "outset",
     //Specifies a 3D outset border. The effect depends on the border-color value
-    Initial = "initial",
+    Initial : "initial",
     //Sets this property to its default value. Read about initial
-    Initial = "inherit"
+    Initial : "inherit"
     //Inherits this property from its parent element. Read about inherit
 };
