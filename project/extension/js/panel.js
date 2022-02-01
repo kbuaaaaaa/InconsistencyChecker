@@ -533,12 +533,12 @@
 					border_width_input.type = "text";
 					border_width_input.className = "border_width_value";
 					border_width_input.style = "margin-left: 20px;";
-					border_div.appendChild(_input);
+					border_div.appendChild(border_width_input);
 
 					var border_style_label = document.createElement("label");
 					border_style_label.innerHTML = " Border Style ";
 					border_style_label.style = "margin-left: 20px;";
-					border_div.appendChild(_label);
+					border_div.appendChild(border_style_label);
 
 					var border_style_input = document.createElement("select");
 					border_style_input.className = "border_style_input";
@@ -549,18 +549,18 @@
 						border_style_input.appendChild(option);
 					}
 					border_style_input.style = "margin-left: 20px;";
-					border_div.appendChild(font_style_input);
+					border_div.appendChild(border_style_input);
 
 					var border_color_label = document.createElement("label");
 					border_color_label.innerHTML = " Border Color ";
 					border_color_label.style = "margin-left: 20px;";
-					border_div.appendChild(_label);
+					border_div.appendChild(border_color_label);
 
 					var border_color_input = document.createElement("input");
 					border_color_input.type = "text";
 					border_color_input.className = "border_color_value";
 					border_color_input.style = "margin-left: 20px;";
-					border_div.appendChild(_input);
+					border_div.appendChild(border_color_input);
 
 
 					property_value_div.appendChild(border_div);
