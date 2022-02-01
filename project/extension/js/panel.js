@@ -45,10 +45,16 @@
 		addButton = $('#add_button'),
 		saveButton = $('#save_button'),
 		inputProperty = $('#input_button'),
-		data = {}
+		data = {},
 
-		console = chrome.extension.getBackgroundPage().console;
-		template = Template()
+		console = chrome.extension.getBackgroundPage().console,
+		template = new Template(),
+		color = [],
+		font = [],
+		border = [],
+		width = [],
+		height = []
+
 
 	restoreSettings();
 
@@ -68,11 +74,11 @@
 
 	data.index = 0;
 	data.list = [
+		"color",
 		"font",
-		"width",
-		"height",
 		"border",
-		"color"
+		"width",
+		"height"
 	];
 
 	htmlTextarea1.on('click', function () {
@@ -351,15 +357,37 @@
 			select.appendChild(option);
     	}
 		select.style = "margin-left: 20px;";
-
-		var property_label = document.createElement("label");
-		property_label.innerHTML = " Property Value ";
-		property_label.style = "margin-left: 20px;";
-
-		var property_input = document.createElement("input");
-		property_input.type = "text";
-		property_input.className = "property_value";
-		property_input.style = "margin-left: 20px;";
+		var value = select.options[select.selectedIndex].value;
+		switch (value) {
+			case "color":
+				break;
+			case "font":
+				break;
+			case "border":
+				break;
+			case "width":
+				var property_label = document.createElement("label");
+				property_label.innerHTML = " Property Value ";
+				property_label.style = "margin-left: 20px;";
+		
+				var property_input = document.createElement("input");
+				property_input.type = "text";
+				property_input.className = "property_value";
+				property_input.style = "margin-left: 20px;";
+				break;
+			case "height":
+				var property_label = document.createElement("label");
+				property_label.innerHTML = " Property Value ";
+				property_label.style = "margin-left: 20px;";
+		
+				var property_input = document.createElement("input");
+				property_input.type = "text";
+				property_input.className = "property_value";
+				property_input.style = "margin-left: 20px;";
+				break;
+			default:
+				break;
+		}
 
 		var delete_button = document.createElement("button");
 		delete_button.innerHTML = " Delete ";
