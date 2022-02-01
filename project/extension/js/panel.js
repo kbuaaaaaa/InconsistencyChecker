@@ -329,25 +329,37 @@
     function add(){
         data.index++;
 		var div = document.createElement("div");
-		div.id = "property" + data.index;
-		div.className = "select_property";
+		div.id = "div_" + data.index;
 		var select_label = document.createElement("label");
-		select_label.innerHTML = "Select Property";
+		select_label.innerHTML = " Select Property ";
+
+		var select = document.createElement("select");
+		select.className = "select_property";
+		for (const val of data.list){
+			var option = document.createElement("option");
+			option.value = val;
+			option.text = val.charAt(0).toUpperCase() + val.slice(1);
+			select.appendChild(option);
+    	}
+		select.style = "margin-left: 20px;";
+
+		var property_label = document.createElement("label");
+		property_label.innerHTML = " Property Value ";
+		property_label.style = "margin-left: 20px;";
+
+		var property_input = document.createElement("input");
+		property_input.type = "text";
+		property_input.className = "property_value";
+		property_input.style = "margin-left: 20px;";
+		
+
 		div.appendChild(select_label);
+		div.appendChild(select);
+		div.appendChild(property_label);
+		div.appendChild(property_input);
 		var element = document.getElementById("property_div");
 		element.append(div);
-
     }
-
-	//<script id="SelectProperty" type="text">
-//     <div id=\"div_d${data.index}\" class=\"select_div\" >
-//         <label for=\"\">Select Property
-//         <select name=\"\" style=\"width: 153px;\" class=\"select_property\">
-//                 {{foreach(i,obj) data.list}}
-//                     <option value=\"{$obj}\">{$obj}</option>
-//                 {{/foreach}}
-//             </select>
-//         </label>
 
 //         <label for=\"\">Property Value
 //             <input type=\"text\" class=\"property_value\"/>
