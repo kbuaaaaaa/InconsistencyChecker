@@ -12,132 +12,20 @@
 <body>
 
 <div class="container">
-    <div class="row" id='create-buttons'>
-        <div class="column" id='create-column'>
-            <div id='error-box'>
-                <div class='alert alert-danger'><p> <strong>Error!</strong> <span class='error-message'></span></p></div>
-            </div>
-            <div class="col-xs-6">
-                <button id='create1' class='btn btn-primary'> Choose the inspected element no.1</button>
-            </div>
-            <div class="col-xs-6">
-                <button id='create2' class='btn btn-primary'> Choose the inspected element no.2</button>
-            </div>
-        </div>
-    </div>
 
-    <div class="row" id='html'>
-        <div class="column" id='textareas-column-1'>
-            <div class="col-xs-6">
-                <span class="label label-warning">HTML</span>
-                <textarea id='html1' readonly class="form-control input-sm"></textarea>
-            </div>
-            <div class="col-xs-6">
-                <span class="label label-warning">HTML</span>
-                <textarea id='html2' readonly class="form-control input-sm"></textarea>
-            </div>
-        </div>
-    </div>  
-    <div class="row" id='css'>
+    <div>
+        <button id='template_page_button' class='btn btn-primary'> Template Builder </button>
+        <button id='compare_page_button' class='btn btn-primary'> Comparison Tool </button>
+    </div> 
 
-        <div class="column" id='textareas-column-2'>
-            <div class="col-xs-6">
-                <span class="label label-warning">CSS</span>
-                <textarea id='css1' readonly class="form-control input-sm"></textarea>
-            </div>
-            <div class="col-xs-6">
-                <span class="label label-warning">CSS</span>
-                <textarea id='css2' readonly class="form-control input-sm"></textarea>
-            </div>
-        </div>
-    </div>
-
-    <div hidden class="row">
-        <div class="panel-group col-xs-12" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#settings">
-                            <span class="fui-list"></span> Settings
-                        </a>
-                    </h4>
-                </div>
-                <div id="settings" class="panel-collapse collapse">
-                    <div class="accordion-inner">
-                        <ul>
-                            <li><label class="checkbox">
-                                <input type='checkbox' checked="checked" id='properties-clean-up'/> Keep only shorthand
-                                properties (e.g. keeps "border", but removes "border-width")
-                            </label></li>
-                            <li><label class="checkbox">
-                                <input type='checkbox' checked="checked" id='remove-default-values'/> Remove properties
-                                with default browser values
-                            </label></li>
-                            <li><label class="checkbox">
-                                <input type='checkbox' checked="checked" id='remove-webkit-properties'/> Remove
-                                properties prefixed with "-webkit"
-                            </label></li>
-                            <li><label class="checkbox">
-                                <input type='checkbox' checked="checked" id='combine-same-rules'/> Combine same rules
-                                together
-                            </label></li>
-                            <li><label class="checkbox">
-                                <input type='checkbox' checked="checked" id='fix-html-indentation'/> Format and clean up
-                                HTML
-                            </label></li>
-                            <li><label class="checkbox">
-                                <input type='checkbox' id='include-ancestors'/> Include ancestor elements in the snippet
-                            </label></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row" id='compare-buttons'>
-        <div class="column" id='compare-column'>
-            <div class="col-xs-6">
-                <button id='compare' class='btn btn-primary'> Compare </button>
-                <button id='detail' class='btn btn-primary'> Show details </button>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column">
-            <div class="col-xs-6">
-                <span class="label label-warning">Report</span>
-                <textarea id='report' readonly class="form-control input-sm"></textarea>
-            </div>
-        </div>
-    </div>
-    <div hidden class="row" id="diff">
-        <div class="row" id="htmlDiff">
-            <div class="column">
-                <div class="col-xs-6">
-                    <label class="label label-warning">HTML Difference</label>
-                    <DIV id="outputHTML"></DIV>
-                </div>
-            </div>
-        </div>
-        <div class="row" id="cssDiff">
-            <div class="column">
-                <div class="col-xs-6">
-                    <label class="label label-warning">CSS Difference</label>
-                    <DIV id="outputCSS"></DIV>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id = "template_div">
+    <div hidden id = "template_page">
         <div id="template_input">
-            <label for="" >Template Name
+            <label>Template Name
                 <input type="text" style = "margin-left: 20px;"/>
             </label>
         
-            <label for="" style = "margin-left: 20px;">Element Class
-                <input type="text" style = "margin-left: 20px;"/>
+            <label style = "margin-left: 20px;">Element Class
+                <input id = "element_class_input" type="text" style = "margin-left: 20px;"/>
             </label>
             <button id='input_button' class='btn btn-primary'> Input Property </button>
         </div>
@@ -149,6 +37,126 @@
             <button id='save_button' class='btn btn-primary' > Save </button>
         </div>
     </div>  
+
+    <div hidden id = "comparison_page">
+        <div class="row" id='create-buttons'>
+            <div class="column" id='create-column'>
+                <div id='error-box'>
+                    <div class='alert alert-danger'><p> <strong>Error!</strong> <span class='error-message'></span></p></div>
+                </div>
+                <div class="col-xs-6">
+                    <button id='create1' class='btn btn-primary'> Choose the inspected element no.1</button>
+                </div>
+                <div class="col-xs-6">
+                    <button id='create2' class='btn btn-primary'> Choose the inspected element no.2</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id='html'>
+            <div class="column" id='textareas-column-1'>
+                <div class="col-xs-6">
+                    <span class="label label-warning">HTML</span>
+                    <textarea id='html1' readonly class="form-control input-sm"></textarea>
+                </div>
+                <div class="col-xs-6">
+                    <span class="label label-warning">HTML</span>
+                    <textarea id='html2' readonly class="form-control input-sm"></textarea>
+                </div>
+            </div>
+        </div>  
+        <div class="row" id='css'>
+
+            <div class="column" id='textareas-column-2'>
+                <div class="col-xs-6">
+                    <span class="label label-warning">CSS</span>
+                    <textarea id='css1' readonly class="form-control input-sm"></textarea>
+                </div>
+                <div class="col-xs-6">
+                    <span class="label label-warning">CSS</span>
+                    <textarea id='css2' readonly class="form-control input-sm"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div hidden class="row">
+            <div class="panel-group col-xs-12" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#settings">
+                                <span class="fui-list"></span> Settings
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="settings" class="panel-collapse collapse">
+                        <div class="accordion-inner">
+                            <ul>
+                                <li><label class="checkbox">
+                                    <input type='checkbox' checked="checked" id='properties-clean-up'/> Keep only shorthand
+                                    properties (e.g. keeps "border", but removes "border-width")
+                                </label></li>
+                                <li><label class="checkbox">
+                                    <input type='checkbox' checked="checked" id='remove-default-values'/> Remove properties
+                                    with default browser values
+                                </label></li>
+                                <li><label class="checkbox">
+                                    <input type='checkbox' checked="checked" id='remove-webkit-properties'/> Remove
+                                    properties prefixed with "-webkit"
+                                </label></li>
+                                <li><label class="checkbox">
+                                    <input type='checkbox' checked="checked" id='combine-same-rules'/> Combine same rules
+                                    together
+                                </label></li>
+                                <li><label class="checkbox">
+                                    <input type='checkbox' checked="checked" id='fix-html-indentation'/> Format and clean up
+                                    HTML
+                                </label></li>
+                                <li><label class="checkbox">
+                                    <input type='checkbox' id='include-ancestors'/> Include ancestor elements in the snippet
+                                </label></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id='compare-buttons'>
+            <div class="column" id='compare-column'>
+                <div class="col-xs-6">
+                    <button id='compare' class='btn btn-primary'> Compare </button>
+                    <button id='detail' class='btn btn-primary'> Show details </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <div class="col-xs-6">
+                    <span class="label label-warning">Report</span>
+                    <textarea id='report' readonly class="form-control input-sm"></textarea>
+                </div>
+            </div>
+        </div>
+        <div hidden class="row" id="diff">
+            <div class="row" id="htmlDiff">
+                <div class="column">
+                    <div class="col-xs-6">
+                        <label class="label label-warning">HTML Difference</label>
+                        <DIV id="outputHTML"></DIV>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="cssDiff">
+                <div class="column">
+                    <div class="col-xs-6">
+                        <label class="label label-warning">CSS Difference</label>
+                        <DIV id="outputCSS"></DIV>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- <div class="row" id='export-buttons-row'>
         <div class="col-xs-4">
             <form action="http://codepen.io/pen/define" method="POST" target="_blank" id='codepen-form'>
