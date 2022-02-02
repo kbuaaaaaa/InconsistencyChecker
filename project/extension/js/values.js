@@ -55,28 +55,28 @@ const GENERIC_FAMILY = {
 };
 
 const BORDER_STYLE = {
-  Default: "none",
-  //Default value. Specifies no border
-  Hidden: "hidden",
-  //The same as "none", except in border conflict resolution for table elements
-  Dotted: "dotted",
-  //Specifies a dotted border
-  Dashed: "dashed",
-  //Specifies a dashed border
-  Solid: "solid",
-  //Specifies a solid border
-  Double: "double",
-  //Specifies a double border
-  Groove: "groove",
-  //Specifies a 3D grooved border. The effect depends on the border-color value
-  Ridge: "ridge",
-  //Specifies a 3D ridged border. The effect depends on the border-color value
-  Inset: "inset",
-  //Specifies a 3D inset border. The effect depends on the border-color value
-  Outset: "outset",
-  //Specifies a 3D outset border. The effect depends on the border-color value
-  Initial: "initial",
-  //Sets this property to its default value. Read about initial
-  Initial: "inherit",
-  //Inherits this property from its parent element. Read about inherit
+    Default : "none",
+    //Default value. Specifies no border
+    Hidden : "hidden",
+    //The same as "none", except in border conflict resolution for table elements
+    Dotted : "dotted",
+    //Specifies a dotted border
+    Dashed : "dashed",
+    //Specifies a dashed border
+    Solid : "solid",
+    //Specifies a solid border
+    Double : "double",
+    //Specifies a double border
+    Groove : "groove",
+    //Specifies a 3D grooved border. The effect depends on the border-color value
+    Ridge : "ridge",
+    //Specifies a 3D ridged border. The effect depends on the border-color value
+    Inset : "inset",
+    //Specifies a 3D inset border. The effect depends on the border-color value
+    Outset : "outset",
+    //Specifies a 3D outset border. The effect depends on the border-color value
+    Initial : "initial",
+    //Sets this property to its default value. Read about initial
+    Initial : "inherit"
+    //Inherits this property from its parent element. Read about inherit
 };
