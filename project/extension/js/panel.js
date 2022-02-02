@@ -18,6 +18,7 @@
 		fixHTMLIndentationInput = $('#fix-html-indentation'),
 		includeAncestors = $('#include-ancestors'),
 		errorBox = $('#error-box'),
+		loader = $('#loader'),
 		
 		secondSnapshot,
 		cssStringifier2 = new CSSStringifier(),
@@ -61,6 +62,7 @@
 	removeWebkitPropertiesInput.on('change', persistSettingAndProcessSnapshot);
 	fixHTMLIndentationInput.on('change', persistSettingAndProcessSnapshot);
 	combineSameRulesInput.on('change', persistSettingAndProcessSnapshot);
+	includeAncestors.on('change', persistSettingAndProcessSnapshot);
 
 	createButton1.on('click', makeFirstSnapshot);
 	createButton2.on('click', makeSecondSnapshot);
@@ -294,11 +296,11 @@
 			});
 		}
 
+		htmlTextarea2.val(secondHTML);
+		cssTextarea2.val(secondCSS);
 		styles2 = styles;
 		secondHTML = html;
 		secondCSS = cssStringifier2.process(styles)
-		htmlTextarea2.val(secondHTML);
-		cssTextarea2.val(secondCSS);
 
 		loader.removeClass('processing');
 	}
