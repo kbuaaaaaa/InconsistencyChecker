@@ -3,7 +3,7 @@ build-job:
     - docker
   stage: build
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - echo "Hello world!"
 
 test-job-1:
   stage: test
