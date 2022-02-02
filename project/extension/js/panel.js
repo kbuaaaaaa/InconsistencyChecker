@@ -615,6 +615,7 @@
 
 		var delete_button = document.createElement("div");
 		delete_button.className = "glyphicon glyphicon-trash";
+		delete_button.innerHTML = " Delete ";
 		delete_button.onclick = () => del(div.id);
 
 		div.appendChild(select_label);
