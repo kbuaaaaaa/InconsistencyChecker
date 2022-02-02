@@ -613,9 +613,8 @@
 			}
 		};
 
-		var delete_button = document.createElement("button");
-		delete_button.innerHTML = " Delete ";
-		delete_button.style = "margin-left: 20px;";
+		var delete_button = document.createElement("div");
+		delete_button.className = "glyphicon glyphicon-trash";
 		delete_button.onclick = () => del(div.id);
 
 		div.appendChild(select_label);
