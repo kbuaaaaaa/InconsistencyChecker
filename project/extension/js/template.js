@@ -33,13 +33,13 @@ class Font {
   }
 }
 
-class Color {
-  constructor(red = 0, green = 0, blue = 0) {
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
-  }
-}
+// class Color {
+//   constructor(red = 0, green = 0, blue = 0) {
+//     this.red = red;
+//     this.green = green;
+//     this.blue = blue;
+//   }
+// }
 
 class Border {
   constructor(
