@@ -394,38 +394,16 @@
 					var color_div = document.createElement("div");
 					color_div.className = "color_div";
 
-					var red_label = document.createElement("label");
-					red_label.innerHTML = " R ";
-					red_label.style = "margin-left: 20px;";
-					color_div.appendChild(red_label);
+					var color_label = document.createElement("label");
+					color_label.innerHTML = " # ";
+					color_label.style = "margin-left: 20px;";
+					color_div.appendChild(color_label);
 			
-					var red_input = document.createElement("input");
-					red_input.type = "text";
-					red_input.className = "red_value";
-					red_input.style = "margin-left: 20px;";
-					color_div.appendChild(red_input);
-
-					var green_label = document.createElement("label");
-					green_label.innerHTML = " G ";
-					green_label.style = "margin-left: 20px;";
-					color_div.appendChild(green_label);
-			
-					var green_input = document.createElement("input");
-					green_input.type = "text";
-					green_input.className = "green_value";
-					green_input.style = "margin-left: 20px;";
-					color_div.appendChild(green_input);
-
-					var blue_label = document.createElement("label");
-					blue_label.innerHTML = " B ";
-					blue_label.style = "margin-left: 20px;";
-					color_div.appendChild(blue_label);
-			
-					var blue_input = document.createElement("input");
-					blue_input.type = "text";
-					blue_input.className = "blue_value";
-					blue_input.style = "margin-left: 20px;";
-					color_div.appendChild(blue_input);
+					var color_input = document.createElement("input");
+					color_input.type = "text";
+					color_input.className = "color_value";
+					color_input.style = "margin-left: 20px;";
+					color_div.appendChild(color_input);
 
 					property_value_div.appendChild(color_div)
 					break;
@@ -644,11 +622,8 @@
     function save(){
 		let	color_inputs = document.getElementsByClassName("color_div");
 		for (const inputs of color_inputs) {
-			let r = inputs.children[1].value,
-				g = inputs.children[3].value,
-				b = inputs.children[5].value,
-				color = new Color(r,g,b)
-			colors.push(color);
+			let hex = inputs.children[1].value;
+			colors.push(hex);
 		}
 		console.log(colors);
 		template.color = colors;
