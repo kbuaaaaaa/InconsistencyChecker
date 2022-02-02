@@ -45,7 +45,7 @@
 		inputProperty = $('#input_button'),
 		templatePageButton = $('#template_page_button'),
 		comparePageButton = $('#compare_page_button'),
-		downloadTemplateButton = $("#download-template");
+		downloadTemplateButton = $("#download-template"),
 		data = {},
 
 		console = chrome.extension.getBackgroundPage().console,
@@ -102,6 +102,16 @@
 
 	$('input[type="checkbox"]').each(function () {
 		$(this).checkbox();
+	});
+
+	document
+	.querySelector("#file-selector")
+	.addEventListener("change", function () {
+	  const reader = new FileReader();
+	  reader.addEventListener("load", () => {
+		sessionStorage.setItem("json-file", reader.result);
+	  });
+	  reader.readAsDataURL(this.files[0]);
 	});
 
 
