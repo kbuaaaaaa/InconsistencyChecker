@@ -10,7 +10,6 @@
 		createButton1 = $('#create1'),
 		htmlTextarea1 = $('#html1'),
 		cssTextarea1 = $('#css1'),
-		styles1,
 
 		propertiesCleanUpInput = $('#properties-clean-up'),
 		removeDefaultValuesInput = $('#remove-default-values'),
@@ -19,8 +18,6 @@
 		fixHTMLIndentationInput = $('#fix-html-indentation'),
 		includeAncestors = $('#include-ancestors'),
 		errorBox = $('#error-box'),
-		loader = $('#loader'),
-		comparison = $('#comparison'),
 		
 		secondSnapshot,
 		cssStringifier2 = new CSSStringifier(),
@@ -32,7 +29,6 @@
 		createButton2 = $('#create2'),
 		htmlTextarea2 = $('#html2'),
 		cssTextarea2 = $('#css2'),
-		styles2,
 
 		compareButton = $('#compare'),
 		detailButton = $('#detail'),
@@ -45,15 +41,17 @@
 		addButton = $('#add_button'),
 		saveButton = $('#save_button'),
 		inputProperty = $('#input_button'),
+		templatePageButton = $('#template_page_button'),
+		comparePageButton = $('#compare_page_button'),
 		data = {},
 
 		console = chrome.extension.getBackgroundPage().console,
 		template = new Template(),
-		color = [],
-		font = [],
-		border = [],
-		width = [],
-		height = []
+		colors = [],
+		fonts = [],
+		borders = [],
+		widths = [],
+		heights = []
 
 
 	restoreSettings();
@@ -71,6 +69,8 @@
 	saveButton.on('click', save);
 	addButton.on('click', add);
 	inputProperty.on('click',switch_to_add);
+	comparePageButton.on('click',switch_to_compare);
+	templatePageButton.on('click',switch_to_template);
 
 	data.index = 0;
 	data.list = [
@@ -334,6 +334,15 @@
 		document.getElementById("input_button").style.display = "none";
 	};
 
+	function switch_to_compare(){
+		document.getElementById("template_page").hidden = true;
+		document.getElementById("comparison_page").hidden = false;
+	}
+
+	function switch_to_template(){
+		document.getElementById("template_page").hidden = false;
+		document.getElementById("comparison_page").hidden = true;
+	}
 
     function del(id) {
         const property_div = document.getElementById("property_div");
@@ -508,7 +517,7 @@
 
 					var generic_family_input = document.createElement("select");
 					generic_family_input.className = "generic_family_input";
-					for (const key of Object.keys(FONT_WEIGHT)){
+					for (const key of Object.keys(GENERIC_FAMILY)){
 						var option = document.createElement("option");
 						option.value = key;
 						option.text = key.charAt(0).toUpperCase() + key.slice(1);
@@ -604,7 +613,6 @@
 			}
 		};
 
-
 		var delete_button = document.createElement("button");
 		delete_button.innerHTML = " Delete ";
 		delete_button.style = "margin-left: 20px;";
@@ -619,6 +627,62 @@
     }
 
     function save(){
+		let	color_inputs = document.getElementsByClassName("color_div");
+		for (const inputs of color_inputs) {
+			let r = inputs.children[1].value,
+				g = inputs.children[3].value,
+				b = inputs.children[5].value,
+				color = new Color(r,g,b)
+			colors.push(color);
+		}
+		console.log(colors);
+		template.color = colors;
+
+		let font_inputs = document.getElementsByClassName("font_div");
+		for (const inputs of font_inputs) {
+			console.log(inputs.children);
+			let font_style = inputs.children[1].value,
+				font_variant = inputs.children[3].value,
+				font_weight = inputs.children[5].value,
+				font_size = inputs.children[7].value,
+				line_height = inputs.children[9].value,
+				font_name = inputs.children[11].value,
+				font_family = inputs.children[13].value,
+				generic_family = inputs.children[15].value,
+				font = new Font(font_style,font_variant,font_weight,font_size,line_height,font_name,font_family,generic_family)
+			fonts.push(font);
+		}
+		console.log(fonts);
+		template.font = fonts;
+
+		let border_inputs = document.getElementsByClassName("border_div");
+		for (const inputs of border_inputs) {
+			let border_width = inputs.children[1].value,
+				border_style = inputs.children[3].value,
+				border_color = inputs.children[5].value,
+				border = new Border(border_width,border_style,border_color)
+			borders.push(border);
+		}
+		console.log(borders);
+		template.border = borders;
+
+		let width_inputs = document.getElementsByClassName("width_div");
+		for (const inputs of width_inputs) {
+			widths.push(inputs.children[1].value);
+		}
+		console.log(widths);
+		template.width = widths;
+
+		let height_inputs = document.getElementsByClassName("height_div");
+		for (const inputs of height_inputs) {
+			heights.push(inputs.children[1].value);
+		}
+		console.log(heights);
+		template.height = heights;
+
+		template.type = document.getElementById("element_class_input").value;
+
+		console.log(template);
 
     }
 })();
