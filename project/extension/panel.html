@@ -15,8 +15,8 @@
     <div>
         <button id='template_page_button' class='btn btn-primary'> Template Builder </button>
         <button id='compare_page_button' class='btn btn-primary'> Comparison Tool </button>
+        <button id='Comparison_page_button' class='btn btn-primary'> Compare template </button>
     </div> 
-
     <div hidden id = "comparison_page">
         <div class="row" id='create-buttons'>
             <div class="column" id='create-column'>
@@ -177,6 +177,30 @@
             </div>  
         </div>
     </div>   
+
+    <div hidden id="Comparison_page">
+        <div id="comparison_div">
+            <h1 class="header">Compare Template</h1>
+               <div class="row">
+            <div class="column">
+                <div class="col-xs-6">
+                    <span class="label label-warning">Output</span>
+                    <textarea id='output' readonly class="form-control input-sm"></textarea>
+                </div>
+                <div class="row" id="Template-upload">
+                    <div class="column" id="Upload-column">
+                      <div class="col-xs-5">
+                        <button  id="compare" class="btn btn-primary">
+                          COMPARE
+                        </button>
+                        <input type="file" id="file-selector" accept=".json" />
+                      </div>
+                    </div>
+                  </div>  
+            </div>
+        </div>
+
+    </div>
     <!-- <div class="row" id='export-buttons-row'>
         <div class="col-xs-4">
             <form action="http://codepen.io/pen/define" method="POST" target="_blank" id='codepen-form'>

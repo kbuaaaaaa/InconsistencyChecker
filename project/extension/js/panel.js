@@ -44,6 +44,7 @@
 		saveButton = $('#save_button'),
 		inputProperty = $('#input_button'),
 		templatePageButton = $('#template_page_button'),
+		ComparisonPageButton=$('#Comparison_page_button'),
 		comparePageButton = $('#compare_page_button'),
 		downloadTemplateButton = $("#download-template"),
 		data = {},
@@ -52,6 +53,7 @@
 		template = new Template(),
 		colors = [],
 		fonts = [],
+
 		borders = [],
 		widths = [],
 		heights = []
@@ -75,6 +77,7 @@
 	inputProperty.on('click',switch_to_add);
 	comparePageButton.on('click',switch_to_compare);
 	templatePageButton.on('click',switch_to_template);
+	ComparisonPageButton.on('click',switch_to_Comparison);
 	downloadTemplateButton.on("click", downloadTemplate);
 
 	data.index = 0;
@@ -109,7 +112,7 @@
 	.addEventListener("change", function () {
 	  const reader = new FileReader();
 	  reader.addEventListener("load", () => {
-		sessionStorage.setItem("json-file", reader.result);
+		localStorage.setItem("json-file", reader.result);
 	  });
 	  reader.readAsDataURL(this.files[0]);
 	});
@@ -352,11 +355,18 @@
 	function switch_to_compare(){
 		document.getElementById("template_page").hidden = true;
 		document.getElementById("comparison_page").hidden = false;
+		document.getElementById("Comparison_page").hidden = true;
 	}
+	function switch_to_Comparison(){
+		document.getElementById("template_page").hidden = true;
+		document.getElementById("comparison_page").hidden = true;
+		document.getElementById("Comparison_page").hidden = false;
 
+	}
 	function switch_to_template(){
 		document.getElementById("template_page").hidden = false;
 		document.getElementById("comparison_page").hidden = true;
+		document.getElementById("Comparison_page").hidden = true;
 	}
 
     function del(id) {
@@ -686,5 +696,6 @@
 		  filename: "test.txt", // template name.json?
 		});
 	}
+	
 
 })();
