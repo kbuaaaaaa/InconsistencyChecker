@@ -52,7 +52,6 @@
     widths = [],
     heights = [],
     leafNodes = [],
-    flaggedElements = {},
     initialCode = "document.body"
 
   restoreSettings();
@@ -725,44 +724,28 @@
   //   }
   // }
 
-  function getChildElementCount(code){
+  function getChildElementCount(code, _callback){
     code += ".childElementCount";
-    console.log(code);
       chrome.tabs.query(
         { active: true, currentWindow: true },
         function(tabs) {
           const { id: tabId } = tabs[0].url;
-          console.log(tabs[0].url);  
-          chrome.tabs.executeScript(tabId, {code}, async (result)  => {
-            console.log(await result);
+          chrome.tabs.executeScript(tabId, {code}, (result)  => {
+            _callback(result);
           });
       }); 
 
   }
 
-  function getStyle(code){
+  function getStyle(code, _callback){
     var style_font,style_border,style_color,style_height,style_width,
       styleCode = "window.getComputedStyle(" + code + ")";
     chrome.tabs.query(
       { active: true, currentWindow: true },
       function(tabs) {
         const { id: tabId } = tabs[0].url;
-        console.log(tabs[0].url);  
-        // http://infoheap.com/chrome-extension-tutorial-access-dom/
         chrome.tabs.executeScript(tabId, {code : styleCode + ".font"}, function (result) {
-          style_font = result[0];
-        });
-        chrome.tabs.executeScript(tabId, {code : styleCode + ".border"}, function (result) {
-          style_border = result[0];
-        });
-        chrome.tabs.executeScript(tabId, {code : styleCode + ".color"}, function (result) {
-          style_color = result[0];
-        });
-        chrome.tabs.executeScript(tabId, {code : styleCode + ".width"}, function (result) {
-          style_width = result[0];
-        });
-        chrome.tabs.executeScript(tabId, {code : styleCode + ".height"}, function (result) {
-          style_height = result[0];
+            _callback(result[0]);
         });
       }
     );
@@ -770,24 +753,71 @@
   }
 
   function traverseAndCompare(code) {
-    console.log(code);
-    let childnum = getChildElementCount(code);
-    console.log(childnum);
-    if (childnum == 0) {
-      let style  = getStyle(code);
-      console.log(style);
-    }
-    else{
-      for (let index = 0; index < childnum; index++) {
-        traverseAndCompare(code + `.children[${index}]`);
+    getChildElementCount(code,(childnum)=>{
+      if (childnum == 0) {
+        getStyle(code,(style) => {
+          console.log(style);
+        });
       }
-    }
+      else{
+        for (let index = 0; index < childnum; index++) {
+          traverseAndCompare(code + `.children[${index}]`);
+        }
+      }
+    });
   }
 
 
   function startTemplateComparison(){
     traverseAndCompare(initialCode);
+    // getRoot(getLeafNodes);
   }
+
+  // function getRoot(_callback){;
+  //     chrome.tabs.query(
+  //       { active: true, currentWindow: true },
+  //       function(tabs) {
+  //         const { id: tabId } = tabs[0].url;
+  //         console.log(tabs[0].url);  
+  //         chrome.tabs.executeScript(tabId, {code : 'document.body'}, (result)  => {
+  //           console.log("inside getRoot" + result);
+  //           _callback(result[0]);
+  //         });
+  //     }); 
+
+  // }
+
+  // function getLeafNodes(root) {
+  //   console.log(root);
+  //   // let body = document.implementation.createHTMLDocument('');
+  //   // Object.assign(body,root);
+  //   // console.log(body);
+  //   if (root == null) {
+  //     return;
+  //   } else if (root.childElementCount == 0) {
+  //     leafNodes.push(root);
+  //     return;
+  //   } else {
+  //     var childNodes = root.children;
+  //     for (var i = 0; i < children.length; i++) {
+  //       getLeafNodes(childNodes[i], leafNodes);
+  //     }
+  //   }
+  // }
+
+  // function compareStyles(template, nodes) {
+  //   for (var i = 0; i < nodes.length; i++) {
+  //     var currentNode = nodes[i];
+  //     var style = window.getComputedStyle(currentNode);
+
+  //     for (var style in template) {
+  //       if (template[style] != currentNode[style]) {
+  //         chrome.extension.getBackgroundPage().console.log(style);
+  //       }
+  //     }
+  //   }
+  // }
+
 
 })();
 
