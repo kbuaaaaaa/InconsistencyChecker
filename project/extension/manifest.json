@@ -14,7 +14,10 @@
 		"persistent": false
 	},
 	"permissions": [
-		"tabs"
+		"storage",
+		"tabs",
+		"activeTab",
+		"<all_urls>"
 	],
 	"content_security_policy": "script-src 'self' 'unsafe-eval' https://apis.google.com https://platform.twitter.com https://www.facebook.com; object-src 'self'"
 }
