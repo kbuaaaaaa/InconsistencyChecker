@@ -39,9 +39,10 @@
     saveButton = $("#save_button"),
     inputProperty = $("#input_button"),
     templatePageButton = $("#template_page_button"),
-    ComparisonPageButton = $("#Comparison_page_button"),
+    TemplateComparisonPageButton = $("#template_comparison_page_button"),
     comparePageButton = $("#compare_page_button"),
     downloadTemplateButton = $("#download-template"),
+    compareTemplate = $('#compare_template'),
     data = {},
     console = chrome.extension.getBackgroundPage().console,
     template = new Template(),
@@ -49,7 +50,10 @@
     fonts = [],
     borders = [],
     widths = [],
-    heights = [];
+    heights = [],
+    leafNodes = [],
+    flaggedElements = {},
+    initialCode = "document.body"
 
   restoreSettings();
 
@@ -69,8 +73,9 @@
   inputProperty.on("click", switch_to_add);
   comparePageButton.on("click", switch_to_compare);
   templatePageButton.on("click", switch_to_template);
-  ComparisonPageButton.on("click", switch_to_Comparison);
+  TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   downloadTemplateButton.on("click", downloadTemplate);
+  compareTemplate.on("click", startTemplateComparison);
 
   data.index = 0;
   data.list = ["select", "color", "font", "border", "width", "height"];
@@ -92,15 +97,14 @@
     $(this).checkbox();
   });
 
-  document
-    .querySelector("#file-selector")
-    .addEventListener("change", function () {
+  document.querySelector("#file-selector").addEventListener("change", function () {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         localStorage.setItem("json-file", reader.result);
       });
       reader.readAsDataURL(this.files[0]);
     });
+
 
   function restoreSettings() {
     // Since we can't access localStorage from here, we need to ask background page to handle the settings.
@@ -132,6 +136,7 @@
       }
     );
   }
+
 
   function persistSettingAndProcessSnapshot() {
     console.assert(this.id);
@@ -359,17 +364,17 @@
   function switch_to_compare() {
     document.getElementById("template_page").hidden = true;
     document.getElementById("comparison_page").hidden = false;
-    document.getElementById("Comparison_page").hidden = true;
+    document.getElementById("template_comparison_page").hidden = true;
   }
-  function switch_to_Comparison() {
+  function switch_to_template_comparison() {
     document.getElementById("template_page").hidden = true;
     document.getElementById("comparison_page").hidden = true;
-    document.getElementById("Comparison_page").hidden = false;
+    document.getElementById("template_comparison_page").hidden = false;
   }
   function switch_to_template() {
     document.getElementById("template_page").hidden = false;
     document.getElementById("comparison_page").hidden = true;
-    document.getElementById("Comparison_page").hidden = true;
+    document.getElementById("template_comparison_page").hidden = true;
   }
 
   function del(id) {
@@ -706,30 +711,84 @@
     });
   }
 
-  function getLeafNodes(root, leafNodes) {
-    if (root == null) {
-      return;
-    } else if (root.childElementCount == 0) {
-      leafNodes.push(root);
-      return;
-    } else {
-      var childNodes = root.childNodes;
-      for (var i = 0; i < childNodes.length; i++) {
-        getLeafNodes(childNodes[i], leafNodes);
+  // function getLeafNodes(root) {
+  //   if (root == null) {
+  //     return;
+  //   } else if (root.childElementCount == 0) {
+  //     leafNodes.push(root);
+  //     return;
+  //   } else {
+  //     var childNodes = root.childNodes;
+  //     for (var i = 0; i < childNodes.length; i++) {
+  //       getLeafNodes(childNodes[i]);
+  //     }
+  //   }
+  // }
+
+  function getChildElementCount(code){
+    code += ".childElementCount";
+    console.log(code);
+      chrome.tabs.query(
+        { active: true, currentWindow: true },
+        function(tabs) {
+          const { id: tabId } = tabs[0].url;
+          console.log(tabs[0].url);  
+          chrome.tabs.executeScript(tabId, {code}, async (result)  => {
+            console.log(await result);
+          });
+      }); 
+
+  }
+
+  function getStyle(code){
+    var style_font,style_border,style_color,style_height,style_width,
+      styleCode = "window.getComputedStyle(" + code + ")";
+    chrome.tabs.query(
+      { active: true, currentWindow: true },
+      function(tabs) {
+        const { id: tabId } = tabs[0].url;
+        console.log(tabs[0].url);  
+        // http://infoheap.com/chrome-extension-tutorial-access-dom/
+        chrome.tabs.executeScript(tabId, {code : styleCode + ".font"}, function (result) {
+          style_font = result[0];
+        });
+        chrome.tabs.executeScript(tabId, {code : styleCode + ".border"}, function (result) {
+          style_border = result[0];
+        });
+        chrome.tabs.executeScript(tabId, {code : styleCode + ".color"}, function (result) {
+          style_color = result[0];
+        });
+        chrome.tabs.executeScript(tabId, {code : styleCode + ".width"}, function (result) {
+          style_width = result[0];
+        });
+        chrome.tabs.executeScript(tabId, {code : styleCode + ".height"}, function (result) {
+          style_height = result[0];
+        });
+      }
+    );
+    return { font : style_font ,color : style_color,border : style_border ,width : style_width ,height : style_height};
+  }
+
+  function traverseAndCompare(code) {
+    console.log(code);
+    let childnum = getChildElementCount(code);
+    console.log(childnum);
+    if (childnum == 0) {
+      let style  = getStyle(code);
+      console.log(style);
+    }
+    else{
+      for (let index = 0; index < childnum; index++) {
+        traverseAndCompare(code + `.children[${index}]`);
       }
     }
   }
 
-  function compareStyles(template, nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-      var currentNode = nodes[i];
-      var style = window.getComputedStyle(currentNode);
 
-      for (var style in template) {
-        if (template[style] != currentNode[style]) {
-          chrome.extension.getBackgroundPage().console.log(style);
-        }
-      }
-    }
+  function startTemplateComparison(){
+    traverseAndCompare(initialCode);
   }
+
 })();
+
+
