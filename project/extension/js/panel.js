@@ -51,8 +51,8 @@
     borders = [],
     widths = [],
     heights = [],
-    leafNodes = [],
-    initialCode = "document.body"
+    initialCode = "document.body",
+    templateString = {font : "" , border : "", color : ""}
 
   restoreSettings();
 
@@ -697,6 +697,8 @@
     template.type = document.getElementById("element_class_input").value;
 
     console.log(template);
+    
+
   }
 
   function downloadTemplate() {
@@ -709,20 +711,6 @@
       filename: "test.txt", // template name.json?
     });
   }
-
-  // function getLeafNodes(root) {
-  //   if (root == null) {
-  //     return;
-  //   } else if (root.childElementCount == 0) {
-  //     leafNodes.push(root);
-  //     return;
-  //   } else {
-  //     var childNodes = root.childNodes;
-  //     for (var i = 0; i < childNodes.length; i++) {
-  //       getLeafNodes(childNodes[i]);
-  //     }
-  //   }
-  // }
 
   function getChildElementCount(code, _callback){
     code += ".childElementCount";
@@ -737,26 +725,33 @@
 
   }
 
+  const PARSING_DELIMITER = '|';
   function getStyle(code, _callback){
-    var style_font,style_border,style_color,style_height,style_width,
-      styleCode = "window.getComputedStyle(" + code + ")";
+    var styleCode = "window.getComputedStyle(" + code + ")";
     chrome.tabs.query(
-      { active: true, currentWindow: true },
-      function(tabs) {
-        const { id: tabId } = tabs[0].url;
-        chrome.tabs.executeScript(tabId, {code : styleCode + ".font"}, function (result) {
-            _callback(result[0]);
-        });
-      }
+        { active: true, currentWindow: true },
+        function(tabs) {
+          const { id: tabId } = tabs[0].url;
+          chrome.tabs.executeScript(tabId, {code : `${styleCode}.font + '${PARSING_DELIMITER}' + ${styleCode}.border + '${PARSING_DELIMITER}' + ${styleCode}.color`}, function (result) {
+              _callback(result[0]);
+          });      
+        }
     );
-    return { font : style_font ,color : style_color,border : style_border ,width : style_width ,height : style_height};
+  }
+
+  const parseStyleString = (styleString) => {
+    const [font, border, color] = styleString.split(PARSING_DELIMITER);
+    return {font, border, color};
   }
 
   function traverseAndCompare(code) {
     getChildElementCount(code,(childnum)=>{
       if (childnum == 0) {
-        getStyle(code,(style) => {
-          console.log(style);
+        getStyle(code,(styleString) => {
+          // console.log("element : " + code + " style : " + style);
+          console.log(styleString);
+          const parsedStyle = parseStyleString(styleString);
+          console.log(parsedStyle)
         });
       }
       else{
@@ -767,57 +762,13 @@
     });
   }
 
-
   function startTemplateComparison(){
     traverseAndCompare(initialCode);
-    // getRoot(getLeafNodes);
   }
 
-  // function getRoot(_callback){;
-  //     chrome.tabs.query(
-  //       { active: true, currentWindow: true },
-  //       function(tabs) {
-  //         const { id: tabId } = tabs[0].url;
-  //         console.log(tabs[0].url);  
-  //         chrome.tabs.executeScript(tabId, {code : 'document.body'}, (result)  => {
-  //           console.log("inside getRoot" + result);
-  //           _callback(result[0]);
-  //         });
-  //     }); 
-
-  // }
-
-  // function getLeafNodes(root) {
-  //   console.log(root);
-  //   // let body = document.implementation.createHTMLDocument('');
-  //   // Object.assign(body,root);
-  //   // console.log(body);
-  //   if (root == null) {
-  //     return;
-  //   } else if (root.childElementCount == 0) {
-  //     leafNodes.push(root);
-  //     return;
-  //   } else {
-  //     var childNodes = root.children;
-  //     for (var i = 0; i < children.length; i++) {
-  //       getLeafNodes(childNodes[i], leafNodes);
-  //     }
-  //   }
-  // }
-
-  // function compareStyles(template, nodes) {
-  //   for (var i = 0; i < nodes.length; i++) {
-  //     var currentNode = nodes[i];
-  //     var style = window.getComputedStyle(currentNode);
-
-  //     for (var style in template) {
-  //       if (template[style] != currentNode[style]) {
-  //         chrome.extension.getBackgroundPage().console.log(style);
-  //       }
-  //     }
-  //   }
-  // }
-
+  function compareAgainstTemplate(elementStyle){
+    
+  }
 
 })();
 
