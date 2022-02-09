@@ -107,8 +107,8 @@
       reader.readAsDataURL(this.files[0]);
     });
 
-  template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\"", "Arial",GENERIC_FAMILY.Sans_Serif)];
-    templateString.font = ['   14px / 20px \"Amazon Ember\", Arial, sans-serif'];
+  // template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\"", "Arial",GENERIC_FAMILY.Sans_Serif)];
+  // templateString.font = ['   14px / 20px \"Amazon Ember\", Arial, sans-serif'];
 
   function restoreSettings() {
     // Since we can't access localStorage from here, we need to ask background page to handle the settings.
