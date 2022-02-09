@@ -43,6 +43,7 @@
     comparePageButton = $("#compare_page_button"),
     downloadTemplateButton = $("#download-template"),
     compareTemplate = $('#compare_template'),
+    highlightPrototype = $('#highlight_prototype'),
     data = {},
     console = chrome.extension.getBackgroundPage().console,
     template = new Template(),
@@ -76,6 +77,7 @@
   TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   downloadTemplateButton.on("click", downloadTemplate);
   compareTemplate.on("click", startTemplateComparison);
+  highlightPrototype.on("click", highlight_prototype);
 
   data.index = 0;
   data.list = ["select", "color", "font", "border", "width", "height"];
@@ -105,6 +107,8 @@
       reader.readAsDataURL(this.files[0]);
     });
 
+  template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\"", "Arial",GENERIC_FAMILY.Sans_Serif)];
+    templateString.font = ['   14px / 20px \"Amazon Ember\", Arial, sans-serif'];
 
   function restoreSettings() {
     // Since we can't access localStorage from here, we need to ask background page to handle the settings.
@@ -812,19 +816,63 @@
             console.log(code + "is highlighted");
         });      
       }
-  );
+    );
   }
 
   function compareAgainstTemplate(elementStyle){
+      var flag = false;
       var dmp = new diff_match_patch();
-      var diffFont = dmp.diff_main(templateString.font[0], elementStyle.font);
+      var diffFont = dmp.diff_main(templateString.font[0].replace(/ /g, ''), elementStyle.font.replace(/ /g, ''));
       dmp.diff_cleanupSemantic(diffFont);
-      var dsFont = dmp.diff_prettyHtml(diffFont);
-      document.getElementById("template_comparison_output").innerHTML = dsFont;
-      var showElementBtn = document.createElement('button');
-      showElementBtn.innerHTML = " Highlight ";
-      showElementBtn.onclick = () => highlightElement(elementStyle.code);
-      document.getElementById("template_comparison_output").appendChild(showElementBtn);
+      console.log(diffFont);
+      for (const result of diffFont) {
+        if(result[0] > 0 || result[0] <0){
+          flag = true
+        }
+      }
+      if (flag){
+        // var dsFont = dmp.diff_prettyHtml(diffFont);
+        var div = document.createElement('div');
+        var togglePanelBtn = document.createElement('button');
+        togglePanelBtn.innerHTML = " Show Details ";
+        togglePanelBtn.className = "accordion";
+        togglePanelBtn.parent = div;
+        togglePanelBtn.onclick = function() {
+          $(this).toggleClass("active");
+          var panel = $(this).siblings()[0];
+          if (panel.style.display === 'none') {
+            console.log("unhiding div");
+            panel.style.display = 'block';
+          } else {
+            console.log("hiding div");
+            panel.style.display = 'none';
+          }
+        };
+        var panel_div = document.createElement('div');
+        panel_div.className = "panel-template-comparison"
+        // panel_div.innerHTML = dsFont;
+        panel_div.innerHTML = elementStyle.font;
+        panel_div.style.display = 'none';
+        var showElementBtn = document.createElement('button');
+        showElementBtn.innerHTML = " Highlight ";
+        showElementBtn.onclick = () => highlightElement(elementStyle.code);
+        panel_div.appendChild(showElementBtn);
+        div.appendChild(togglePanelBtn);
+        div.appendChild(panel_div);
+        document.getElementById("template_comparison_output").appendChild(div);
+      }
+  }
+
+  function highlight_prototype(){
+    chrome.tabs.query(
+      { active: true, currentWindow: true },
+      function(tabs) {
+        const { id: tabId } = tabs[0].url;
+        chrome.tabs.executeScript(tabId, {code : "document.getElementsByClassName(\"nav-left\")[0].style.border = '10px none rgb(255, 0, 0)'"}, function (result) {
+          console.log("highlighted logo");
+        });      
+      }
+    );
   }
 
 })();
