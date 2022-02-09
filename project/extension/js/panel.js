@@ -812,7 +812,7 @@
       { active: true, currentWindow: true },
       function(tabs) {
         const { id: tabId } = tabs[0].url;
-        chrome.tabs.executeScript(tabId, {code : `${code}.style.border = '10px none rgb(255, 0, 0)'`}, function (result) {
+        chrome.tabs.executeScript(tabId, {code : `${code}.style.background = 'red'`}, function (result) {
             console.log(code + "is highlighted");
         });      
       }
@@ -868,7 +868,7 @@
       { active: true, currentWindow: true },
       function(tabs) {
         const { id: tabId } = tabs[0].url;
-        chrome.tabs.executeScript(tabId, {code : "document.getElementsByClassName(\"nav-left\")[0].style.border = '10px none rgb(255, 0, 0)'"}, function (result) {
+        chrome.tabs.executeScript(tabId, {code : "document.getElementsByClassName(\"nav-left\")[0].style.background = 'red'"}, function (result) {
           console.log("highlighted logo");
         });      
       }
