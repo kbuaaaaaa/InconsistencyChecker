@@ -763,7 +763,6 @@
             _callback(result);
           });
       }); 
-
   }
 
   const PARSING_DELIMITER = '|';
@@ -782,6 +781,7 @@
 
   const parseStyleString = (styleString,code) => {
     const [font, border, color] = styleString.split(PARSING_DELIMITER);
+    console.log({code, font, border, color});
     return {code, font, border, color};
   }
 
@@ -814,7 +814,7 @@
         const { id: tabId } = tabs[0].url;
         chrome.tabs.executeScript(tabId, {code : `${code}.style.background = 'red'`}, function (result) {
             console.log(code + "is highlighted");
-        });      
+        });
       }
     );
   }
@@ -851,7 +851,7 @@
         var panel_div = document.createElement('div');
         panel_div.className = "panel-template-comparison"
         // panel_div.innerHTML = dsFont;
-        panel_div.innerHTML = elementStyle.font;
+        panel_div.innerHTML = "Template : " + templateString.font[0] + "<br>" + "Element : " + elementStyle.font + "<br>";
         panel_div.style.display = 'none';
         var showElementBtn = document.createElement('button');
         showElementBtn.innerHTML = " Highlight ";
