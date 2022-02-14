@@ -1,0 +1,11 @@
+OUR LIST OF OBJECTIVES:
+	For the next sprint our main objective is to create a working prototype that ideally, uses 
+both the inspector tool and the standard template tool.
+Inspector tool:
+•	Make an appropriate output that shows the differences between two elements.
+•	Try to compare two elements from two(if possible extend it to take on more than two elements) different pages and also output the differences within those two elements.
+Standard Template tool:
+•	Use the email that the customer sent us as the basis for the template and set it as our main standard template for all properties.
+•	If that does not suit the customers needs, implement an algorithm so that after one use of the program we store properties that can be used as a standard template.
+Another goal is to make sure that the parameters the users can enter are applicable to a non-technical users and find a way to formally present this in the extension tool.
+Another goal was to make the issues on gitlab more specific to the assignee so that goal of the ticket could easily be identified.
