@@ -39,9 +39,11 @@
     saveButton = $("#save_button"),
     inputProperty = $("#input_button"),
     templatePageButton = $("#template_page_button"),
-    ComparisonPageButton = $("#Comparison_page_button"),
+    TemplateComparisonPageButton = $("#template_comparison_page_button"),
     comparePageButton = $("#compare_page_button"),
     downloadTemplateButton = $("#download-template"),
+    compareTemplate = $('#compare_template'),
+    highlightPrototype = $('#highlight_prototype'),
     data = {},
     console = chrome.extension.getBackgroundPage().console,
     template = new Template(),
@@ -49,9 +51,12 @@
     fonts = [],
     borders = [],
     widths = [],
-    heights = [];
+    heights = [],
+    templateString = {font : [] , border : [], color : []}
 
   restoreSettings();
+
+  const INITIAL_CODE = "document.body";
 
   propertiesCleanUpInput.on("change", persistSettingAndProcessSnapshot);
   removeDefaultValuesInput.on("change", persistSettingAndProcessSnapshot);
@@ -69,8 +74,10 @@
   inputProperty.on("click", switch_to_add);
   comparePageButton.on("click", switch_to_compare);
   templatePageButton.on("click", switch_to_template);
-  ComparisonPageButton.on("click", switch_to_Comparison);
+  TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   downloadTemplateButton.on("click", downloadTemplate);
+  compareTemplate.on("click", startTemplateComparison);
+  highlightPrototype.on("click", highlight_prototype);
 
   data.index = 0;
   data.list = ["select", "color", "font", "border", "width", "height"];
@@ -92,15 +99,16 @@
     $(this).checkbox();
   });
 
-  document
-    .querySelector("#file-selector")
-    .addEventListener("change", function () {
+  document.querySelector("#file-selector").addEventListener("change", function () {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
         localStorage.setItem("json-file", reader.result);
       });
       reader.readAsDataURL(this.files[0]);
     });
+
+  // template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\"", "Arial",GENERIC_FAMILY.Sans_Serif)];
+  // templateString.font = ['   14px / 20px \"Amazon Ember\", Arial, sans-serif'];
 
   function restoreSettings() {
     // Since we can't access localStorage from here, we need to ask background page to handle the settings.
@@ -132,6 +140,7 @@
       }
     );
   }
+
 
   function persistSettingAndProcessSnapshot() {
     console.assert(this.id);
@@ -359,17 +368,17 @@
   function switch_to_compare() {
     document.getElementById("template_page").hidden = true;
     document.getElementById("comparison_page").hidden = false;
-    document.getElementById("Comparison_page").hidden = true;
+    document.getElementById("template_comparison_page").hidden = true;
   }
-  function switch_to_Comparison() {
+  function switch_to_template_comparison() {
     document.getElementById("template_page").hidden = true;
     document.getElementById("comparison_page").hidden = true;
-    document.getElementById("Comparison_page").hidden = false;
+    document.getElementById("template_comparison_page").hidden = false;
   }
   function switch_to_template() {
     document.getElementById("template_page").hidden = false;
     document.getElementById("comparison_page").hidden = true;
-    document.getElementById("Comparison_page").hidden = true;
+    document.getElementById("template_comparison_page").hidden = true;
   }
 
   function del(id) {
@@ -407,16 +416,39 @@
           var color_div = document.createElement("div");
           color_div.className = "color_div";
 
-          var color_label = document.createElement("label");
-          color_label.innerHTML = " # ";
-          color_label.style = "margin-left: 20px;";
-          color_div.appendChild(color_label);
+					var red_label = document.createElement("label");
+					red_label.innerHTML = " R ";
+					red_label.style = "margin-left: 20px;";
+					color_div.appendChild(red_label);
 
-          var color_input = document.createElement("input");
-          color_input.type = "text";
-          color_input.className = "color_value";
-          color_input.style = "margin-left: 20px;";
-          color_div.appendChild(color_input);
+					var red_input = document.createElement("input");
+					red_input.type = "text";
+					red_input.className = "red_value";
+					red_input.style = "margin-left: 20px;";
+					color_div.appendChild(red_input);
+
+					var green_label = document.createElement("label");
+					green_label.innerHTML = " G ";
+					green_label.style = "margin-left: 20px;";
+					color_div.appendChild(green_label);
+			
+					var green_input = document.createElement("input");
+					green_input.type = "text";
+					green_input.className = "green_value";
+					green_input.style = "margin-left: 20px;";
+					color_div.appendChild(green_input);
+
+					var blue_label = document.createElement("label");
+					blue_label.innerHTML = " B ";
+					blue_label.style = "margin-left: 20px;";
+					color_div.appendChild(blue_label);
+			
+					var blue_input = document.createElement("input");
+					blue_input.type = "text";
+					blue_input.className = "blue_value";
+					blue_input.style = "margin-left: 20px;";
+					color_div.appendChild(blue_input);
+
 
           property_value_div.appendChild(color_div);
           break;
@@ -633,10 +665,13 @@
   function save() {
     let color_inputs = document.getElementsByClassName("color_div");
     for (const inputs of color_inputs) {
-      let hex = inputs.children[1].value;
-      colors.push(hex);
+			let r = inputs.children[1].value,
+				g = inputs.children[3].value,
+				b = inputs.children[5].value,
+				color = new Color(r,g,b)
+			colors.push(color);
     }
-    console.log(colors);
+    // console.log(colors);
     template.color = colors;
 
     let font_inputs = document.getElementsByClassName("font_div");
@@ -662,7 +697,7 @@
         );
       fonts.push(font);
     }
-    console.log(fonts);
+    // console.log(fonts);
     template.font = fonts;
 
     let border_inputs = document.getElementsByClassName("border_div");
@@ -673,26 +708,38 @@
         border = new Border(border_width, border_style, border_color);
       borders.push(border);
     }
-    console.log(borders);
+    // console.log(borders);
     template.border = borders;
 
     let width_inputs = document.getElementsByClassName("width_div");
     for (const inputs of width_inputs) {
       widths.push(inputs.children[1].value);
     }
-    console.log(widths);
+    // console.log(widths);
     template.width = widths;
 
     let height_inputs = document.getElementsByClassName("height_div");
     for (const inputs of height_inputs) {
       heights.push(inputs.children[1].value);
     }
-    console.log(heights);
+    // console.log(heights);
     template.height = heights;
 
     template.type = document.getElementById("element_class_input").value;
 
     console.log(template);
+
+    for (const font of template.font) {
+      console.log(font + font.font_style);
+      templateString.font.push(`${FONT_STYLE[font.font_style]} ${FONT_VARIANT[font.font_variant]} ${FONT_WEIGHT[font.font_weight]} ${font.font_size}px / ${font.line_height}px ${font.font_name}, ${font.font_family}, ${GENERIC_FAMILY[font.generic_family]}`);
+    }
+    for (const border of template.border) {
+      templateString.border.push(`${border.border_width}px ${BORDER_STYLE[border.border_style]} rgb(${border.border_color.red}, ${border.border_color.green}, ${border.border_color.blue})`);
+    }
+    for (const color of template.color) {
+      templateString.color.push(`rgb(${color.red}, ${color.green}, ${color.blue})`);
+    }
+    console.log(templateString);
   }
 
   function downloadTemplate() {
@@ -706,30 +753,128 @@
     });
   }
 
-  function getLeafNodes(root, leafNodes) {
-    if (root == null) {
-      return;
-    } else if (root.childElementCount == 0) {
-      leafNodes.push(root);
-      return;
-    } else {
-      var childNodes = root.childNodes;
-      for (var i = 0; i < childNodes.length; i++) {
-        getLeafNodes(childNodes[i], leafNodes);
-      }
-    }
+  function getChildElementCount(code, _callback){
+    code += ".childElementCount";
+      chrome.tabs.query(
+        { active: true, currentWindow: true },
+        function(tabs) {
+          const { id: tabId } = tabs[0].url;
+          chrome.tabs.executeScript(tabId, {code}, (result)  => {
+            _callback(result);
+          });
+      }); 
   }
 
-  function compareStyles(template, nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-      var currentNode = nodes[i];
-      var style = window.getComputedStyle(currentNode);
+  const PARSING_DELIMITER = '|';
+  function getStyle(code, _callback){
+    var styleCode = "window.getComputedStyle(" + code + ")";
+    chrome.tabs.query(
+        { active: true, currentWindow: true },
+        function(tabs) {
+          const { id: tabId } = tabs[0].url;
+          chrome.tabs.executeScript(tabId, {code : `${styleCode}.font + '${PARSING_DELIMITER}' + ${styleCode}.border + '${PARSING_DELIMITER}' + ${styleCode}.color`}, function (result) {
+              _callback(result[0]);
+          });      
+        }
+    );
+  }
 
-      for (var style in template) {
-        if (template[style] != currentNode[style]) {
-          chrome.extension.getBackgroundPage().console.log(style);
+  const parseStyleString = (styleString,code) => {
+    const [font, border, color] = styleString.split(PARSING_DELIMITER);
+    console.log({code, font, border, color});
+    return {code, font, border, color};
+  }
+
+  function traverseAndCompare(code) {
+    getChildElementCount(code,(childnum)=>{
+      if (childnum == 0) {
+        getStyle(code,(styleString) => {
+          // console.log(styleString);
+          const parsedStyle = parseStyleString(styleString,code);
+          // console.log(parsedStyle)
+          compareAgainstTemplate(parsedStyle);
+        });
+      }
+      else{
+        for (let index = 0; index < childnum; index++) {
+          traverseAndCompare(code + `.children[${index}]`);
         }
       }
-    }
+    });
   }
+
+  function startTemplateComparison(){
+    traverseAndCompare(INITIAL_CODE);
+  }
+
+  function highlightElement(code){
+    chrome.tabs.query(
+      { active: true, currentWindow: true },
+      function(tabs) {
+        const { id: tabId } = tabs[0].url;
+        chrome.tabs.executeScript(tabId, {code : `${code}.style.background = 'red'`}, function (result) {
+            console.log(code + "is highlighted");
+        });
+      }
+    );
+  }
+
+  function compareAgainstTemplate(elementStyle){
+      var flag = false;
+      var dmp = new diff_match_patch();
+      var diffFont = dmp.diff_main(templateString.font[0].replace(/ /g, ''), elementStyle.font.replace(/ /g, ''));
+      dmp.diff_cleanupSemantic(diffFont);
+      console.log(diffFont);
+      for (const result of diffFont) {
+        if(result[0] > 0 || result[0] <0){
+          flag = true
+        }
+      }
+      if (flag){
+        // var dsFont = dmp.diff_prettyHtml(diffFont);
+        var div = document.createElement('div');
+        var togglePanelBtn = document.createElement('button');
+        togglePanelBtn.innerHTML = " Show Details ";
+        togglePanelBtn.className = "accordion";
+        togglePanelBtn.parent = div;
+        togglePanelBtn.onclick = function() {
+          $(this).toggleClass("active");
+          var panel = $(this).siblings()[0];
+          if (panel.style.display === 'none') {
+            console.log("unhiding div");
+            panel.style.display = 'block';
+          } else {
+            console.log("hiding div");
+            panel.style.display = 'none';
+          }
+        };
+        var panel_div = document.createElement('div');
+        panel_div.className = "panel-template-comparison"
+        // panel_div.innerHTML = dsFont;
+        panel_div.innerHTML = "Template : " + templateString.font[0] + "<br>" + "Element : " + elementStyle.font + "<br>";
+        panel_div.style.display = 'none';
+        var showElementBtn = document.createElement('button');
+        showElementBtn.innerHTML = " Highlight ";
+        showElementBtn.onclick = () => highlightElement(elementStyle.code);
+        panel_div.appendChild(showElementBtn);
+        div.appendChild(togglePanelBtn);
+        div.appendChild(panel_div);
+        document.getElementById("template_comparison_output").appendChild(div);
+      }
+  }
+
+  function highlight_prototype(){
+    chrome.tabs.query(
+      { active: true, currentWindow: true },
+      function(tabs) {
+        const { id: tabId } = tabs[0].url;
+        chrome.tabs.executeScript(tabId, {code : "document.getElementsByClassName(\"nav-left\")[0].style.background = 'red'"}, function (result) {
+          console.log("highlighted logo");
+        });      
+      }
+    );
+  }
+
 })();
+
+
