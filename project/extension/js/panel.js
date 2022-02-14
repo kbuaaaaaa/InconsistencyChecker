@@ -416,42 +416,21 @@
           var color_div = document.createElement("div");
           color_div.className = "color_div";
 
-					var red_label = document.createElement("label");
-					red_label.innerHTML = " R ";
-					red_label.style = "margin-left: 20px;";
-					color_div.appendChild(red_label);
+          var color_label = document.createElement("label");
+          color_label.innerHTML = " Color ";
+          color_label.style = "margin-left: 20px;";
+          color_div.appendChild(color_label);
 
-					var red_input = document.createElement("input");
-					red_input.type = "text";
-					red_input.className = "red_value";
-					red_input.style = "margin-left: 20px;";
-					color_div.appendChild(red_input);
-
-					var green_label = document.createElement("label");
-					green_label.innerHTML = " G ";
-					green_label.style = "margin-left: 20px;";
-					color_div.appendChild(green_label);
-			
-					var green_input = document.createElement("input");
-					green_input.type = "text";
-					green_input.className = "green_value";
-					green_input.style = "margin-left: 20px;";
-					color_div.appendChild(green_input);
-
-					var blue_label = document.createElement("label");
-					blue_label.innerHTML = " B ";
-					blue_label.style = "margin-left: 20px;";
-					color_div.appendChild(blue_label);
-			
-					var blue_input = document.createElement("input");
-					blue_input.type = "text";
-					blue_input.className = "blue_value";
-					blue_input.style = "margin-left: 20px;";
-					color_div.appendChild(blue_input);
-
+          var color_input = document.createElement("input");
+          color_input.type = "text";
+          color_input.className = "color_value";
+          color_input.style = "margin-left: 20px;";
+          color_input.placeholder = "#FFFFFF";
+          color_div.appendChild(color_input);
 
           property_value_div.appendChild(color_div);
           break;
+
         case "font":
           var font_div = document.createElement("div");
           font_div.className = "font_div";
@@ -566,6 +545,7 @@
 
           property_value_div.appendChild(font_div);
           break;
+
         case "border":
           var border_div = document.createElement("div");
           border_div.className = "border_div";
@@ -604,12 +584,14 @@
 
           var border_color_input = document.createElement("input");
           border_color_input.type = "text";
+          border_color_input.placeholder = "#FFFFFF";
           border_color_input.className = "border_color_value";
           border_color_input.style = "margin-left: 20px;";
           border_div.appendChild(border_color_input);
 
           property_value_div.appendChild(border_div);
           break;
+
         case "width":
           var width_div = document.createElement("div");
           width_div.className = "width_div";
@@ -627,6 +609,7 @@
 
           property_value_div.appendChild(width_div);
           break;
+
         case "height":
           var height_div = document.createElement("div");
           height_div.className = "height_div";
@@ -665,13 +648,11 @@
   function save() {
     let color_inputs = document.getElementsByClassName("color_div");
     for (const inputs of color_inputs) {
-			let r = inputs.children[1].value,
-				g = inputs.children[3].value,
-				b = inputs.children[5].value,
-				color = new Color(r,g,b)
+			let color = inputs.children[1].value;
+			color = new Color(color);
 			colors.push(color);
     }
-    // console.log(colors);
+    console.log(colors);
     template.color = colors;
 
     let font_inputs = document.getElementsByClassName("font_div");
@@ -734,10 +715,10 @@
       templateString.font.push(`${FONT_STYLE[font.font_style]} ${FONT_VARIANT[font.font_variant]} ${FONT_WEIGHT[font.font_weight]} ${font.font_size}px / ${font.line_height}px ${font.font_name}, ${font.font_family}, ${GENERIC_FAMILY[font.generic_family]}`);
     }
     for (const border of template.border) {
-      templateString.border.push(`${border.border_width}px ${BORDER_STYLE[border.border_style]} rgb(${border.border_color.red}, ${border.border_color.green}, ${border.border_color.blue})`);
+      templateString.border.push(`${border.border_width}px ${BORDER_STYLE[border.border_style]} ${border.border_color.color}`);
     }
     for (const color of template.color) {
-      templateString.color.push(`rgb(${color.red}, ${color.green}, ${color.blue})`);
+      templateString.color.push(`${color.color}`);
     }
     console.log(templateString);
   }
@@ -765,6 +746,9 @@
       }); 
   }
 
+  // Convert rgb to hex
+  const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`;
+
   const PARSING_DELIMITER = '|';
   function getStyle(code, _callback){
     var styleCode = "window.getComputedStyle(" + code + ")";
@@ -781,7 +765,7 @@
 
   const parseStyleString = (styleString,code) => {
     const [font, border, color] = styleString.split(PARSING_DELIMITER);
-    console.log({code, font, border, color});
+    // console.log({code, font, border, color});
     return {code, font, border, color};
   }
 
@@ -791,7 +775,20 @@
         getStyle(code,(styleString) => {
           // console.log(styleString);
           const parsedStyle = parseStyleString(styleString,code);
-          // console.log(parsedStyle)
+          parsedStyle.color = rgb2hex(parsedStyle.color);
+
+
+          // var borderHexColor = rgb2hex(parsedStyle.border.split(" ")[2]);
+          var splitBorderStyle = parsedStyle.border.split(" ");
+          var splitBorderColor = splitBorderStyle.slice(2,);
+          var rgbBorderColor = splitBorderColor.join(" ");
+          console.log(rgbBorderColor);
+          var hexBorderColor = rgb2hex(rgbBorderColor);
+          splitBorderStyle = splitBorderStyle.slice(0,2);
+          splitBorderStyle.push(hexBorderColor);
+          parsedStyle.border = splitBorderStyle.join(" ");
+
+          console.log(parsedStyle)
           compareAgainstTemplate(parsedStyle);
         });
       }
