@@ -635,8 +635,8 @@
     let border_inputs = document.getElementsByClassName("border_div");
     for (const inputs of border_inputs) {
       let border_width = inputs.children[1].value + "px",
-        border_style = BORDER_STYLE[inputs.children[3].value],
-        border_color = inputs.children[5].value,
+        border_style = inputs.children[3].value,
+        border_color = new Color(inputs.children[5].value),
         border = new Border(border_width, border_style, border_color);
       borders.push(border);
     }
@@ -644,18 +644,6 @@
     template.type = document.getElementById("element_class_input").value;
 
     console.log(template);
-
-    for (const font of template.font) {
-      console.log(font + font.font_style);
-      templateString.font.push(`${FONT_STYLE[font.font_style]} ${FONT_VARIANT[font.font_variant]} ${FONT_WEIGHT[font.font_weight]} ${font.font_size}px / ${font.line_height}px ${font.font_family}, ${GENERIC_FAMILY[font.generic_family]}`);
-    }
-    for (const border of template.border) {
-      templateString.border.push(`${border.border_width}px ${BORDER_STYLE[border.border_style]} ${border.border_color.color}`);
-    }
-    for (const color of template.color) {
-      templateString.color.push(`${color.color}`);
-    }
-    console.log(templateString);
   }
 
   function downloadTemplate() {
@@ -683,6 +671,7 @@
 
 
   const PARSING_DELIMITER = '|';
+  const FONT_PARSING_DELIMITER = ',';
   function getStyle(code, _callback){
     var styleCode = "window.getComputedStyle(" + code + ")";
     chrome.tabs.query(
@@ -706,9 +695,9 @@
   }
 
   const parseStyleString = (styleString,code) => {
-    const [font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color] = styleString.split(PARSING_DELIMITER);
-    // console.log({code, font, border, color});
-    return {code, font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color};
+    const [font_style, font_variant, font_weight, font_size, line_height, font_family_all, border_width, border_style, border_color, color] = styleString.split(PARSING_DELIMITER);
+    const [font_name,font_family,generic_family] = font_family_all.split(FONT_PARSING_DELIMITER);
+    return {code, font_style, font_variant, font_weight, font_size, line_height, font_name, font_family, generic_family, border_width, border_style, border_color, color};
   }
 
   function traverseAndCompare(code) {
@@ -718,9 +707,20 @@
           const parsedStyle = parseStyleString(styleString,code);
           parsedStyle.color = rgb2hex(parsedStyle.color);
           parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
-          console.log(parsedStyle);
-          console.log(templateString);
-          compareAgainstTemplate(parsedStyle);
+          elementFont = new Font(
+            font_style,
+            font_variant,
+            font_weight,
+            font_size,
+            line_height,
+            font_name,
+            font_family,
+            generic_family
+          );
+          elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, new Color(parsedStyle.border_color));
+          elementColor = new Color(parsedStyle.color);
+          elementStyle = new Element(code, elementColor, elementFont, elementBorder);
+          compareAgainstTemplate(elementStyle);
         });
       }
       else{

@@ -85,3 +85,9 @@ const BORDER_STYLE = {
     Initial : "inherit"
     //Inherits this property from its parent element. Read about inherit
 };
+
+const PROPERTY = {
+  None : "none",
+  Consistent : "consistent",
+  Inconsistent : "inconsistent"
+}
