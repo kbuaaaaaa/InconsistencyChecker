@@ -1,12 +1,10 @@
 class Template{
-    constructor(type = "", color = [], font = [], border = [], width = 0, height = 0){
+    constructor(type = "", color = [], font = [], border = []){
         this.type = type;
         //the ui/class name eg. Button, Card. This is for later when we have to run through the page to check elements
         this.color = color;
         this.font = font;
         this.border = border;
-        this.width = width;
-        this.height = height;
     }
 }
 
@@ -17,9 +15,8 @@ class Font {
     font_weight = FONT_WEIGHT.Normal,
     font_size = 0,
     line_height = 0,
-    font_name = "",
     font_family = "",
-    generic_family = GENERIC_FAMILY.Sans_Serif
+    generic_family = GENERIC_FAMILY.Default
   ) {
     //https://www.w3schools.com/cssref/pr_font_font-style.asp for value ref.
     this.font_style = font_style;
@@ -43,7 +40,7 @@ class Border {
   constructor(
     border_width = 0,
     border_style = BORDER_STYLE.None,
-    border_color = Color()
+    border_color = "#FFFFFF"
   ) {
     this.border_width = border_width;
     this.border_style = border_style;

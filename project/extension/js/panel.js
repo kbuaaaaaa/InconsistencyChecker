@@ -756,7 +756,16 @@
         { active: true, currentWindow: true },
         function(tabs) {
           const { id: tabId } = tabs[0].url;
-          chrome.tabs.executeScript(tabId, {code : `${styleCode}.font + '${PARSING_DELIMITER}' + ${styleCode}.border + '${PARSING_DELIMITER}' + ${styleCode}.color`}, function (result) {
+          chrome.tabs.executeScript(tabId, {code : `${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("font-variant") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("font-weight") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("line-height") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("font-family") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.color`}, function (result) {
               _callback(result[0]);
           });      
         }
@@ -764,9 +773,9 @@
   }
 
   const parseStyleString = (styleString,code) => {
-    const [font, border, color] = styleString.split(PARSING_DELIMITER);
+    const [font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color] = styleString.split(PARSING_DELIMITER);
     // console.log({code, font, border, color});
-    return {code, font, border, color};
+    return {code, font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color};
   }
 
   function traverseAndCompare(code) {
@@ -775,18 +784,13 @@
         getStyle(code,(styleString) => {
           // console.log(styleString);
           const parsedStyle = parseStyleString(styleString,code);
+          
           parsedStyle.color = rgb2hex(parsedStyle.color);
+          parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
 
-          var splitBorderStyle = parsedStyle.border.split(" ");
-          var splitBorderColor = splitBorderStyle.slice(2,);
-          var rgbBorderColor = splitBorderColor.join(" ");
-          var hexBorderColor = rgb2hex(rgbBorderColor);
-          splitBorderStyle = splitBorderStyle.slice(0,2);
-          splitBorderStyle.push(hexBorderColor);
-          parsedStyle.border = splitBorderStyle.join(" ");
-
-          console.log(parsedStyle)
-          compareAgainstTemplateV2(parsedStyle);
+          console.log(parsedStyle);
+          console.log(templateString);
+          compareAgainstTemplate(parsedStyle);
         });
       }
       else{
@@ -804,8 +808,7 @@
   function compareAgainstTemplate(elementStyle){
       var flag = false;
       var dmp = new diff_match_patch();
-      //var diffFont = dmp.diff_main(templateString.font[0].replace(/ /g, ''), elementStyle.font.replace(/ /g, ''));
-      var diffFont = dmp.diff_main('14px/20px"AmazonEmber",Arial,sans-serif', elementStyle.font.replace(/ /g, ''));
+      var diffFont = dmp.diff_main(templateString.font[0].replace(/ /g, ''), elementStyle.font.replace(/ /g, ''));
 
       dmp.diff_cleanupSemantic(diffFont);
       console.log(diffFont);
