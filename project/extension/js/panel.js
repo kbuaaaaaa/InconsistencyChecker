@@ -661,8 +661,8 @@
       let font_style = inputs.children[1].value,
         font_variant = inputs.children[3].value,
         font_weight = inputs.children[5].value,
-        font_size = inputs.children[7].value,
-        line_height = inputs.children[9].value,
+        font_size = inputs.children[7].value + "px",
+        line_height = inputs.children[9].value + "px",
         font_name = inputs.children[11].value,
         font_family = inputs.children[13].value,
         generic_family = inputs.children[15].value,
@@ -683,7 +683,7 @@
 
     let border_inputs = document.getElementsByClassName("border_div");
     for (const inputs of border_inputs) {
-      let border_width = inputs.children[1].value,
+      let border_width = inputs.children[1].value + "px",
         border_style = inputs.children[3].value,
         border_color = new Color(inputs.children[5].value),
         border = new Border(border_width, border_style, border_color);
