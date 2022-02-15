@@ -76,8 +76,8 @@ class Template{
           break;
         }
       }
-
-      return {fontResult, colorResult, borderResult};
+      let result = fontResult && colorResult && borderResult;
+      return {result, fontResult, colorResult, borderResult};
     }
 
 }
