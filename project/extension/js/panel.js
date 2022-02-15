@@ -80,7 +80,7 @@
   highlightPrototype.on("click", highlight_prototype);
 
   data.index = 0;
-  data.list = ["select", "color", "font", "border", "width", "height"];
+  data.list = ["select", "color", "font", "border"]
 
   htmlTextarea1.on("click", function () {
     $(this).select();
@@ -505,27 +505,16 @@
           line_height_input.style = "margin-left: 20px;";
           font_div.appendChild(line_height_input);
 
-          var font_name_label = document.createElement("label");
-          font_name_label.innerHTML = " Font Name ";
-          font_name_label.style = "margin-left: 20px;";
-          font_div.appendChild(font_name_label);
+          var family_name_label = document.createElement("label");
+          family_name_label.innerHTML = " Family Name ";
+          family_name_label.style = "margin-left: 20px;";
+          font_div.appendChild(family_name_label);
 
-          var font_name_input = document.createElement("input");
-          font_name_input.type = "text";
-          font_name_input.className = "font_name_value";
-          font_name_input.style = "margin-left: 20px;";
-          font_div.appendChild(font_name_input);
-
-          var font_family_label = document.createElement("label");
-          font_family_label.innerHTML = " Font Family ";
-          font_family_label.style = "margin-left: 20px;";
-          font_div.appendChild(font_family_label);
-
-          var font_family_input = document.createElement("input");
-          font_family_input.type = "text";
-          font_family_input.className = "font_family_value";
-          font_family_input.style = "margin-left: 20px;";
-          font_div.appendChild(font_family_input);
+          var family_name_input = document.createElement("input");
+          family_name_input.type = "text";
+          family_name_input.className = "family_name_value";
+          family_name_input.style = "margin-left: 20px;";
+          font_div.appendChild(family_name_input);
 
           var generic_family_label = document.createElement("label");
           generic_family_label.innerHTML = " Generic Family ";
@@ -591,42 +580,6 @@
 
           property_value_div.appendChild(border_div);
           break;
-
-        case "width":
-          var width_div = document.createElement("div");
-          width_div.className = "width_div";
-
-          var width_label = document.createElement("label");
-          width_label.innerHTML = " Value ";
-          width_label.style = "margin-left: 20px;";
-          width_div.appendChild(width_label);
-
-          var width_input = document.createElement("input");
-          width_input.type = "text";
-          width_input.className = "width_value";
-          width_input.style = "margin-left: 20px;";
-          width_div.appendChild(width_input);
-
-          property_value_div.appendChild(width_div);
-          break;
-
-        case "height":
-          var height_div = document.createElement("div");
-          height_div.className = "height_div";
-
-          var height_label = document.createElement("label");
-          height_label.innerHTML = " Value ";
-          height_label.style = "margin-left: 20px;";
-          height_div.appendChild(height_label);
-
-          var height_input = document.createElement("input");
-          height_input.type = "text";
-          height_input.className = "height_value";
-          height_input.style = "margin-left: 20px;";
-          height_div.appendChild(height_input);
-
-          property_value_div.appendChild(height_div);
-          break;
         default:
           break;
       }
@@ -644,7 +597,9 @@
     var property_div = document.getElementById("property_div");
     property_div.appendChild(div);
   }
-
+  // Convert rgb to hex
+  const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`;
+  
   function save() {
     let color_inputs = document.getElementsByClassName("color_div");
     for (const inputs of color_inputs) {
@@ -652,33 +607,29 @@
 			color = new Color(color);
 			colors.push(color);
     }
-    console.log(colors);
     template.color = colors;
 
     let font_inputs = document.getElementsByClassName("font_div");
     for (const inputs of font_inputs) {
       console.log(inputs.children);
-      let font_style = inputs.children[1].value,
-        font_variant = inputs.children[3].value,
-        font_weight = inputs.children[5].value,
+      let font_style = FONT_STYLE[inputs.children[1].value],
+        font_variant = FONT_VARIANT[inputs.children[3].value],
+        font_weight = FONT_WEIGHT[inputs.children[5].value],
         font_size = inputs.children[7].value + "px",
         line_height = inputs.children[9].value + "px",
-        font_name = inputs.children[11].value,
-        font_family = inputs.children[13].value,
-        generic_family = inputs.children[15].value,
+        family_name = inputs.children[11].value,
+        generic_family = GENERIC_FAMILY[inputs.children[13].value],
+        font_family = family_name + ", " + generic_family,
         font = new Font(
           font_style,
           font_variant,
           font_weight,
           font_size,
           line_height,
-          font_name,
           font_family,
-          generic_family
         );
       fonts.push(font);
     }
-    // console.log(fonts);
     template.font = fonts;
 
     let border_inputs = document.getElementsByClassName("border_div");
@@ -689,23 +640,7 @@
         border = new Border(border_width, border_style, border_color);
       borders.push(border);
     }
-    // console.log(borders);
     template.border = borders;
-
-    let width_inputs = document.getElementsByClassName("width_div");
-    for (const inputs of width_inputs) {
-      widths.push(inputs.children[1].value);
-    }
-    // console.log(widths);
-    template.width = widths;
-
-    let height_inputs = document.getElementsByClassName("height_div");
-    for (const inputs of height_inputs) {
-      heights.push(inputs.children[1].value);
-    }
-    // console.log(heights);
-    template.height = heights;
-
     template.type = document.getElementById("element_class_input").value;
 
     console.log(template);
@@ -734,8 +669,6 @@
       }); 
   }
 
-  // Convert rgb to hex
-  const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`;
 
   const PARSING_DELIMITER = '|';
   const FONT_PARSING_DELIMITER = ',';
@@ -771,9 +704,7 @@
     getChildElementCount(code,(childnum)=>{
       if (childnum == 0) {
         getStyle(code,(styleString) => {
-          // console.log(styleString);
           const parsedStyle = parseStyleString(styleString,code);
-          
           parsedStyle.color = rgb2hex(parsedStyle.color);
           parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
           elementFont = new Font(
