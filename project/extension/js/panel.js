@@ -49,10 +49,7 @@
     template = new Template(),
     colors = [],
     fonts = [],
-    borders = [],
-    widths = [],
-    heights = [],
-    templateString = {font : [] , border : [], color : []}
+    borders = []
 
   restoreSettings();
 
@@ -619,14 +616,14 @@
         line_height = inputs.children[9].value + "px",
         family_name = inputs.children[11].value,
         generic_family = GENERIC_FAMILY[inputs.children[13].value],
-        font_family = family_name + ", " + generic_family,
         font = new Font(
           font_style,
           font_variant,
           font_weight,
           font_size,
           line_height,
-          font_family,
+          family_name,
+          generic_family
         );
       fonts.push(font);
     }
