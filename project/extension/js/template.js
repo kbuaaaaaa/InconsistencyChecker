@@ -110,7 +110,7 @@ class Font {
   }
 
   toString(){
-    let result = `Font<br>&emsp;Font Style : ${FONT_STYLE[this.font_style]}<br>&emsp;Font Variant : ${FONT_VARIANT[this.font_variant]}<br>&emsp;Font Weight : ${FONT_WEIGHT[this.font_weight]}<br>}`;
+    let result = `Font<br>&emsp;Font Style : ${this.font_style}<br>&emsp;Font Variant : ${this.font_variant}<br>&emsp;Font Weight : ${this.font_weight}<br>`;
     if (this.font_size !== "") {
       result += `&emsp;Font Size : ${this.font_size}<br>`;
     }
