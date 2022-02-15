@@ -110,7 +110,18 @@ class Font {
   }
 
   toString(){
-    
+    let result = `Font Style : ${FONT_STYLE[this.font_style]}<br>Font Variant : ${FONT_VARIANT[this.font_variant]}<br>Font Weight : ${FONT_WEIGHT[this.font_weight]}<br>}`
+    if (this.font_size !== "") {
+      result += `Font Size : ${this.font_size}<br>`;
+    }
+    if (this.line_height !== "") {
+      result += `Line Height : ${this.line_height}<br>`;
+    }
+
+    if (this.font_family !== "") {
+      result += `Font Family : ${this.font_family}<br>`
+    }
+    return result;
   }
 }
 
