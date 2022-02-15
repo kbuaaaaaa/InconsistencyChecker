@@ -687,10 +687,10 @@
         { active: true, currentWindow: true },
         function(tabs) {
           const { id: tabId } = tabs[0].url;
-          chrome.tabs.executeScript(tabId, {code : `${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
+          chrome.tabs.executeScript(tabId, {code : `${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
           + ${styleCode}.getPropertyValue("font-variant") + '${PARSING_DELIMITER}' 
           + ${styleCode}.getPropertyValue("font-weight") + '${PARSING_DELIMITER}' 
+          + ${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}'
           + ${styleCode}.getPropertyValue("line-height") + '${PARSING_DELIMITER}' 
           + ${styleCode}.getPropertyValue("font-family") + '${PARSING_DELIMITER}' 
           + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
@@ -713,7 +713,6 @@
       if (childnum == 0) {
         getStyle(code,(styleString) => {
           const parsedStyle = parseStyleString(styleString,code);
-          console.log(parsedStyle.color);
           parsedStyle.color = rgb2hex(parsedStyle.color);
           parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
           let elementFont = new Font(
@@ -796,8 +795,6 @@
       }
   }
 
-
-
   function highlightElement(code){
     chrome.tabs.query(
       { active: true, currentWindow: true },
@@ -821,15 +818,6 @@
       }
     );
   }
-
-
-  //console.log("Template string: ", templateString);
-  //console.log("Template string font first: ", templateString.font[0]);
-  //console.log("Template string font all: ", templateString.font);
-  //console.log("Template string font replaced: ", templateString.font[0].replace(/ /g, ''));
-  //console.log("element style: ", elementStyle);
-  //console.log("elementstyle font:", elementStyle.font);
-  //console.log("Element style font: ", elementStyle.font.replace(/ /g, ''))
 
 })();
 
