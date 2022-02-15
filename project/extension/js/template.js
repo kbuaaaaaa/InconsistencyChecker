@@ -31,18 +31,11 @@ class Template{
             match = false;
           }
         }
-        if (font.font_name !== "") {
-          if (font.font_name !== element.font.font_name) {
-            match = false;
-          }
-        }
+
         if (font.font_family !== "") {
           if (font.font_family !== element.font.font_family) {
             match = false;
           }
-        }
-        if (GENERIC_FAMILY[font.generic_family] !== element.font.generic_family) {
-          match = false;
         }
         if(match){
           fontResult = PROPERTY.Consistent;
@@ -105,7 +98,7 @@ class Font {
     font_weight = FONT_WEIGHT.Normal,
     font_size = 0,
     line_height = 0,
-    font_family = "\"Amazon Ember\", Arial, sans-serif",
+    font_family = ""
   ) {
     //https://www.w3schools.com/cssref/pr_font_font-style.asp for value ref.
     this.font_style = font_style;

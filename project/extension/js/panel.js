@@ -616,14 +616,14 @@
         line_height = inputs.children[9].value + "px",
         family_name = inputs.children[11].value,
         generic_family = GENERIC_FAMILY[inputs.children[13].value],
+        font_family = family_name + ', ' + generic_family;
         font = new Font(
           font_style,
           font_variant,
           font_weight,
           font_size,
           line_height,
-          family_name,
-          generic_family
+          font_family
         );
       fonts.push(font);
     }
@@ -668,7 +668,6 @@
 
 
   const PARSING_DELIMITER = '|';
-  const FONT_PARSING_DELIMITER = ',';
   function getStyle(code, _callback){
     var styleCode = "window.getComputedStyle(" + code + ")";
     chrome.tabs.query(
@@ -693,8 +692,7 @@
 
   const parseStyleString = (styleString,code) => {
     const [font_style, font_variant, font_weight, font_size, line_height, font_family_all, border_width, border_style, border_color, color] = styleString.split(PARSING_DELIMITER);
-    const [font_name,font_family,generic_family] = font_family_all.split(FONT_PARSING_DELIMITER);
-    return {code, font_style, font_variant, font_weight, font_size, line_height, font_name, font_family, generic_family, border_width, border_style, border_color, color};
+    return {code, font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color};
   }
 
   function traverseAndCompare(code) {
@@ -710,9 +708,7 @@
             font_weight,
             font_size,
             line_height,
-            font_name,
-            font_family,
-            generic_family
+            font_family
           );
           elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, new Color(parsedStyle.border_color));
           elementColor = new Color(parsedStyle.color);
