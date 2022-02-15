@@ -612,29 +612,38 @@
       let font_style = FONT_STYLE[inputs.children[1].value],
         font_variant = FONT_VARIANT[inputs.children[3].value],
         font_weight = FONT_WEIGHT[inputs.children[5].value],
-        font_size = inputs.children[7].value + "px",
-        line_height = inputs.children[9].value + "px",
+        font_size = inputs.children[7].value,
+        line_height = inputs.children[9].value ,
         family_name = inputs.children[11].value,
         generic_family = GENERIC_FAMILY[inputs.children[13].value],
         font_family = family_name + ', ' + generic_family;
-        font = new Font(
+      if (font_size !== "") {
+        font_size += "px";
+      }
+      if (line_height !== "") {
+        line_height += "px";
+      }
+      let font = new Font(
           font_style,
           font_variant,
           font_weight,
           font_size,
           line_height,
           font_family
-        );
+      );
       fonts.push(font);
     }
     template.font = fonts;
 
     let border_inputs = document.getElementsByClassName("border_div");
     for (const inputs of border_inputs) {
-      let border_width = inputs.children[1].value + "px",
+      let border_width = inputs.children[1].value ,
         border_style = inputs.children[3].value,
-        border_color = new Color(inputs.children[5].value),
-        border = new Border(border_width, border_style, border_color);
+        border_color = new Color(inputs.children[5].value)
+      if (border_width !== "") {
+        border_width += "px";
+      }
+      let border = new Border(border_width, border_style, border_color);
       borders.push(border);
     }
     template.border = borders;
