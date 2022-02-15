@@ -42,8 +42,8 @@
     TemplateComparisonPageButton = $("#template_comparison_page_button"),
     comparePageButton = $("#compare_page_button"),
     downloadTemplateButton = $("#download-template"),
-    compareTemplate = $('#compare_template'),
-    highlightPrototype = $('#highlight_prototype'),
+    compareTemplate = $("#compare_template"),
+    highlightPrototype = $("#highlight_prototype"),
     data = {},
     console = chrome.extension.getBackgroundPage().console,
     template = new Template(),
@@ -52,7 +52,7 @@
     borders = [],
     widths = [],
     heights = [],
-    templateString = {font : [] , border : [], color : []}
+    templateString = { font: [], border: [], color: [] };
 
   restoreSettings();
 
@@ -99,13 +99,23 @@
     $(this).checkbox();
   });
 
-  document.querySelector("#file-selector").addEventListener("change", function () {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        localStorage.setItem("json-file", reader.result);
+  function readTemplate() {
+    document
+      .querySelector("#file-selector")
+      .addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          localStorage.setItem("json-file", reader.result);
+          var styleFromJSON = JSON.parse(reader.result);
+          var templateParsed = new Template(styleFromJSON);
+          templateParsed.type = styleFromJSON.type;
+
+          template = templateParsed;
+        });
+        reader.readAsText(this.files[0]);
       });
-      reader.readAsDataURL(this.files[0]);
-    });
+  }
+  readTemplate();
 
   // template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\"", "Arial",GENERIC_FAMILY.Sans_Serif)];
   // templateString.font = ['   14px / 20px \"Amazon Ember\", Arial, sans-serif'];
@@ -140,7 +150,6 @@
       }
     );
   }
-
 
   function persistSettingAndProcessSnapshot() {
     console.assert(this.id);
@@ -416,39 +425,38 @@
           var color_div = document.createElement("div");
           color_div.className = "color_div";
 
-					var red_label = document.createElement("label");
-					red_label.innerHTML = " R ";
-					red_label.style = "margin-left: 20px;";
-					color_div.appendChild(red_label);
+          var red_label = document.createElement("label");
+          red_label.innerHTML = " R ";
+          red_label.style = "margin-left: 20px;";
+          color_div.appendChild(red_label);
 
-					var red_input = document.createElement("input");
-					red_input.type = "text";
-					red_input.className = "red_value";
-					red_input.style = "margin-left: 20px;";
-					color_div.appendChild(red_input);
+          var red_input = document.createElement("input");
+          red_input.type = "text";
+          red_input.className = "red_value";
+          red_input.style = "margin-left: 20px;";
+          color_div.appendChild(red_input);
 
-					var green_label = document.createElement("label");
-					green_label.innerHTML = " G ";
-					green_label.style = "margin-left: 20px;";
-					color_div.appendChild(green_label);
-			
-					var green_input = document.createElement("input");
-					green_input.type = "text";
-					green_input.className = "green_value";
-					green_input.style = "margin-left: 20px;";
-					color_div.appendChild(green_input);
+          var green_label = document.createElement("label");
+          green_label.innerHTML = " G ";
+          green_label.style = "margin-left: 20px;";
+          color_div.appendChild(green_label);
 
-					var blue_label = document.createElement("label");
-					blue_label.innerHTML = " B ";
-					blue_label.style = "margin-left: 20px;";
-					color_div.appendChild(blue_label);
-			
-					var blue_input = document.createElement("input");
-					blue_input.type = "text";
-					blue_input.className = "blue_value";
-					blue_input.style = "margin-left: 20px;";
-					color_div.appendChild(blue_input);
+          var green_input = document.createElement("input");
+          green_input.type = "text";
+          green_input.className = "green_value";
+          green_input.style = "margin-left: 20px;";
+          color_div.appendChild(green_input);
 
+          var blue_label = document.createElement("label");
+          blue_label.innerHTML = " B ";
+          blue_label.style = "margin-left: 20px;";
+          color_div.appendChild(blue_label);
+
+          var blue_input = document.createElement("input");
+          blue_input.type = "text";
+          blue_input.className = "blue_value";
+          blue_input.style = "margin-left: 20px;";
+          color_div.appendChild(blue_input);
 
           property_value_div.appendChild(color_div);
           break;
@@ -665,11 +673,11 @@
   function save() {
     let color_inputs = document.getElementsByClassName("color_div");
     for (const inputs of color_inputs) {
-			let r = inputs.children[1].value,
-				g = inputs.children[3].value,
-				b = inputs.children[5].value,
-				color = new Color(r,g,b)
-			colors.push(color);
+      let r = inputs.children[1].value,
+        g = inputs.children[3].value,
+        b = inputs.children[5].value,
+        color = new Color(r, g, b);
+      colors.push(color);
     }
     // console.log(colors);
     template.color = colors;
@@ -731,13 +739,25 @@
 
     for (const font of template.font) {
       console.log(font + font.font_style);
-      templateString.font.push(`${FONT_STYLE[font.font_style]} ${FONT_VARIANT[font.font_variant]} ${FONT_WEIGHT[font.font_weight]} ${font.font_size}px / ${font.line_height}px ${font.font_name}, ${font.font_family}, ${GENERIC_FAMILY[font.generic_family]}`);
+      templateString.font.push(
+        `${FONT_STYLE[font.font_style]} ${FONT_VARIANT[font.font_variant]} ${
+          FONT_WEIGHT[font.font_weight]
+        } ${font.font_size}px / ${font.line_height}px ${font.font_name}, ${
+          font.font_family
+        }, ${GENERIC_FAMILY[font.generic_family]}`
+      );
     }
     for (const border of template.border) {
-      templateString.border.push(`${border.border_width}px ${BORDER_STYLE[border.border_style]} rgb(${border.border_color.red}, ${border.border_color.green}, ${border.border_color.blue})`);
+      templateString.border.push(
+        `${border.border_width}px ${BORDER_STYLE[border.border_style]} rgb(${
+          border.border_color.red
+        }, ${border.border_color.green}, ${border.border_color.blue})`
+      );
     }
     for (const color of template.color) {
-      templateString.color.push(`rgb(${color.red}, ${color.green}, ${color.blue})`);
+      templateString.color.push(
+        `rgb(${color.red}, ${color.green}, ${color.blue})`
+      );
     }
     console.log(templateString);
   }
@@ -753,49 +773,49 @@
     });
   }
 
-  function getChildElementCount(code, _callback){
+  function getChildElementCount(code, _callback) {
     code += ".childElementCount";
-      chrome.tabs.query(
-        { active: true, currentWindow: true },
-        function(tabs) {
-          const { id: tabId } = tabs[0].url;
-          chrome.tabs.executeScript(tabId, {code}, (result)  => {
-            _callback(result);
-          });
-      }); 
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code }, (result) => {
+        _callback(result);
+      });
+    });
   }
 
-  const PARSING_DELIMITER = '|';
-  function getStyle(code, _callback){
+  const PARSING_DELIMITER = "|";
+  function getStyle(code, _callback) {
     var styleCode = "window.getComputedStyle(" + code + ")";
-    chrome.tabs.query(
-        { active: true, currentWindow: true },
-        function(tabs) {
-          const { id: tabId } = tabs[0].url;
-          chrome.tabs.executeScript(tabId, {code : `${styleCode}.font + '${PARSING_DELIMITER}' + ${styleCode}.border + '${PARSING_DELIMITER}' + ${styleCode}.color`}, function (result) {
-              _callback(result[0]);
-          });      
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(
+        tabId,
+        {
+          code: `${styleCode}.font + '${PARSING_DELIMITER}' + ${styleCode}.border + '${PARSING_DELIMITER}' + ${styleCode}.color`,
+        },
+        function (result) {
+          _callback(result[0]);
         }
-    );
+      );
+    });
   }
 
-  const parseStyleString = (styleString,code) => {
+  const parseStyleString = (styleString, code) => {
     const [font, border, color] = styleString.split(PARSING_DELIMITER);
-    console.log({code, font, border, color});
-    return {code, font, border, color};
-  }
+    console.log({ code, font, border, color });
+    return { code, font, border, color };
+  };
 
   function traverseAndCompare(code) {
-    getChildElementCount(code,(childnum)=>{
+    getChildElementCount(code, (childnum) => {
       if (childnum == 0) {
-        getStyle(code,(styleString) => {
+        getStyle(code, (styleString) => {
           // console.log(styleString);
-          const parsedStyle = parseStyleString(styleString,code);
+          const parsedStyle = parseStyleString(styleString, code);
           // console.log(parsedStyle)
           compareAgainstTemplate(parsedStyle);
         });
-      }
-      else{
+      } else {
         for (let index = 0; index < childnum; index++) {
           traverseAndCompare(code + `.children[${index}]`);
         }
@@ -803,78 +823,88 @@
     });
   }
 
-  function startTemplateComparison(){
+  function startTemplateComparison() {
     traverseAndCompare(INITIAL_CODE);
   }
 
-  function highlightElement(code){
-    chrome.tabs.query(
-      { active: true, currentWindow: true },
-      function(tabs) {
-        const { id: tabId } = tabs[0].url;
-        chrome.tabs.executeScript(tabId, {code : `${code}.style.background = 'red'`}, function (result) {
-            console.log(code + "is highlighted");
-        });
-      }
-    );
-  }
-
-  function compareAgainstTemplate(elementStyle){
-      var flag = false;
-      var dmp = new diff_match_patch();
-      var diffFont = dmp.diff_main(templateString.font[0].replace(/ /g, ''), elementStyle.font.replace(/ /g, ''));
-      dmp.diff_cleanupSemantic(diffFont);
-      console.log(diffFont);
-      for (const result of diffFont) {
-        if(result[0] > 0 || result[0] <0){
-          flag = true
+  function highlightElement(code) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(
+        tabId,
+        { code: `${code}.style.background = 'red'` },
+        function (result) {
+          console.log(code + "is highlighted");
         }
-      }
-      if (flag){
-        // var dsFont = dmp.diff_prettyHtml(diffFont);
-        var div = document.createElement('div');
-        var togglePanelBtn = document.createElement('button');
-        togglePanelBtn.innerHTML = " Show Details ";
-        togglePanelBtn.className = "accordion";
-        togglePanelBtn.parent = div;
-        togglePanelBtn.onclick = function() {
-          $(this).toggleClass("active");
-          var panel = $(this).siblings()[0];
-          if (panel.style.display === 'none') {
-            console.log("unhiding div");
-            panel.style.display = 'block';
-          } else {
-            console.log("hiding div");
-            panel.style.display = 'none';
-          }
-        };
-        var panel_div = document.createElement('div');
-        panel_div.className = "panel-template-comparison"
-        // panel_div.innerHTML = dsFont;
-        panel_div.innerHTML = "Template : " + templateString.font[0] + "<br>" + "Element : " + elementStyle.font + "<br>";
-        panel_div.style.display = 'none';
-        var showElementBtn = document.createElement('button');
-        showElementBtn.innerHTML = " Highlight ";
-        showElementBtn.onclick = () => highlightElement(elementStyle.code);
-        panel_div.appendChild(showElementBtn);
-        div.appendChild(togglePanelBtn);
-        div.appendChild(panel_div);
-        document.getElementById("template_comparison_output").appendChild(div);
-      }
+      );
+    });
   }
 
-  function highlight_prototype(){
-    chrome.tabs.query(
-      { active: true, currentWindow: true },
-      function(tabs) {
-        const { id: tabId } = tabs[0].url;
-        chrome.tabs.executeScript(tabId, {code : "document.getElementsByClassName(\"nav-left\")[0].style.background = 'red'"}, function (result) {
-          console.log("highlighted logo");
-        });      
-      }
+  function compareAgainstTemplate(elementStyle) {
+    var flag = false;
+    var dmp = new diff_match_patch();
+    var diffFont = dmp.diff_main(
+      templateString.font[0].replace(/ /g, ""),
+      elementStyle.font.replace(/ /g, "")
     );
+    dmp.diff_cleanupSemantic(diffFont);
+    console.log(diffFont);
+    for (const result of diffFont) {
+      if (result[0] > 0 || result[0] < 0) {
+        flag = true;
+      }
+    }
+    if (flag) {
+      // var dsFont = dmp.diff_prettyHtml(diffFont);
+      var div = document.createElement("div");
+      var togglePanelBtn = document.createElement("button");
+      togglePanelBtn.innerHTML = " Show Details ";
+      togglePanelBtn.className = "accordion";
+      togglePanelBtn.parent = div;
+      togglePanelBtn.onclick = function () {
+        $(this).toggleClass("active");
+        var panel = $(this).siblings()[0];
+        if (panel.style.display === "none") {
+          console.log("unhiding div");
+          panel.style.display = "block";
+        } else {
+          console.log("hiding div");
+          panel.style.display = "none";
+        }
+      };
+      var panel_div = document.createElement("div");
+      panel_div.className = "panel-template-comparison";
+      // panel_div.innerHTML = dsFont;
+      panel_div.innerHTML =
+        "Template : " +
+        templateString.font[0] +
+        "<br>" +
+        "Element : " +
+        elementStyle.font +
+        "<br>";
+      panel_div.style.display = "none";
+      var showElementBtn = document.createElement("button");
+      showElementBtn.innerHTML = " Highlight ";
+      showElementBtn.onclick = () => highlightElement(elementStyle.code);
+      panel_div.appendChild(showElementBtn);
+      div.appendChild(togglePanelBtn);
+      div.appendChild(panel_div);
+      document.getElementById("template_comparison_output").appendChild(div);
+    }
   }
 
+  function highlight_prototype() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(
+        tabId,
+        {
+          code: "document.getElementsByClassName(\"nav-left\")[0].style.background = 'red'",
+        },
+        function (result) {
+          console.log("highlighted logo");
+        }
+      );
+    });
+  }
 })();
-
-
