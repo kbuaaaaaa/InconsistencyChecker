@@ -105,9 +105,9 @@
     });
 
   template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\", Arial, sans-serif"),
-  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,12,18,"\"Amazon Ember\", Arial, sans-serif"),
+  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,14,20,"\"Amazon Ember\", Arial, sans-serif"),
   new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,13,19,"\"Amazon Ember\", Arial, sans-serif")];
-  template.border = [new Border("0px", "none" , "#0F1111")];
+  template.border = [new Border("0px", "none" , "#0f1111")];
   template.color = [new Color("#808080"),new Color("#232F3E")];
 
 
@@ -742,8 +742,9 @@
   }
 
   function compareAgainstTemplate(elementStyle){
-      var flag, fontFlag, colorFlag, borderFlag = template.compare(elementStyle);
-      if (!flag){
+      var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
+      console.log(flag);
+      if (flag){
         var div = document.createElement('div');
         var togglePanelBtn = document.createElement('button');
         togglePanelBtn.innerHTML = " Show Details ";
