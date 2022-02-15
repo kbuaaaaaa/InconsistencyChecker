@@ -114,44 +114,30 @@ h1 {
 }
 
 .form-control {
+	flex: 1;
+	margin-left: 10px;
 	border:rgb(2, 2, 42) 2px solid;
+}
+.form-group span{
+	font-size: 18px;
 }
 
 #add_and_save {
 	margin-left:20px;
 }
 
-.panel-template-comparison {
-	padding: 0 18px;
-	background-color: white;
-	overflow: hidden;
-	transition: max-height 0.2s ease-out;
+.a1{
+	color: #FFFFFF;
+	padding: 10px;
+	text-decoration: none;
+	font-size: 15px;
+	margin-right: 10px;
+	background-color: #232f3e;
 }
-
-.accordion {
-	background-color: #eee;
-	color: #444;
-	cursor: pointer;
-	padding: 18px;
-	width: 100%;
-	text-align: left;
-	border: none;
-	outline: none;
-	transition: 0.4s;
+.a1:hover{
+	color: #FFFFFF;
+	background-color: #16a085;
 }
-  
-.active, .accordion:hover {
-	background-color: #ccc;
-}
-
-.accordion:after {
-	content: '\02795'; /* Unicode character for "plus" sign (+) */
-	font-size: 13px;
-	color: #777;
-	float: right;
-	margin-left: 5px;
-}
-  
-.active:after {
-	content: "\2796"; /* Unicode character for "minus" sign (-) */
+.tag_a{
+	padding-top: 20px;
 }
