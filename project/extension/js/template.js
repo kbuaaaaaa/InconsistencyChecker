@@ -1,11 +1,18 @@
 class Template{
-    constructor(type = "", color = [], font = [], border = []){
-        this.type = type;
-        //the ui/class name eg. Button, Card. This is for later when we have to run through the page to check elements
+    constructor(color = [], font = [], border = []){
         this.color = color;
         this.font = font;
         this.border = border;
     }
+}
+
+class Element{
+  constructor(code = "", color = new Color(), font = new Font(), border = new Border()){
+      this.code = code;
+      this.color = color;
+      this.font = font;
+      this.border = border;
+  }
 }
 
 class Font {
@@ -40,7 +47,7 @@ class Border {
   constructor(
     border_width = 0,
     border_style = BORDER_STYLE.None,
-    border_color = "#FFFFFF"
+    border_color = new Color()
   ) {
     this.border_width = border_width;
     this.border_style = border_style;
