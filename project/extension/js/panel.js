@@ -44,6 +44,7 @@
     downloadTemplateButton = $("#download-template"),
     compareTemplate = $('#compare_template'),
     highlightPrototype = $('#highlight_prototype'),
+    displayTemplate = $('#display-template-btn'),
     data = {},
     console = chrome.extension.getBackgroundPage().console,
     template = new Template(),
@@ -75,6 +76,7 @@
   downloadTemplateButton.on("click", downloadTemplate);
   compareTemplate.on("click", startTemplateComparison);
   highlightPrototype.on("click", highlight_prototype);
+  displayTemplate.on("click", display_template);
 
   data.index = 0;
   data.list = ["select", "color", "font", "border"]
@@ -643,7 +645,7 @@
     for (const inputs of border_inputs) {
       let border_width = inputs.children[1].value ,
         border_style = inputs.children[3].value,
-        border_color = new Color(inputs.children[5].value)
+        border_color = inputs.children[5].value
       if (border_width !== "") {
         border_width += "px";
       }
@@ -795,6 +797,88 @@
         document.getElementById("template_comparison_output").appendChild(div);
       }
   }
+
+  function display_template () {
+    var div = document.createElement('div');
+    var templateProperties = document.createElement('p');
+
+    templateProperties.innerHTML = template.font.toString()
+                             + template.color.toString()
+                             + template.border.toString();
+    
+    templateProperties.parent = div;
+    div.appendChild(templateProperties);
+    document.getElementById("display-template").appendChild(div);
+  }
+
+  function compareAgainstTemplateV2(elementStyle) {
+    var flagFont = false;
+    var flagColor = false;
+    var flagBorder = false;
+
+    var dmp = new diff_match_patch();
+
+    var diffFont2;
+    var diffColor;
+    var diffBorder;
+
+    // To use after calculating differences
+    dmp.diff_cleanupSemantic(diffFont2);
+    dmp.diff_cleanupSemantic(diffColor);
+    dmp.diff_cleanupSemantic(diffBorder);
+
+    // Comparisons of color properties
+    if (templateString.color.length > 0) {
+      for (let i = 0, len = templateString.color.length; i < len; i++) {
+        diffColor = dmp.diff_main(templateString.color[0], elementStyle.color);
+        dmp.diff_cleanupSemantic(diffColor);
+
+        console.log(diffFont);
+
+        for (const result of diffColor) {
+          if (result[0] > 0 || result[0] < 0) {
+            flag = true;
+          }
+
+          if (flag) {
+            var div = document.createElement('div');
+            var togglePanelBtn = document.createElement('button');
+            togglePanelBtn.innerHTML = " Show Details ";
+            togglePanelBtn.className = "accordion";
+            togglePanelBtn.parent = div;
+            togglePanelBtn.onclick = function () {
+              $(this).toggleClass("active");
+              var panel = $(this).siblings()[0];
+              if (panel.style.display === 'none') {
+                panel.style.display = 'block';
+              } else {
+                panel.style.display = 'none';
+              }
+            };
+            var panel_div = document.createElement('div');
+            panel_div.className = "panel-template-comparison";
+            // TODO: concatanate relevant properties so they only appear once
+            // Like all template properties displayed together, only once, same for element ones... 
+            // so it would be done at the end of a for loop for all the properties from the template
+            // -> perhaps you need a for loop for each element, with for loops for each set of properties
+            // - you only display outout at end of one element
+            panel_div.innerHTML = "Template: " + templateString.color[i] + "<br>" + "Element: " + elementStyle.color + "<br>"
+            panel_div.style.display = 'none';
+            var showElementBtn = document.createElement('button');
+            showElementBtn.innerHTML = " Highlight ";
+            showElementBtn.onclick = () => highlightElement(elementStyle.code);
+            panel_div.appendChild(showElementBtn);
+            div.appendChild(togglePanelBtn);
+            div.appendChild(panel_div);
+            document.getElementById("template_comparison_output").appendChild(div);
+          }
+        }
+      }
+    }
+
+
+  }
+
 
   function highlightElement(code){
     chrome.tabs.query(

@@ -113,7 +113,7 @@ class Font {
   }
 
   toString(){
-    let result = `Font<br>&emsp;Font Style : ${this.font_style}<br>&emsp;Font Variant : ${this.font_variant}<br>&emsp;Font Weight : ${this.font_weight}<br>`;
+    let result = `Font<br>&emsp;Font Style : ${this.font_style}<br>&emsp;Font Variant : ${this.font_variant}<br>&emsp;Font Weight : ${this.font_weight}<br>}`;
     if (this.font_size !== "") {
       result += `&emsp;Font Size : ${this.font_size}<br>`;
     }
@@ -134,7 +134,9 @@ class Color {
   }
 
   toString(){
-    return `Color : ${this.color}`;
+    let result = `Color<br>&emsp;Color: ${this.color}<br>`;
+
+    return result;
   }
 }
 
@@ -142,7 +144,7 @@ class Border {
   constructor(
     border_width = 0,
     border_style = BORDER_STYLE.None,
-    border_color = new Color()
+    border_color = ""
   ) {
     this.border_width = border_width;
     this.border_style = border_style;
@@ -154,9 +156,10 @@ class Border {
     if (this.border_width !== "") {
       result += `&emsp;Border Width : ${this.border_width}<br>`;
     }
-    result += `&emsp;Border Style : ${this.border_style}<br>`;
+    var bs = BORDER_STYLE[this.border_style]
+    result += `&emsp;Border Style : ${bs}<br>`;
     if (this.border_color !== "") {
-      result += `&emsp;Border ${this.border_color.toString()}<br>`
+      result += `&emsp;Border Color : ${this.border_color}<br>`
     }
     return result;
   }
