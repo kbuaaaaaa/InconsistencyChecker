@@ -15,8 +15,7 @@ class Font {
     font_weight = FONT_WEIGHT.Normal,
     font_size = 0,
     line_height = 0,
-    font_family = "",
-    generic_family = GENERIC_FAMILY.Default
+    font_family = "\"Amazon Ember\", Arial, sans-serif",
   ) {
     //https://www.w3schools.com/cssref/pr_font_font-style.asp for value ref.
     this.font_style = font_style;
@@ -24,9 +23,7 @@ class Font {
     this.font_weight = font_weight;
     this.font_size = font_size;
     this.line_height = line_height;
-    this.font_name = font_name;
     this.font_family = font_family;
-    this.generic_family = generic_family;
   }
 }
 

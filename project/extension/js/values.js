@@ -15,7 +15,7 @@ const FONT_VARIANT = {
   Default : "normal",
   Normal: "normal",
   //The browser displays a normal font. This is default
-  Small_Caps: "small caps",
+  Small_Caps: "small-caps",
   //The browser displays a small-caps font
   Initial: "initial",
   //Sets this property to its default value. Read about initial
