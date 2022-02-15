@@ -114,7 +114,12 @@ h1 {
 }
 
 .form-control {
+	flex: 1;
+	margin-left: 10px;
 	border:rgb(2, 2, 42) 2px solid;
+}
+.form-group span{
+	font-size: 18px;
 }
 
 #add_and_save {
