@@ -8,7 +8,8 @@ class Template{
     compare(element){
       let fontResult = PROPERTY.None,
           borderResult = PROPERTY.None,
-          colorResult = PROPERTY.None
+          colorResult = PROPERTY.None,
+          result = false
       
       for (const font of this.font) {
         let match = true;
@@ -76,8 +77,10 @@ class Template{
           break;
         }
       }
-      let result = fontResult && colorResult && borderResult;
-      return {result, fontResult, colorResult, borderResult};
+      if (fontResult = PROPERTY.Inconsistent || colorResult == PROPERTY.Inconsistent || borderResult == PROPERTY.Inconsistent) {
+        result = true;
+      }
+      return [result, fontResult, colorResult, borderResult];
     }
 
 }
@@ -153,7 +156,7 @@ class Border {
     }
     result += `&emsp;Border Style : ${this.border_style}<br>`;
     if (this.border_color !== "") {
-      result += `&emsp;Border Color : ${this.border_color.toString()}<br>`
+      result += `&emsp;Border ${this.border_color.toString()}<br>`
     }
     return result;
   }
