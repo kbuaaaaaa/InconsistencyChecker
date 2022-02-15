@@ -763,7 +763,7 @@
   }
 
   function downloadTemplate() {
-    var content = JSON.stringify(template);
+    var content = JSON.stringify(template, null, 2);
     var blob = new Blob([content], { type: "application/json" });
     var name = String(template.type) + ".json";
 
