@@ -44,6 +44,7 @@
     downloadTemplateButton = $("#download-template"),
     compareTemplate = $('#compare_template'),
     highlightPrototype = $('#highlight_prototype'),
+    displayTemplate = $('#display-template-btn'),
     data = {},
     console = chrome.extension.getBackgroundPage().console,
     template = new Template(),
@@ -75,6 +76,7 @@
   downloadTemplateButton.on("click", downloadTemplate);
   compareTemplate.on("click", startTemplateComparison);
   highlightPrototype.on("click", highlight_prototype);
+  displayTemplate.on("click", display_template);
 
   data.index = 0;
   data.list = ["select", "color", "font", "border"]
@@ -639,7 +641,7 @@
     for (const inputs of border_inputs) {
       let border_width = inputs.children[1].value ,
         border_style = inputs.children[3].value,
-        border_color = new Color(inputs.children[5].value)
+        border_color = inputs.children[5].value
       if (border_width !== "") {
         border_width += "px";
       }
@@ -781,6 +783,19 @@
         div.appendChild(panel_div);
         document.getElementById("template_comparison_output").appendChild(div);
       }
+  }
+
+  function display_template () {
+    var div = document.createElement('div');
+    var templateProperties = document.createElement('p');
+
+    templateProperties.innerHTML = template.font.toString()
+                             + template.color.toString()
+                             + template.border.toString();
+    
+    templateProperties.parent = div;
+    div.appendChild(templateProperties);
+    document.getElementById("display-template").appendChild(div);
   }
 
   function compareAgainstTemplateV2(elementStyle) {
