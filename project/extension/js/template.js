@@ -110,7 +110,7 @@ class Font {
   }
 
   toString(){
-    let result = `Font Style : ${FONT_STYLE[this.font_style]}<br>Font Variant : ${FONT_VARIANT[this.font_variant]}<br>Font Weight : ${FONT_WEIGHT[this.font_weight]}<br>}`
+    let result = `Font Style : ${FONT_STYLE[this.font_style]}<br>Font Variant : ${FONT_VARIANT[this.font_variant]}<br>Font Weight : ${FONT_WEIGHT[this.font_weight]}<br>}`;
     if (this.font_size !== "") {
       result += `Font Size : ${this.font_size}<br>`;
     }
@@ -129,6 +129,10 @@ class Color {
   constructor(color="#FFFFFF") {
     this.color = color;
   }
+
+  toString(){
+    return this.color;
+  }
 }
 
 class Border {
@@ -140,5 +144,17 @@ class Border {
     this.border_width = border_width;
     this.border_style = border_style;
     this.border_color = border_color;
+  }
+
+  toString(){
+    let result = "";
+    if (this.border_width !== "") {
+      result += `Border Width : ${this.border_width}<br>`;
+    }
+    result += `Border Style : ${this.border_style}<br>`;
+    if (this.border_color !== "") {
+      result += `Border Color : ${this.border_color.toString()}<br>`
+    }
+    return result;
   }
 }
