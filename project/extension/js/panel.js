@@ -104,8 +104,12 @@
       reader.readAsDataURL(this.files[0]);
     });
 
-  // template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\"", "Arial",GENERIC_FAMILY.Sans_Serif)];
-  // templateString.font = ['   14px / 20px \"Amazon Ember\", Arial, sans-serif'];
+  template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\", Arial, sans-serif"),
+  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,12,18,"\"Amazon Ember\", Arial, sans-serif"),
+  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,13,19,"\"Amazon Ember\", Arial, sans-serif")];
+  template.border = [new Border("0px", "none" , "#0F1111")];
+  template.color = [new Color("#808080"),new Color("#232F3E")];
+
 
   function restoreSettings() {
     // Since we can't access localStorage from here, we need to ask background page to handle the settings.
@@ -700,7 +704,7 @@
   }
 
   const parseStyleString = (styleString,code) => {
-    const [font_style, font_variant, font_weight, font_size, line_height, font_family_all, border_width, border_style, border_color, color] = styleString.split(PARSING_DELIMITER);
+    const [font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color] = styleString.split(PARSING_DELIMITER);
     return {code, font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color};
   }
 
@@ -709,19 +713,20 @@
       if (childnum == 0) {
         getStyle(code,(styleString) => {
           const parsedStyle = parseStyleString(styleString,code);
+          console.log(parsedStyle.color);
           parsedStyle.color = rgb2hex(parsedStyle.color);
           parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
-          elementFont = new Font(
-            font_style,
-            font_variant,
-            font_weight,
-            font_size,
-            line_height,
-            font_family
+          let elementFont = new Font(
+            parsedStyle.font_style,
+            parsedStyle.font_variant,
+            parsedStyle.font_weight,
+            parsedStyle.font_size,
+            parsedStyle.line_height,
+            parsedStyle.font_family
           );
-          elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, new Color(parsedStyle.border_color));
-          elementColor = new Color(parsedStyle.color);
-          elementStyle = new Element(code, elementColor, elementFont, elementBorder);
+          let elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, new Color(parsedStyle.border_color));
+          let elementColor = new Color(parsedStyle.color);
+          let elementStyle = new Element(code, elementColor, elementFont, elementBorder);
           compareAgainstTemplate(elementStyle);
         });
       }
@@ -738,20 +743,8 @@
   }
 
   function compareAgainstTemplate(elementStyle){
-      var flag = false;
-      var dmp = new diff_match_patch();
-      var diffFont = dmp.diff_main(templateString.font[0].replace(/ /g, ''), elementStyle.font.replace(/ /g, ''));
-
-      dmp.diff_cleanupSemantic(diffFont);
-      console.log(diffFont);
-
-      for (const result of diffFont) {
-        if(result[0] > 0 || result[0] <0) {
-          flag = true;
-        }
-      }
-      if (flag){
-        // var dsFont = dmp.diff_prettyHtml(diffFont);
+      var flag, fontFlag, colorFlag, borderFlag = template.compare(elementStyle);
+      if (!flag){
         var div = document.createElement('div');
         var togglePanelBtn = document.createElement('button');
         togglePanelBtn.innerHTML = " Show Details ";
@@ -761,18 +754,38 @@
           $(this).toggleClass("active");
           var panel = $(this).siblings()[0];
           if (panel.style.display === 'none') {
-            //console.log("unhiding div");
             panel.style.display = 'block';
           } else {
-            //console.log("hiding div");
             panel.style.display = 'none';
           }
         };
         var panel_div = document.createElement('div');
         panel_div.className = "panel-template-comparison"
-        // panel_div.innerHTML = dsFont;
-        panel_div.innerHTML = "Template : " + templateString.font[0] + "<br>" + "Element : " + elementStyle.font + "<br>";
         panel_div.style.display = 'none';
+        if(fontFlag != PROPERTY.None){
+          var font_div = document.createElement('div');
+          font_div.innerHTML = elementStyle.font.toString();
+          if(fontFlag == PROPERTY.Inconsistent){
+            font_div.style.background = 'rgb(240, 100, 110)'
+          }
+          panel_div.appendChild(font_div);
+        }
+        if(borderFlag != PROPERTY.None){
+          var border_div = document.createElement('div');
+          border_div.innerHTML = elementStyle.border.toString();
+          if(borderFlag == PROPERTY.Inconsistent){
+            border_div.style.background = 'rgb(240, 100, 110)'
+          }
+          panel_div.appendChild(border_div);
+        }
+        if(colorFlag != PROPERTY.None){
+          var color_div = document.createElement('div');
+          color_div.innerHTML = elementStyle.color.toString();
+          if(colorFlag == PROPERTY.Inconsistent){
+            color_div.style.background = 'rgb(240, 100, 110)'
+          }
+          panel_div.appendChild(color_div);
+        }
         var showElementBtn = document.createElement('button');
         showElementBtn.innerHTML = " Highlight ";
         showElementBtn.onclick = () => highlightElement(elementStyle.code);
@@ -783,73 +796,6 @@
       }
   }
 
-  function compareAgainstTemplateV2(elementStyle) {
-    var flagFont = false;
-    var flagColor = false;
-    var flagBorder = false;
-
-    var dmp = new diff_match_patch();
-
-    var diffFont2;
-    var diffColor;
-    var diffBorder;
-
-    // To use after calculating differences
-    dmp.diff_cleanupSemantic(diffFont2);
-    dmp.diff_cleanupSemantic(diffColor);
-    dmp.diff_cleanupSemantic(diffBorder);
-
-    // Comparisons of color properties
-    if (templateString.color.length > 0) {
-      for (let i = 0, len = templateString.color.length; i < len; i++) {
-        diffColor = dmp.diff_main(templateString.color[0], elementStyle.color);
-        dmp.diff_cleanupSemantic(diffColor);
-
-        console.log(diffFont);
-
-        for (const result of diffColor) {
-          if (result[0] > 0 || result[0] < 0) {
-            flag = true;
-          }
-
-          if (flag) {
-            var div = document.createElement('div');
-            var togglePanelBtn = document.createElement('button');
-            togglePanelBtn.innerHTML = " Show Details ";
-            togglePanelBtn.className = "accordion";
-            togglePanelBtn.parent = div;
-            togglePanelBtn.onclick = function () {
-              $(this).toggleClass("active");
-              var panel = $(this).siblings()[0];
-              if (panel.style.display === 'none') {
-                panel.style.display = 'block';
-              } else {
-                panel.style.display = 'none';
-              }
-            };
-            var panel_div = document.createElement('div');
-            panel_div.className = "panel-template-comparison";
-            // TODO: concatanate relevant properties so they only appear once
-            // Like all template properties displayed together, only once, same for element ones... 
-            // so it would be done at the end of a for loop for all the properties from the template
-            // -> perhaps you need a for loop for each element, with for loops for each set of properties
-            // - you only display outout at end of one element
-            panel_div.innerHTML = "Template: " + templateString.color[i] + "<br>" + "Element: " + elementStyle.color + "<br>"
-            panel_div.style.display = 'none';
-            var showElementBtn = document.createElement('button');
-            showElementBtn.innerHTML = " Highlight ";
-            showElementBtn.onclick = () => highlightElement(elementStyle.code);
-            panel_div.appendChild(showElementBtn);
-            div.appendChild(togglePanelBtn);
-            div.appendChild(panel_div);
-            document.getElementById("template_comparison_output").appendChild(div);
-          }
-        }
-      }
-    }
-
-
-  }
 
 
   function highlightElement(code){
