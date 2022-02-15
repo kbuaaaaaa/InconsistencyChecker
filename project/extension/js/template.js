@@ -110,16 +110,16 @@ class Font {
   }
 
   toString(){
-    let result = `Font Style : ${FONT_STYLE[this.font_style]}<br>Font Variant : ${FONT_VARIANT[this.font_variant]}<br>Font Weight : ${FONT_WEIGHT[this.font_weight]}<br>}`;
+    let result = `Font<br>&emsp;Font Style : ${FONT_STYLE[this.font_style]}<br>&emsp;Font Variant : ${FONT_VARIANT[this.font_variant]}<br>&emsp;Font Weight : ${FONT_WEIGHT[this.font_weight]}<br>}`;
     if (this.font_size !== "") {
-      result += `Font Size : ${this.font_size}<br>`;
+      result += `&emsp;Font Size : ${this.font_size}<br>`;
     }
     if (this.line_height !== "") {
-      result += `Line Height : ${this.line_height}<br>`;
+      result += `&emsp;Line Height : ${this.line_height}<br>`;
     }
 
     if (this.font_family !== "") {
-      result += `Font Family : ${this.font_family}<br>`
+      result += `&emsp;Font Family : ${this.font_family}<br>`
     }
     return result;
   }
@@ -131,7 +131,7 @@ class Color {
   }
 
   toString(){
-    return this.color;
+    return `Color : ${this.color}`;
   }
 }
 
@@ -147,13 +147,13 @@ class Border {
   }
 
   toString(){
-    let result = "";
+    let result = "Border<br>";
     if (this.border_width !== "") {
-      result += `Border Width : ${this.border_width}<br>`;
+      result += `&emsp;Border Width : ${this.border_width}<br>`;
     }
-    result += `Border Style : ${this.border_style}<br>`;
+    result += `&emsp;Border Style : ${this.border_style}<br>`;
     if (this.border_color !== "") {
-      result += `Border Color : ${this.border_color.toString()}<br>`
+      result += `&emsp;Border Color : ${this.border_color.toString()}<br>`
     }
     return result;
   }
