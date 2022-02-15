@@ -696,13 +696,13 @@
   }
 
   function downloadTemplate() {
-    // TODO: pass a template object as a parameter and put that in the content
-    var content = "test"; // JSON.stringify(template	)
-    var blob = new Blob([content], { type: "text/plain;charset=UTF-8" });
+    var content = JSON.stringify(template);
+    var blob = new Blob([content], { type: "application/json" });
+    var name = String(template.type) + ".json";
 
     chrome.downloads.download({
       url: window.URL.createObjectURL(blob),
-      filename: "test.txt", // template name.json?
+      filename: name, // template name.json?
     });
   }
 
