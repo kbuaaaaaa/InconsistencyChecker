@@ -135,17 +135,6 @@
   }
   readTemplate();
 
-  // template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"14px","20px","\"Amazon Ember\", Arial, sans-serif"),
-  // new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","20px", "\"Amazon Ember\", Arial, sans-serif"),
-  // new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","19px", "\"Amazon Ember\", Arial, sans-serif"),
-  // new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"13px","19px", "\"Amazon Ember\", Arial, sans-serif"),
-  // new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"13px","19px", "\"Amazon Ember\", Arial, sans-serif")];
-  // // template.font = [new Font("","","","","","")];
-  // template.border = [new Border("0px", BORDER_STYLE.Default , "#0f1111")];
-  // template.color = [new Color("#808080"),new Color("#232F3E"), new Color("#0f1111")];
-
-
-
   function restoreSettings() {
     // Since we can't access localStorage from here, we need to ask background page to handle the settings.
     // Communication with background page is based on sendMessage/onMessage.
