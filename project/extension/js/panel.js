@@ -122,7 +122,7 @@
             var temp = new Border(border.border_width, border.border_style, border.border_color);
             templateParsed.border.push(temp);
           }
-          for (const color of styleFromJSON.border) {
+          for (const color of styleFromJSON.color) {
             var temp = new Color(color.color);
             templateParsed.color.push(temp);
           }
