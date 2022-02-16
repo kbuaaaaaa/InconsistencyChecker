@@ -98,13 +98,23 @@
     $(this).checkbox();
   });
 
-  document.querySelector("#file-selector").addEventListener("change", function () {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        localStorage.setItem("json-file", reader.result);
+  function readTemplate() {
+    document
+      .querySelector("#file-selector")
+      .addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          localStorage.setItem("json-file", reader.result);
+          var styleFromJSON = JSON.parse(reader.result);
+          var templateParsed = new Template(styleFromJSON);
+          templateParsed.type = styleFromJSON.type;
+
+          template = templateParsed;
+        });
+        reader.readAsText(this.files[0]);
       });
-      reader.readAsDataURL(this.files[0]);
-    });
+  }
+  readTemplate();
 
   template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"14px","20px","\"Amazon Ember\", Arial, sans-serif"),
   new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","20px", "\"Amazon Ember\", Arial, sans-serif"),
@@ -147,7 +157,6 @@
       }
     );
   }
-
 
   function persistSettingAndProcessSnapshot() {
     console.assert(this.id);
@@ -665,26 +674,24 @@
   }
 
   function downloadTemplate() {
-    // TODO: pass a template object as a parameter and put that in the content
-    var content = "test"; // JSON.stringify(template	)
-    var blob = new Blob([content], { type: "text/plain;charset=UTF-8" });
+    var content = JSON.stringify(template, null, 2);
+    var blob = new Blob([content], { type: "application/json" });
+    var name = String(template.type) + ".json";
 
     chrome.downloads.download({
       url: window.URL.createObjectURL(blob),
-      filename: "test.txt", // template name.json?
+      filename: name, // template name.json?
     });
   }
 
-  function getChildElementCount(code, _callback){
+  function getChildElementCount(code, _callback) {
     code += ".childElementCount";
-      chrome.tabs.query(
-        { active: true, currentWindow: true },
-        function(tabs) {
-          const { id: tabId } = tabs[0].url;
-          chrome.tabs.executeScript(tabId, {code}, (result)  => {
-            _callback(result);
-          });
-      }); 
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code }, (result) => {
+        _callback(result);
+      });
+    });
   }
 
 
@@ -708,7 +715,8 @@
               _callback(result[0]);
           });      
         }
-    );
+      );
+    });
   }
 
   function getTagName(code, _callback){
@@ -730,7 +738,7 @@
 
   const RELEVANT_TAGNAMES = ['DIV','SPAN']
   function traverseAndCompare(code) {
-    getChildElementCount(code,(childnum)=>{
+    getChildElementCount(code, (childnum) => {
       if (childnum == 0) {
         getTagName(code, (tagName) => {
           if(RELEVANT_TAGNAMES.includes(tagName)){
@@ -783,7 +791,7 @@
     });
   }
 
-  function startTemplateComparison(){
+  function startTemplateComparison() {
     traverseAndCompare(INITIAL_CODE);
   }
 
@@ -840,6 +848,44 @@
         div.appendChild(panel_div);
         document.getElementById("template_comparison_output").appendChild(div);
       }
+    }
+    if (flag) {
+      // var dsFont = dmp.diff_prettyHtml(diffFont);
+      var div = document.createElement("div");
+      var togglePanelBtn = document.createElement("button");
+      togglePanelBtn.innerHTML = " Show Details ";
+      togglePanelBtn.className = "accordion";
+      togglePanelBtn.parent = div;
+      togglePanelBtn.onclick = function () {
+        $(this).toggleClass("active");
+        var panel = $(this).siblings()[0];
+        if (panel.style.display === "none") {
+          console.log("unhiding div");
+          panel.style.display = "block";
+        } else {
+          console.log("hiding div");
+          panel.style.display = "none";
+        }
+      };
+      var panel_div = document.createElement("div");
+      panel_div.className = "panel-template-comparison";
+      // panel_div.innerHTML = dsFont;
+      panel_div.innerHTML =
+        "Template : " +
+        templateString.font[0] +
+        "<br>" +
+        "Element : " +
+        elementStyle.font +
+        "<br>";
+      panel_div.style.display = "none";
+      var showElementBtn = document.createElement("button");
+      showElementBtn.innerHTML = " Highlight ";
+      showElementBtn.onclick = () => highlightElement(elementStyle.code);
+      panel_div.appendChild(showElementBtn);
+      div.appendChild(togglePanelBtn);
+      div.appendChild(panel_div);
+      document.getElementById("template_comparison_output").appendChild(div);
+    }
   }
 
   function display_template () {
@@ -891,11 +937,8 @@
         const { id: tabId } = tabs[0].url;
         chrome.tabs.executeScript(tabId, {code : "document.getElementsByClassName(\"nav-left\")[0].style.background = 'red'"}, function (result) {
           console.log("highlighted logo");
-        });      
-      }
-    );
+        }
+      );
+    });
   }
-
 })();
-
-
