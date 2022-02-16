@@ -12,10 +12,10 @@
 
 <div class="container">
 
-    <div>
-        <button id='template_page_button' class='btn btn-primary'> Template Builder </button>
-        <button id='compare_page_button' class='btn btn-primary'> Comparison Tool </button>
-        <button id='template_comparison_page_button' class='btn btn-primary'> Compare template </button>
+    <div class="tag_a">
+				<a id='template_page_button' class='a1'> Template Builder </a>
+				<a id='compare_page_button' class='a1'> Comparison Tool </button></a>
+				<a id='template_comparison_page_button' class='a1'> Compare template </a>
     </div> 
     <div hidden id = "comparison_page">
         <div class="row" id='create-buttons'>
@@ -132,7 +132,7 @@
         </div>
     </div>
 
-    <div hidden id = "template_page">
+    <div  id = "template_page">
         <div id = "template_div">
             <h1 class="header">TEMPLATE BUILDER</h1>
             <div id="template_input">
@@ -140,13 +140,15 @@
                     <div class="row justify-content-center">
                         <div class="col-xs-4">
                             <div class="form-group">
-                                <input type="text" value="" placeholder="Template Name" class="form-control">
+																<span>Template Name</span>
+                                <input type="text" value="" placeholder="" class="form-control">
                             </div>
                         </div>
 
                         <div class="col-xs-4">
                             <div class="form-group">
-                                <input id = "element_class_input" type="text" value="" placeholder="Category" class="form-control">
+																<span>Category</span>
+                                <input id = "element_class_input" type="text" value="" placeholder="" class="form-control">
                             </div>
                         </div>
 
@@ -184,9 +186,9 @@
                 </p>
             </div>
         </div>
-    </div>   
+    </div>
 
-    <div hidden id="template_comparison_page">
+      <div hidden id="template_comparison_page">
         <div id="template_comparison_div">
             <h1 class="header">Compare Template</h1>
                <div class="row">
@@ -211,7 +213,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>  
+                  </div>
             </div>
             <div class="help-tip">
                 <p> This page is used to compare templates.Once you have created your template, ensure you have clicked "Save" on the Template Builder page, once you have done so
@@ -221,6 +223,36 @@
         </div>
 
     </div>
+
+
+   <!-- <div hidden id="Comparison_page">
+        <div id="comparison_div">
+            <h1 class="header">Compare Template</h1>
+               <div class="row">
+            <div class="column">
+                <div class="col-xs-6">
+                    <span class="label label-warning">Output</span>
+                    <textarea id='output' readonly class="form-control input-sm"></textarea>
+                </div>
+                <div class="row" id="Template-upload">
+                    <div class="column" id="Upload-column">
+                      <div class="col-xs-5">
+                        <button  id="compare" class="btn btn-primary">
+                          COMPARE
+                        </button>
+                        <input type="file" id="file-selector" accept=".json" />
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+    </div> -->
+
+        
+
+
+
     <!-- <div class="row" id='export-buttons-row'>
         <div class="col-xs-4">
             <form action="http://codepen.io/pen/define" method="POST" target="_blank" id='codepen-form'>
