@@ -626,12 +626,15 @@
         line_height = inputs.children[9].value ,
         family_name = inputs.children[11].value,
         generic_family = GENERIC_FAMILY[inputs.children[13].value],
-        font_family = family_name + ', ' + generic_family;
+        font_family = "";
       if (font_size !== "") {
         font_size += "px";
       }
       if (line_height !== "") {
         line_height += "px";
+      }
+      if (family_name !== ""){
+        font_family = family_name + ', ' + generic_family;
       }
       let font = new Font(
           font_style,
@@ -648,7 +651,7 @@
     let border_inputs = document.getElementsByClassName("border_div");
     for (const inputs of border_inputs) {
       let border_width = inputs.children[1].value ,
-        border_style = inputs.children[3].value,
+        border_style = BORDER_STYLE[inputs.children[3].value],
         border_color = inputs.children[5].value
       if (border_width !== "") {
         border_width += "px";
@@ -658,7 +661,6 @@
     }
     template.border = borders;
     template.type = document.getElementById("element_class_input").value;
-
     console.log(template);
   }
 
@@ -709,33 +711,71 @@
     );
   }
 
+  function getTagName(code, _callback){
+    chrome.tabs.query(
+      { active: true, currentWindow: true },
+      function(tabs) {
+        const { id: tabId } = tabs[0].url;
+        chrome.tabs.executeScript(tabId, {code : `${code}.tagName`}, function (result) {
+            _callback(result[0]);
+        });      
+      }
+  );
+  }
+
   const parseStyleString = (styleString,code) => {
     const [font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color] = styleString.split(PARSING_DELIMITER);
     return {code, font_style, font_variant, font_weight, font_size, line_height, font_family, border_width, border_style, border_color, color};
   }
 
+  const RELEVANT_TAGNAMES = ['DIV','SPAN']
   function traverseAndCompare(code) {
     getChildElementCount(code,(childnum)=>{
       if (childnum == 0) {
-        getStyle(code,(styleString) => {
-          const parsedStyle = parseStyleString(styleString,code);
-          parsedStyle.color = rgb2hex(parsedStyle.color);
-          parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
-          let elementFont = new Font(
-            parsedStyle.font_style,
-            parsedStyle.font_variant,
-            parsedStyle.font_weight,
-            parsedStyle.font_size,
-            parsedStyle.line_height,
-            parsedStyle.font_family
-          );
-          let elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, parsedStyle.border_color);
-          let elementColor = new Color(parsedStyle.color);
-          let elementStyle = new Element(code, elementColor, elementFont, elementBorder);
-          compareAgainstTemplate(elementStyle);
+        getTagName(code, (tagName) => {
+          if(RELEVANT_TAGNAMES.includes(tagName)){
+            getStyle(code,(styleString) => {
+              const parsedStyle = parseStyleString(styleString,code);
+              parsedStyle.color = rgb2hex(parsedStyle.color);
+              parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
+              let elementFont = new Font(
+                parsedStyle.font_style,
+                parsedStyle.font_variant,
+                parsedStyle.font_weight,
+                parsedStyle.font_size,
+                parsedStyle.line_height,
+                parsedStyle.font_family
+              );
+              let elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, parsedStyle.border_color);
+              let elementColor = new Color(parsedStyle.color);
+              let elementStyle = new Element(code, elementColor, elementFont, elementBorder);
+              compareAgainstTemplate(elementStyle);
+            });
+          }
         });
       }
       else{
+        getTagName(code, (tagName) => {
+          if(RELEVANT_TAGNAMES.includes(tagName)){
+            getStyle(code,(styleString) => {
+              const parsedStyle = parseStyleString(styleString,code);
+              parsedStyle.color = rgb2hex(parsedStyle.color);
+              parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
+              let elementFont = new Font(
+                parsedStyle.font_style,
+                parsedStyle.font_variant,
+                parsedStyle.font_weight,
+                parsedStyle.font_size,
+                parsedStyle.line_height,
+                parsedStyle.font_family
+              );
+              let elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, parsedStyle.border_color);
+              let elementColor = new Color(parsedStyle.color);
+              let elementStyle = new Element(code, elementColor, elementFont, elementBorder);
+              compareAgainstTemplate(elementStyle);
+            });
+          }
+        });
         for (let index = 0; index < childnum; index++) {
           traverseAndCompare(code + `.children[${index}]`);
         }
