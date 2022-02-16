@@ -104,11 +104,15 @@
       reader.readAsDataURL(this.files[0]);
     });
 
-  template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,14,20,"\"Amazon Ember\", Arial, sans-serif"),
-  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,14,20,"\"Amazon Ember\", Arial, sans-serif"),
-  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,13,19,"\"Amazon Ember\", Arial, sans-serif")];
-  template.border = [new Border("0px", "none" , "#0f1111")];
-  template.color = [new Color("#808080"),new Color("#232F3E")];
+  template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"14px","20px","\"Amazon Ember\", Arial, sans-serif"),
+  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","20px", "\"Amazon Ember\", Arial, sans-serif"),
+  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","19px", "\"Amazon Ember\", Arial, sans-serif"),
+  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"13px","19px", "\"Amazon Ember\", Arial, sans-serif"),
+  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"13px","19px", "\"Amazon Ember\", Arial, sans-serif")];
+  // template.font = [new Font("","","","","","")];
+  template.border = [new Border("0px", BORDER_STYLE.Default , "#0f1111")];
+  template.color = [new Color("#808080"),new Color("#232F3E"), new Color("#0f1111")];
+
 
 
   function restoreSettings() {
@@ -743,7 +747,6 @@
 
   function compareAgainstTemplate(elementStyle){
       var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
-      console.log(flag);
       if (flag){
         var div = document.createElement('div');
         var togglePanelBtn = document.createElement('button');
@@ -762,27 +765,28 @@
         var panel_div = document.createElement('div');
         panel_div.className = "panel-template-comparison"
         panel_div.style.display = 'none';
-        if(fontFlag != PROPERTY.None){
+        if(fontFlag !== PROPERTY.None){
           var font_div = document.createElement('div');
           font_div.innerHTML = elementStyle.font.toString();
           if(fontFlag == PROPERTY.Inconsistent){
-            font_div.style.background = 'rgb(240, 100, 110)'
+            // console.log(template.font[0], elementStyle.font);
+            font_div.style.backgroundColor = 'rgb(240, 100, 110)'
           }
           panel_div.appendChild(font_div);
         }
-        if(borderFlag != PROPERTY.None){
+        if(borderFlag !== PROPERTY.None){
           var border_div = document.createElement('div');
           border_div.innerHTML = elementStyle.border.toString();
           if(borderFlag == PROPERTY.Inconsistent){
-            border_div.style.background = 'rgb(240, 100, 110)'
+            border_div.style.backgroundColor = 'rgb(240, 100, 110)'
           }
           panel_div.appendChild(border_div);
         }
-        if(colorFlag != PROPERTY.None){
+        if(colorFlag !== PROPERTY.None){
           var color_div = document.createElement('div');
           color_div.innerHTML = elementStyle.color.toString();
           if(colorFlag == PROPERTY.Inconsistent){
-            color_div.style.background = 'rgb(240, 100, 110)'
+            color_div.style.backgroundColor = 'rgb(240, 100, 110)'
           }
           panel_div.appendChild(color_div);
         }

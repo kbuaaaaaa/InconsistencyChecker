@@ -9,36 +9,32 @@ class Template{
       let fontResult = PROPERTY.None,
           borderResult = PROPERTY.None,
           colorResult = PROPERTY.None,
-          result = false
+          result = false;
       
-      for (const font of this.font) {
-        let match = true;
-        if (FONT_STYLE[font.font_style] !== element.font.font_style) {
-          match = false;
+      for (const f of this.font) {
+        let font_match = true;
+        if (f.font_style !== element.font.font_style) {
+          font_match = false;
         }
-        if (FONT_VARIANT[font.font_variant] !== element.font.font_variant) {
-          match = false;
+        if (f.font_variant !== element.font.font_variant) {
+          font_match = false;
         }
-        if (FONT_WEIGHT[font.font_weight] !== element.font.font_weight) {
-          match = false;
+        if (f.font_weight !== element.font.font_weight) {
+          font_match = false;
         }
-        if (font.font_size !== "") {
-          if (font.font_size !== element.font.font_size) {
-            match = false;
-          }
+        
+        if (f.font_size !== "" && f.font_size !== element.font.font_size) {
+          font_match = false;
+            
         }
-        if (font.line_height !== "") {
-          if (font.line_height !== element.font.line_height) {
-            match = false;
-          }
+        if (f.line_height !== "" && f.line_height !== element.font.line_height) {
+          font_match = false;
         }
 
-        if (font.font_family !== "") {
-          if (font.font_family !== element.font.font_family) {
-            match = false;
-          }
+        if (f.font_family !== "" && f.font_family !== element.font.font_family) {
+          font_match = false;
         }
-        if(match){
+        if(font_match == true){
           fontResult = PROPERTY.Consistent;
           break;
         }else{
@@ -46,22 +42,18 @@ class Template{
         }
       }
 
-      for (const border of this.border) {
+      for (const b of this.border) {
         let match = true;
-        if (BORDER_STYLE[border.border_style] !== element.border.border_style) {
+        if (b.border_style !== element.border.border_style) {
           match = false;
         }
-        if (border.border_width !== "") {
-          if (border.border_width !== element.border.border_width) {
+        if (b.border_width !== "" && b.border_width !== element.border.border_width) {
             match = false;
-          }
         }
-        if (border.border_color !== "") {
-          if (border.border_color !== element.border.border_color) {
+        if (b.border_color !== "" && b.border_color !== element.border.border_color.color) {
             match = false;
-          }
         }
-        if(match){
+        if(match == true){
           borderResult = PROPERTY.Consistent;
           break;
         }else{
@@ -69,15 +61,15 @@ class Template{
         }
       }
 
-      for (const color of this.color) {
-        if (color.color !== element.color.color) {
+      for (const c of this.color) {
+        if (c.color !== element.color.color) {
           colorResult = PROPERTY.Inconsistent
         }else{
-          colorResult = PROPERTY.Inconsistent
+          colorResult = PROPERTY.Consistent
           break;
         }
       }
-      if (fontResult = PROPERTY.Inconsistent || colorResult == PROPERTY.Inconsistent || borderResult == PROPERTY.Inconsistent) {
+      if (fontResult == PROPERTY.Inconsistent || colorResult == PROPERTY.Inconsistent || borderResult == PROPERTY.Inconsistent) {
         result = true;
       }
       return [result, fontResult, colorResult, borderResult];
