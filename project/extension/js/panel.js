@@ -106,24 +106,43 @@
         reader.addEventListener("load", () => {
           localStorage.setItem("json-file", reader.result);
           var styleFromJSON = JSON.parse(reader.result);
-          var templateParsed = new Template(styleFromJSON);
-          templateParsed.type = styleFromJSON.type;
+          console.log(styleFromJSON);
+          var templateParsed = new Template([],[],[]);
+          for (const font of styleFromJSON.font) {
+            var temp = new Font(                
+              font.font_style,
+              font.font_variant,
+              font.font_weight,
+              font.font_size,
+              font.line_height,
+              font.font_family);
+            templateParsed.font.push(temp);
+          }
+          for (const border of styleFromJSON.border) {
+            var temp = new Border(border.border_width, border.border_style, border.border_color);
+            templateParsed.border.push(temp);
+          }
+          for (const color of styleFromJSON.border) {
+            var temp = new Color(color.color);
+            templateParsed.color.push(temp);
+          }
 
           template = templateParsed;
+          console.log(template);
         });
         reader.readAsText(this.files[0]);
       });
   }
   readTemplate();
 
-  template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"14px","20px","\"Amazon Ember\", Arial, sans-serif"),
-  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","20px", "\"Amazon Ember\", Arial, sans-serif"),
-  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","19px", "\"Amazon Ember\", Arial, sans-serif"),
-  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"13px","19px", "\"Amazon Ember\", Arial, sans-serif"),
-  new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"13px","19px", "\"Amazon Ember\", Arial, sans-serif")];
-  // template.font = [new Font("","","","","","")];
-  template.border = [new Border("0px", BORDER_STYLE.Default , "#0f1111")];
-  template.color = [new Color("#808080"),new Color("#232F3E"), new Color("#0f1111")];
+  // template.font = [new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"14px","20px","\"Amazon Ember\", Arial, sans-serif"),
+  // new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","20px", "\"Amazon Ember\", Arial, sans-serif"),
+  // new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"14px","19px", "\"Amazon Ember\", Arial, sans-serif"),
+  // new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT[400] ,"13px","19px", "\"Amazon Ember\", Arial, sans-serif"),
+  // new Font(FONT_STYLE.Normal,FONT_VARIANT.Normal,FONT_WEIGHT.Normal,"13px","19px", "\"Amazon Ember\", Arial, sans-serif")];
+  // // template.font = [new Font("","","","","","")];
+  // template.border = [new Border("0px", BORDER_STYLE.Default , "#0f1111")];
+  // template.color = [new Color("#808080"),new Color("#232F3E"), new Color("#0f1111")];
 
 
 
@@ -714,8 +733,6 @@
           + ${styleCode}.color`}, function (result) {
               _callback(result[0]);
           });      
-        }
-      );
     });
   }
 
@@ -848,44 +865,6 @@
         div.appendChild(panel_div);
         document.getElementById("template_comparison_output").appendChild(div);
       }
-    }
-    if (flag) {
-      // var dsFont = dmp.diff_prettyHtml(diffFont);
-      var div = document.createElement("div");
-      var togglePanelBtn = document.createElement("button");
-      togglePanelBtn.innerHTML = " Show Details ";
-      togglePanelBtn.className = "accordion";
-      togglePanelBtn.parent = div;
-      togglePanelBtn.onclick = function () {
-        $(this).toggleClass("active");
-        var panel = $(this).siblings()[0];
-        if (panel.style.display === "none") {
-          console.log("unhiding div");
-          panel.style.display = "block";
-        } else {
-          console.log("hiding div");
-          panel.style.display = "none";
-        }
-      };
-      var panel_div = document.createElement("div");
-      panel_div.className = "panel-template-comparison";
-      // panel_div.innerHTML = dsFont;
-      panel_div.innerHTML =
-        "Template : " +
-        templateString.font[0] +
-        "<br>" +
-        "Element : " +
-        elementStyle.font +
-        "<br>";
-      panel_div.style.display = "none";
-      var showElementBtn = document.createElement("button");
-      showElementBtn.innerHTML = " Highlight ";
-      showElementBtn.onclick = () => highlightElement(elementStyle.code);
-      panel_div.appendChild(showElementBtn);
-      div.appendChild(togglePanelBtn);
-      div.appendChild(panel_div);
-      document.getElementById("template_comparison_output").appendChild(div);
-    }
   }
 
   function display_template () {
@@ -937,8 +916,7 @@
         const { id: tabId } = tabs[0].url;
         chrome.tabs.executeScript(tabId, {code : "document.getElementsByClassName(\"nav-left\")[0].style.background = 'red'"}, function (result) {
           console.log("highlighted logo");
-        }
-      );
+        });
     });
   }
 })();
