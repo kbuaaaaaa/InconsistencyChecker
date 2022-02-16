@@ -729,7 +729,7 @@
             parsedStyle.line_height,
             parsedStyle.font_family
           );
-          let elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, new Color(parsedStyle.border_color));
+          let elementBorder = new Border(parsedStyle.border_width, parsedStyle.border_style, parsedStyle.border_color);
           let elementColor = new Color(parsedStyle.color);
           let elementStyle = new Element(code, elementColor, elementFont, elementBorder);
           compareAgainstTemplate(elementStyle);
@@ -769,7 +769,7 @@
         panel_div.style.display = 'none';
         if(fontFlag !== PROPERTY.None){
           var font_div = document.createElement('div');
-          font_div.innerHTML = elementStyle.font.toString();
+          font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
           if(fontFlag == PROPERTY.Inconsistent){
             // console.log(template.font[0], elementStyle.font);
             font_div.style.backgroundColor = 'rgb(240, 100, 110)'
@@ -778,7 +778,7 @@
         }
         if(borderFlag !== PROPERTY.None){
           var border_div = document.createElement('div');
-          border_div.innerHTML = elementStyle.border.toString();
+          border_div.innerHTML = "<h6>Border</h6><br>" + elementStyle.border.toString();
           if(borderFlag == PROPERTY.Inconsistent){
             border_div.style.backgroundColor = 'rgb(240, 100, 110)'
           }
@@ -786,7 +786,7 @@
         }
         if(colorFlag !== PROPERTY.None){
           var color_div = document.createElement('div');
-          color_div.innerHTML = elementStyle.color.toString();
+          color_div.innerHTML = "<h6>Color</h6><br>" + elementStyle.color.toString();
           if(colorFlag == PROPERTY.Inconsistent){
             color_div.style.backgroundColor = 'rgb(240, 100, 110)'
           }
@@ -805,84 +805,32 @@
   function display_template () {
     var div = document.createElement('div');
     var templateProperties = document.createElement('p');
+    var code = ""
+    if (template.font.length > 0) {
+      code += "<h6>Font</h6><br>"
+      for (let index = 0; index < template.font.length; index++) {
+          code += `Font no.${index+1}<br>` + template.font[index].toString()
+      }
+    }
+    if(template.color.length > 0){
+      code += "<h6>Color</h6><br>"
+      for (let index = 0; index < template.color.length; index++) {
+          code += `Color no.${index+1}<br>` + template.color[index].toString()
+      }
+    }
+    if(template.border.length > 0){
+      code += "<h6>Border</h6><br>"
+      for (let index = 0; index < template.border.length; index++) {
+          code += `Border no.${index+1}<br>` + template.border[index].toString()
+      }
+    }
 
-    templateProperties.innerHTML = template.font.toString()
-                             + template.color.toString()
-                             + template.border.toString();
+    templateProperties.innerHTML = code;
     
     templateProperties.parent = div;
     div.appendChild(templateProperties);
     document.getElementById("display-template").appendChild(div);
   }
-
-  function compareAgainstTemplateV2(elementStyle) {
-    var flagFont = false;
-    var flagColor = false;
-    var flagBorder = false;
-
-    var dmp = new diff_match_patch();
-
-    var diffFont2;
-    var diffColor;
-    var diffBorder;
-
-    // To use after calculating differences
-    dmp.diff_cleanupSemantic(diffFont2);
-    dmp.diff_cleanupSemantic(diffColor);
-    dmp.diff_cleanupSemantic(diffBorder);
-
-    // Comparisons of color properties
-    if (templateString.color.length > 0) {
-      for (let i = 0, len = templateString.color.length; i < len; i++) {
-        diffColor = dmp.diff_main(templateString.color[0], elementStyle.color);
-        dmp.diff_cleanupSemantic(diffColor);
-
-        console.log(diffFont);
-
-        for (const result of diffColor) {
-          if (result[0] > 0 || result[0] < 0) {
-            flag = true;
-          }
-
-          if (flag) {
-            var div = document.createElement('div');
-            var togglePanelBtn = document.createElement('button');
-            togglePanelBtn.innerHTML = " Show Details ";
-            togglePanelBtn.className = "accordion";
-            togglePanelBtn.parent = div;
-            togglePanelBtn.onclick = function () {
-              $(this).toggleClass("active");
-              var panel = $(this).siblings()[0];
-              if (panel.style.display === 'none') {
-                panel.style.display = 'block';
-              } else {
-                panel.style.display = 'none';
-              }
-            };
-            var panel_div = document.createElement('div');
-            panel_div.className = "panel-template-comparison";
-            // TODO: concatanate relevant properties so they only appear once
-            // Like all template properties displayed together, only once, same for element ones... 
-            // so it would be done at the end of a for loop for all the properties from the template
-            // -> perhaps you need a for loop for each element, with for loops for each set of properties
-            // - you only display outout at end of one element
-            panel_div.innerHTML = "Template: " + templateString.color[i] + "<br>" + "Element: " + elementStyle.color + "<br>"
-            panel_div.style.display = 'none';
-            var showElementBtn = document.createElement('button');
-            showElementBtn.innerHTML = " Highlight ";
-            showElementBtn.onclick = () => highlightElement(elementStyle.code);
-            panel_div.appendChild(showElementBtn);
-            div.appendChild(togglePanelBtn);
-            div.appendChild(panel_div);
-            document.getElementById("template_comparison_output").appendChild(div);
-          }
-        }
-      }
-    }
-
-
-  }
-
 
   function highlightElement(code){
     chrome.tabs.query(

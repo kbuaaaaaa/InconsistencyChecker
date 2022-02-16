@@ -50,7 +50,7 @@ class Template{
         if (b.border_width !== "" && b.border_width !== element.border.border_width) {
             match = false;
         }
-        if (b.border_color !== "" && b.border_color !== element.border.border_color.color) {
+        if (b.border_color !== "" && b.border_color !== element.border.border_color) {
             match = false;
         }
         if(match == true){
@@ -105,7 +105,7 @@ class Font {
   }
 
   toString(){
-    let result = `Font<br>&emsp;Font Style : ${this.font_style}<br>&emsp;Font Variant : ${this.font_variant}<br>&emsp;Font Weight : ${this.font_weight}<br>}`;
+    let result = `&emsp;Font Style : ${this.font_style}<br>&emsp;Font Variant : ${this.font_variant}<br>&emsp;Font Weight : ${this.font_weight}<br>`;
     if (this.font_size !== "") {
       result += `&emsp;Font Size : ${this.font_size}<br>`;
     }
@@ -126,8 +126,7 @@ class Color {
   }
 
   toString(){
-    let result = `Color<br>&emsp;Color: ${this.color}<br>`;
-
+    let result = `&emsp;Color: ${this.color}<br>`;
     return result;
   }
 }
@@ -144,11 +143,11 @@ class Border {
   }
 
   toString(){
-    let result = "Border<br>";
+    let result = "";
     if (this.border_width !== "") {
       result += `&emsp;Border Width : ${this.border_width}<br>`;
     }
-    var bs = BORDER_STYLE[this.border_style]
+    var bs = this.border_style
     result += `&emsp;Border Style : ${bs}<br>`;
     if (this.border_color !== "") {
       result += `&emsp;Border Color : ${this.border_color}<br>`
