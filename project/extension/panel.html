@@ -171,10 +171,18 @@
                   <button id="download-template" class="btn btn-primary">
                     Download template
                   </button>
-                  <input type="file" id="file-selector" accept=".json" />
+                  <input type="file" id="file-selector" class="custom-input" accept=".json" />
+                  <small id="helperText" class="form-text text-muted">Import a template</small></p>
+
                 </div>
               </div>
             </div>  
+            <div class="help-tip">
+                <p>This page is used to upload or create a template. by clicking "Add property" you can choose what exact
+                    properties you would like to compare against. Once you have created your template, click "Save" to save the template
+                    for comparison.<br />
+                </p>
+            </div>
         </div>
     </div>   
 
@@ -193,13 +201,19 @@
                         <button  id="compare_template" class="btn btn-primary">
                           COMPARE
                         </button>
-                        <input type="file" id="file-selector" accept=".json" />
+                        <input type="file" id="file-selector" class="custom-input" accept=".json" />
+                        <small id="helperText" class="form-text text-muted">Import a Template</small></p>
                         <button  id="highlight_prototype" class="btn btn-primary">
                             HIGHLIGHT PROTOTYPE
                           </button>
                       </div>
                     </div>
                   </div>  
+            </div>
+            <div class="help-tip">
+                <p> This page is used to compare templates.Once you have created your template, ensure you have clicked "Save" on the Template Builder page, once you have done so
+                    simply click "COMPARE" to find the inconsistencies.<br />
+                </p>
             </div>
         </div>
 
