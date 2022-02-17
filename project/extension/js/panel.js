@@ -396,7 +396,8 @@
       option.text = val.charAt(0).toUpperCase() + val.slice(1);
       select.appendChild(option);
     }
-    select.style = "margin-left: 20px;";
+    select.style = "margin-left: 20px;" +
+                   "border-radius: 4px;";
     select.onchange = function () {
       var value = select.options[select.selectedIndex].value;
       if (property_value_div.childElementCount > 0) {
@@ -415,7 +416,8 @@
           var color_input = document.createElement("input");
           color_input.type = "text";
           color_input.className = "color_value";
-          color_input.style = "margin-left: 20px;";
+          color_input.style = "margin-left: 20px;" +
+                              "border-radius: 4px;";
           color_div.appendChild(color_input);
 
           property_value_div.appendChild(color_div);
@@ -437,7 +439,8 @@
             option.text = key.charAt(0).toUpperCase() + key.slice(1);
             font_style_input.appendChild(option);
           }
-          font_style_input.style = "margin-left: 20px;";
+          font_style_input.style = "margin-left: 20px;" +
+                                   "border-radius: 4px;";
           font_div.appendChild(font_style_input);
 
           var font_variant_label = document.createElement("label");
@@ -453,7 +456,8 @@
             option.text = key.charAt(0).toUpperCase() + key.slice(1);
             font_variant_input.appendChild(option);
           }
-          font_variant_input.style = "margin-left: 20px;";
+          font_variant_input.style = "margin-left: 20px;" +
+                                     "border-radius: 4px;";
           font_div.appendChild(font_variant_input);
 
           var font_weight_label = document.createElement("label");
@@ -469,7 +473,8 @@
             option.text = key.charAt(0).toUpperCase() + key.slice(1);
             font_weight_input.appendChild(option);
           }
-          font_weight_input.style = "margin-left: 20px;";
+          font_weight_input.style = "margin-left: 20px;" +
+                                    "border-radius: 4px;";
           font_div.appendChild(font_weight_input);
 
           var font_size_label = document.createElement("label");
@@ -480,7 +485,8 @@
           var font_size_input = document.createElement("input");
           font_size_input.type = "text";
           font_size_input.className = "font_size_value";
-          font_size_input.style = "margin-left: 20px;";
+          font_size_input.style = "margin-left: 20px;" +
+                                  "border-radius: 4px;";
           font_div.appendChild(font_size_input);
 
           var line_height_label = document.createElement("label");
@@ -491,7 +497,8 @@
           var line_height_input = document.createElement("input");
           line_height_input.type = "text";
           line_height_input.className = "line_height_value";
-          line_height_input.style = "margin-left: 20px;";
+          line_height_input.style = "margin-left: 20px;" +
+                                    "border-radius: 4px;";
           font_div.appendChild(line_height_input);
 
           var font_name_label = document.createElement("label");
@@ -502,7 +509,8 @@
           var font_name_input = document.createElement("input");
           font_name_input.type = "text";
           font_name_input.className = "font_name_value";
-          font_name_input.style = "margin-left: 20px;";
+          font_name_input.style = "margin-left: 20px;" +
+                                  "border-radius: 4px;";
           font_div.appendChild(font_name_input);
 
           var font_family_label = document.createElement("label");
@@ -513,7 +521,8 @@
           var font_family_input = document.createElement("input");
           font_family_input.type = "text";
           font_family_input.className = "font_family_value";
-          font_family_input.style = "margin-left: 20px;";
+          font_family_input.style = "margin-left: 20px;" +
+                                    "border-radius: 4px;";
           font_div.appendChild(font_family_input);
 
           var generic_family_label = document.createElement("label");
@@ -529,7 +538,8 @@
             option.text = key.charAt(0).toUpperCase() + key.slice(1);
             generic_family_input.appendChild(option);
           }
-          generic_family_input.style = "margin-left: 20px;";
+          generic_family_input.style = "margin-left: 20px;" +
+              "border-radius: 4px;";
           font_div.appendChild(generic_family_input);
 
           property_value_div.appendChild(font_div);
@@ -546,7 +556,8 @@
           var border_width_input = document.createElement("input");
           border_width_input.type = "text";
           border_width_input.className = "border_width_value";
-          border_width_input.style = "margin-left: 20px;";
+          border_width_input.style = "margin-left: 20px;" +
+              "border-radius: 4px;";
           border_div.appendChild(border_width_input);
 
           var border_style_label = document.createElement("label");
@@ -562,7 +573,8 @@
             option.text = key.charAt(0).toUpperCase() + key.slice(1);
             border_style_input.appendChild(option);
           }
-          border_style_input.style = "margin-left: 20px;";
+          border_style_input.style = "margin-left: 20px;" +
+              "border-radius: 4px;";
           border_div.appendChild(border_style_input);
 
           var border_color_label = document.createElement("label");
@@ -573,7 +585,8 @@
           var border_color_input = document.createElement("input");
           border_color_input.type = "text";
           border_color_input.className = "border_color_value";
-          border_color_input.style = "margin-left: 20px;";
+          border_color_input.style = "margin-left: 20px;" +
+              "border-radius: 4px;";
           border_div.appendChild(border_color_input);
 
           property_value_div.appendChild(border_div);
@@ -590,7 +603,8 @@
           var width_input = document.createElement("input");
           width_input.type = "text";
           width_input.className = "width_value";
-          width_input.style = "margin-left: 20px;";
+          width_input.style = "margin-left: 20px;" +
+              "border-radius: 4px;";
           width_div.appendChild(width_input);
 
           property_value_div.appendChild(width_div);
@@ -607,7 +621,8 @@
           var height_input = document.createElement("input");
           height_input.type = "text";
           height_input.className = "height_value";
-          height_input.style = "margin-left: 20px;";
+          height_input.style = "margin-left: 20px;" +
+              "border-radius: 4px;";
           height_div.appendChild(height_input);
 
           property_value_div.appendChild(height_div);
