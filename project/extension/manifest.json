@@ -13,5 +13,12 @@
 		"scripts": ["js/background.js"],
 		"persistent": false
 	},
+	"permissions": [
+		"storage",
+		"tabs",
+		"activeTab",
+		"<all_urls>",
+		"downloads"
+	],
 	"content_security_policy": "script-src 'self' 'unsafe-eval' https://apis.google.com https://platform.twitter.com https://www.facebook.com; object-src 'self'"
 }

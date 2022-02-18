@@ -1,5 +1,5 @@
 const FONT_STYLE = {
-  Default : "none",
+  Default : "normal",
   //The browser displays a normal font style. This is default
   Normal: "normal",
   //The browser displays an italic font style
@@ -12,10 +12,10 @@ const FONT_STYLE = {
   Inherit: "inherit",
 };
 const FONT_VARIANT = {
-  Default : "none",
+  Default : "normal",
   Normal: "normal",
   //The browser displays a normal font. This is default
-  Small_Caps: "small caps",
+  Small_Caps: "small-caps",
   //The browser displays a small-caps font
   Initial: "initial",
   //Sets this property to its default value. Read about initial
@@ -24,7 +24,7 @@ const FONT_VARIANT = {
 };
 
 const FONT_WEIGHT = {
-  Default : "none",
+  Default : "normal",
   Normal: "normal",
   //Defines normal characters. This is default
   Bold: "bold",
@@ -50,7 +50,8 @@ const FONT_WEIGHT = {
 };
 
 const GENERIC_FAMILY = {
-  Default : "none",
+  Default : "",
+  //The amazon.com pages use sans-serif as their default
   Serif: "serif",
   Sans_Serif: "sans-serif",
   Cursive: "cursive",
@@ -84,3 +85,9 @@ const BORDER_STYLE = {
     Initial : "inherit"
     //Inherits this property from its parent element. Read about inherit
 };
+
+const PROPERTY = {
+  None : "none",
+  Consistent : "consistent",
+  Inconsistent : "inconsistent"
+}
