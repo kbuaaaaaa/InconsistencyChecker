@@ -100,13 +100,12 @@
 
   function readTemplate() {
     document
-      .querySelector("#file-selector")
+      .querySelector("#file-selector-output-page")
       .addEventListener("change", function () {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
           localStorage.setItem("json-file", reader.result);
           var styleFromJSON = JSON.parse(reader.result);
-          console.log(styleFromJSON);
           var templateParsed = new Template([], [], []);
           for (const font of styleFromJSON.font) {
             var temp = new Font(
@@ -133,7 +132,42 @@
           }
 
           template = templateParsed;
-          console.log(template);
+        });
+        reader.readAsText(this.files[0]);
+      });
+    document
+      .querySelector("#file-selector-template-page")
+      .addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          localStorage.setItem("json-file", reader.result);
+          var styleFromJSON = JSON.parse(reader.result);
+          var templateParsed = new Template([], [], []);
+          for (const font of styleFromJSON.font) {
+            var temp = new Font(
+              font.font_style,
+              font.font_variant,
+              font.font_weight,
+              font.font_size,
+              font.line_height,
+              font.font_family
+            );
+            templateParsed.font.push(temp);
+          }
+          for (const border of styleFromJSON.border) {
+            var temp = new Border(
+              border.border_width,
+              border.border_style,
+              border.border_color
+            );
+            templateParsed.border.push(temp);
+          }
+          for (const color of styleFromJSON.color) {
+            var temp = new Color(color.color);
+            templateParsed.color.push(temp);
+          }
+
+          template = templateParsed;
         });
         reader.readAsText(this.files[0]);
       });
@@ -289,7 +323,6 @@
         allowComments: true,
       });
     }
-    console.log(html);
 
     firstHTML = html;
     firstCSS = cssStringifier1.process(styles);
@@ -410,7 +443,6 @@
 
   function del(id) {
     const property_div = document.getElementById("property_div");
-    console.log(id);
     const div = document.getElementById(id);
     property_div.removeChild(div);
   }
@@ -640,6 +672,8 @@
       .join("")}`;
 
   function save() {
+    template.name = document.getElementById("template_name").value;
+
     let color_inputs = document.getElementsByClassName("color_div");
     for (const inputs of color_inputs) {
       let color = inputs.children[1].value;
@@ -650,7 +684,6 @@
 
     let font_inputs = document.getElementsByClassName("font_div");
     for (const inputs of font_inputs) {
-      console.log(inputs.children);
       let font_style = FONT_STYLE[inputs.children[1].value],
         font_variant = FONT_VARIANT[inputs.children[3].value],
         font_weight = FONT_WEIGHT[inputs.children[5].value],
@@ -692,18 +725,16 @@
       borders.push(border);
     }
     template.border = borders;
-    template.type = document.getElementById("element_class_input").value;
-    console.log(template);
   }
 
   function downloadTemplate() {
     var content = JSON.stringify(template, null, 2);
     var blob = new Blob([content], { type: "application/json" });
-    var name = String(template.type) + ".json";
+    var name = String(template.name) + ".json";
 
     chrome.downloads.download({
       url: window.URL.createObjectURL(blob),
-      filename: name, // template name.json?
+      filename: name,
     });
   }
 
@@ -885,37 +916,48 @@
         var font_div = document.createElement("div");
         font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
         if (fontFlag == PROPERTY.Inconsistent) {
-          // console.log(template.font[0], elementStyle.font);
           font_div.style.backgroundColor = "rgb(240, 100, 110)";
         }
         panel_div.appendChild(font_div);
       }
-      if (borderFlag !== PROPERTY.None) {
-        var border_div = document.createElement("div");
-        border_div.innerHTML =
-          "<h6>Border</h6><br>" + elementStyle.border.toString();
-        if (borderFlag == PROPERTY.Inconsistent) {
-          border_div.style.backgroundColor = "rgb(240, 100, 110)";
-        }
-        panel_div.appendChild(border_div);
-      }
-      if (colorFlag !== PROPERTY.None) {
-        var color_div = document.createElement("div");
-        color_div.innerHTML =
-          "<h6>Color</h6><br>" + elementStyle.color.toString();
-        if (colorFlag == PROPERTY.Inconsistent) {
-          color_div.style.backgroundColor = "rgb(240, 100, 110)";
-        }
-        panel_div.appendChild(color_div);
-      }
-      var showElementBtn = document.createElement("button");
-      showElementBtn.innerHTML = " Highlight ";
-      showElementBtn.onclick = () => highlightElement(elementStyle.code);
-      panel_div.appendChild(showElementBtn);
-      div.appendChild(togglePanelBtn);
-      div.appendChild(panel_div);
-      document.getElementById("template_comparison_output").appendChild(div);
     }
+    var panel_div = document.createElement("div");
+    panel_div.className = "panel-template-comparison";
+    panel_div.style.display = "none";
+    if (fontFlag !== PROPERTY.None) {
+      var font_div = document.createElement("div");
+      font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
+      if (fontFlag == PROPERTY.Inconsistent) {
+        // console.log(template.font[0], elementStyle.font);
+        font_div.style.backgroundColor = "rgb(240, 100, 110)";
+      }
+      panel_div.appendChild(font_div);
+    }
+    if (borderFlag !== PROPERTY.None) {
+      var border_div = document.createElement("div");
+      border_div.innerHTML =
+        "<h6>Border</h6><br>" + elementStyle.border.toString();
+      if (borderFlag == PROPERTY.Inconsistent) {
+        border_div.style.backgroundColor = "rgb(240, 100, 110)";
+      }
+      panel_div.appendChild(border_div);
+    }
+    if (colorFlag !== PROPERTY.None) {
+      var color_div = document.createElement("div");
+      color_div.innerHTML =
+        "<h6>Color</h6><br>" + elementStyle.color.toString();
+      if (colorFlag == PROPERTY.Inconsistent) {
+        color_div.style.backgroundColor = "rgb(240, 100, 110)";
+      }
+      panel_div.appendChild(color_div);
+    }
+    var showElementBtn = document.createElement("button");
+    showElementBtn.innerHTML = " Highlight ";
+    showElementBtn.onclick = () => highlightElement(elementStyle.code);
+    panel_div.appendChild(showElementBtn);
+    div.appendChild(togglePanelBtn);
+    div.appendChild(panel_div);
+    document.getElementById("template_comparison_output").appendChild(div);
   }
 
   function display_template() {
