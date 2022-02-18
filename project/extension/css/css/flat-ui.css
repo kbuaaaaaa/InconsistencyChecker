@@ -1442,6 +1442,8 @@ textarea.input-hg {
 }
 .form-group {
   position: relative;
+	display: flex;
+	align-items: center;
 }
 .form-control + .input-icon {
   position: absolute;
