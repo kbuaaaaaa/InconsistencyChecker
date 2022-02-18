@@ -117,3 +117,6 @@ dmypy.json
 
 # Specific IDE settings
 .idea/
+
+#auto generated vscode file
+.DS_Store
