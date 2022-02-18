@@ -1,3 +1,4 @@
+image: alpine:latest
 build-job:
   tags:
     - docker
