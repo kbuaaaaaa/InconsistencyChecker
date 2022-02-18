@@ -1,5 +1,6 @@
 class Template{
-    constructor(color = [], font = [], border = []){
+    constructor(name = "untitled" , color = [], font = [], border = []){
+        this.name =  name; 
         this.color = color;
         this.font = font;
         this.border = border;
