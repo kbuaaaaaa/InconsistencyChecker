@@ -659,7 +659,6 @@
   
   function save() {
     template.name = document.getElementById("template_name").value;
-    console.log(template.name);
 
     let color_inputs = document.getElementsByClassName("color_div");
     for (const inputs of color_inputs) {
