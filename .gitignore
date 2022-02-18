@@ -118,5 +118,5 @@ dmypy.json
 # Specific IDE settings
 .idea/
 
-#auto generated vscode file
+# Ignore Mac system files
 .DS_Store
