@@ -100,7 +100,40 @@
 
   function readTemplate() {
     document
-      .querySelector("#file-selector")
+      .querySelector("#file-selector-output-page")
+      .addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          localStorage.setItem("json-file", reader.result);
+          var styleFromJSON = JSON.parse(reader.result);
+          console.log(styleFromJSON);
+          var templateParsed = new Template([],[],[]);
+          for (const font of styleFromJSON.font) {
+            var temp = new Font(                
+              font.font_style,
+              font.font_variant,
+              font.font_weight,
+              font.font_size,
+              font.line_height,
+              font.font_family);
+            templateParsed.font.push(temp);
+          }
+          for (const border of styleFromJSON.border) {
+            var temp = new Border(border.border_width, border.border_style, border.border_color);
+            templateParsed.border.push(temp);
+          }
+          for (const color of styleFromJSON.color) {
+            var temp = new Color(color.color);
+            templateParsed.color.push(temp);
+          }
+
+          template = templateParsed;
+          console.log(template);
+        });
+        reader.readAsText(this.files[0]);
+      });
+      document
+      .querySelector("#file-selector-template-page")
       .addEventListener("change", function () {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
@@ -625,6 +658,9 @@
   const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`;
   
   function save() {
+    template.name = document.getElementById("template_name").value;
+    console.log(template.name);
+
     let color_inputs = document.getElementsByClassName("color_div");
     for (const inputs of color_inputs) {
 			let color = inputs.children[1].value;
@@ -677,18 +713,17 @@
       borders.push(border);
     }
     template.border = borders;
-    template.type = document.getElementById("element_class_input").value;
     console.log(template);
   }
 
   function downloadTemplate() {
     var content = JSON.stringify(template, null, 2);
     var blob = new Blob([content], { type: "application/json" });
-    var name = String(template.type) + ".json";
+    var name = String(template.name) + ".json";
 
     chrome.downloads.download({
       url: window.URL.createObjectURL(blob),
-      filename: name, // template name.json?
+      filename: name,
     });
   }
 
