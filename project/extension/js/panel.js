@@ -106,7 +106,6 @@
         reader.addEventListener("load", () => {
           localStorage.setItem("json-file", reader.result);
           var styleFromJSON = JSON.parse(reader.result);
-          console.log(styleFromJSON);
           var templateParsed = new Template([],[],[]);
           for (const font of styleFromJSON.font) {
             var temp = new Font(                
@@ -128,7 +127,6 @@
           }
 
           template = templateParsed;
-          console.log(template);
         });
         reader.readAsText(this.files[0]);
       });
@@ -139,7 +137,6 @@
         reader.addEventListener("load", () => {
           localStorage.setItem("json-file", reader.result);
           var styleFromJSON = JSON.parse(reader.result);
-          console.log(styleFromJSON);
           var templateParsed = new Template([],[],[]);
           for (const font of styleFromJSON.font) {
             var temp = new Font(                
@@ -161,7 +158,6 @@
           }
 
           template = templateParsed;
-          console.log(template);
         });
         reader.readAsText(this.files[0]);
       });
@@ -317,7 +313,6 @@
         allowComments: true,
       });
     }
-    console.log(html);
     styles1 = styles;
 
     firstHTML = html;
@@ -440,7 +435,6 @@
 
   function del(id) {
     const property_div = document.getElementById("property_div");
-    console.log(id);
     const div = document.getElementById(id);
     property_div.removeChild(div);
   }
@@ -659,7 +653,6 @@
   
   function save() {
     template.name = document.getElementById("template_name").value;
-    console.log(template.name);
 
     let color_inputs = document.getElementsByClassName("color_div");
     for (const inputs of color_inputs) {
@@ -671,7 +664,6 @@
 
     let font_inputs = document.getElementsByClassName("font_div");
     for (const inputs of font_inputs) {
-      console.log(inputs.children);
       let font_style = FONT_STYLE[inputs.children[1].value],
         font_variant = FONT_VARIANT[inputs.children[3].value],
         font_weight = FONT_WEIGHT[inputs.children[5].value],
@@ -713,7 +705,6 @@
       borders.push(border);
     }
     template.border = borders;
-    console.log(template);
   }
 
   function downloadTemplate() {
@@ -860,7 +851,6 @@
           var font_div = document.createElement('div');
           font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
           if(fontFlag == PROPERTY.Inconsistent){
-            // console.log(template.font[0], elementStyle.font);
             font_div.style.backgroundColor = 'rgb(240, 100, 110)'
           }
           panel_div.appendChild(font_div);
