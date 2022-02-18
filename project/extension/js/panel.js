@@ -285,7 +285,6 @@
       });
     }
     console.log(html);
-    styles1 = styles;
 
     firstHTML = html;
     firstCSS = cssStringifier1.process(styles);
@@ -351,7 +350,6 @@
 
     htmlTextarea2.val(secondHTML);
     cssTextarea2.val(secondCSS);
-    styles2 = styles;
     secondHTML = html;
     secondCSS = cssStringifier2.process(styles);
 
