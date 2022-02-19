@@ -36,6 +36,7 @@
     firstCSS,
     secondCSS,
     addButton = $("#add_button"),
+    clearButton=$("#clear_button"),
     saveButton = $("#save_button"),
     inputProperty = $("#input_button"),
     templatePageButton = $("#template_page_button"),
@@ -69,6 +70,7 @@
   detailButton.on("click", showDetail);
   saveButton.on("click", save);
   addButton.on("click", add);
+  clearButton.on("click",clear);
   inputProperty.on("click", switch_to_add);
   comparePageButton.on("click", switch_to_compare);
   templatePageButton.on("click", switch_to_template);
@@ -421,7 +423,7 @@
 
   function switch_to_add() {
     add();
-    document.getElementById("add_and_save").hidden = false;
+    document.getElementById("add_and_save_and_clear").hidden = false;
     document.getElementById("input_button").style.display = "none";
   }
 
@@ -446,6 +448,13 @@
     const div = document.getElementById(id);
     property_div.removeChild(div);
   }
+  function clear(){
+    const property_div = document.getElementById("property_div");
+    while (property_div.firstChild) {
+      property_div.removeChild(property_div.lastChild);
+    }
+  }
+
 
   function add() {
     data.index++;
