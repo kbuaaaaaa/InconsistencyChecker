@@ -7,6 +7,8 @@ build-job:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 
 test-job-1:
+  tags:
+    - docker
   stage: test
   script:
     - echo "This job tests something"
