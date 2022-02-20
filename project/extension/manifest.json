@@ -1,0 +1,24 @@
+{
+	"name": "InconsistencyChecker",
+	"description": "Easily extract CSS and HTML from selected element.",
+	"version": "0.4",
+	"manifest_version": 2,
+	"minimum_chrome_version": "18.0",
+	"icons": {
+		"24": "gfx/icon_24.png",
+		"128": "gfx/icon_128.png"
+	},
+	"devtools_page": "devtools.html",
+	"background": {
+		"scripts": ["js/background.js"],
+		"persistent": false
+	},
+	"permissions": [
+		"storage",
+		"tabs",
+		"activeTab",
+		"<all_urls>",
+		"downloads"
+	],
+	"content_security_policy": "script-src 'self' 'unsafe-eval' https://apis.google.com https://platform.twitter.com https://www.facebook.com; object-src 'self'"
+}
