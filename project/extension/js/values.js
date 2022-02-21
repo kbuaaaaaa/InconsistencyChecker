@@ -50,7 +50,7 @@ const FONT_WEIGHT = {
 };
 
 const GENERIC_FAMILY = {
-  Default : "",
+  Default : "sans-serif",
   //The amazon.com pages use sans-serif as their default
   Serif: "serif",
   Sans_Serif: "sans-serif",
