@@ -575,7 +575,7 @@
           var family_name_input = document.createElement("input");
           family_name_input.type = "text";
           family_name_input.className = "family_name_value";
-          family_name_input.style = "margin-left: 20px;";
+          family_name_input.style = "margin-left: 20px;"+ "border-radius: 4px;";
           font_div.appendChild(family_name_input);
 
           var generic_family_label = document.createElement("label");
