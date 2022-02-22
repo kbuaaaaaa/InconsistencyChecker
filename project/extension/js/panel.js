@@ -42,6 +42,7 @@
     TemplateComparisonPageButton = $("#template_comparison_page_button"),
     comparePageButton = $("#compare_page_button"),
     downloadTemplateButton = $("#download-template"),
+    resetbutton=$("#reset_button"),
     compareTemplate = $("#compare_template"),
     highlightPrototype = $("#highlight_prototype"),
     displayTemplate = $("#display-template-btn"),
@@ -74,6 +75,7 @@
   templatePageButton.on("click", switch_to_template);
   TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   downloadTemplateButton.on("click", downloadTemplate);
+  resetbutton.on("click",reset);
   compareTemplate.on("click", startTemplateComparison);
   highlightPrototype.on("click", highlight_prototype);
   displayTemplate.on("click", display_template);
@@ -736,6 +738,12 @@
       url: window.URL.createObjectURL(blob),
       filename: name,
     });
+  }
+  function reset(){
+    template.name="";
+    template.border=[];
+    template.font=[];
+    template.color=[];
   }
 
   function getChildElementCount(code, _callback) {
