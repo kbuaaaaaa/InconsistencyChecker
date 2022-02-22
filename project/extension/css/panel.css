@@ -125,7 +125,7 @@ h1 {
 }
 
 #add_and_save {
-  margin-left: 20px;
+ /* margin-left: 20px;*/
 }
 
 .a1 {
@@ -218,7 +218,7 @@ h1 {
   width: 40px;
   height: 40px;
   font-size: 24px;
-  line-height: 42px;
+  line-height: 38px;
   cursor: default;
 }
 
@@ -226,6 +226,9 @@ h1 {
   content: "?";
   font-family: sans-serif;
   font-weight: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #444;
 }
 
