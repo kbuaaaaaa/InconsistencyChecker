@@ -43,6 +43,7 @@
     TemplateComparisonPageButton = $("#template_comparison_page_button"),
     comparePageButton = $("#compare_page_button"),
     downloadTemplateButton = $("#download-template"),
+    resetbutton=$("#reset_button"),
     compareTemplate = $("#compare_template"),
     highlightPrototype = $("#highlight_prototype"),
     displayTemplate = $("#display-template-btn"),
@@ -76,6 +77,7 @@
   templatePageButton.on("click", switch_to_template);
   TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   downloadTemplateButton.on("click", downloadTemplate);
+  resetbutton.on("click",reset);
   compareTemplate.on("click", startTemplateComparison);
   highlightPrototype.on("click", highlight_prototype);
   displayTemplate.on("click", display_template);
@@ -584,7 +586,7 @@
           var family_name_input = document.createElement("input");
           family_name_input.type = "text";
           family_name_input.className = "family_name_value";
-          family_name_input.style = "margin-left: 20px;";
+          family_name_input.style = "margin-left: 20px;"+ "border-radius: 4px;";
           font_div.appendChild(family_name_input);
 
           var generic_family_label = document.createElement("label");
@@ -745,6 +747,12 @@
       url: window.URL.createObjectURL(blob),
       filename: name,
     });
+  }
+  function reset(){
+    template.name="";
+    template.border=[];
+    template.font=[];
+    template.color=[];
   }
 
   function getChildElementCount(code, _callback) {
