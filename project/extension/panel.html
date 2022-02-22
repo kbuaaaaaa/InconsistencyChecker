@@ -16,7 +16,8 @@
 				<a id='template_page_button' class='a1'> Template Builder </a>
 				<a id='compare_page_button' class='a1'> Comparison Tool </button></a>
 				<a id='template_comparison_page_button' class='a1'> Compare template </a>
-    </div> 
+    </div>
+
     <div hidden id = "comparison_page">
         <div class="row" id='create-buttons'>
             <div class="column" id='create-column'>
@@ -31,6 +32,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="row" id='html'>
           <div class="column" id='textareas-column-1'>
               <div class="col-xs-6">
@@ -42,17 +44,20 @@
                   <textarea id='html2' readonly class="form-control input-sm"></textarea>
               </div>
           </div> 
-        </div>  
-        <div class="column" id='css'>
-          <div class="col-xs-6">
-              <span class="label label-warning">CSS</span>
-              <textarea id='css1' readonly class="form-control input-sm"></textarea>
-          </div>
-          <div class="col-xs-6">
-              <span class="label label-warning">CSS</span>
-              <textarea id='css2' readonly class="form-control input-sm"></textarea>
-          </div>
         </div>
+        <div class="row" id='css'>  
+            <div class="column" id="textareas-column-1">
+            <div class="col-xs-6">
+                <span class="label label-warning">CSS</span>
+                <textarea id='css1' readonly class="form-control input-sm"></textarea>
+            </div>
+            <div class="col-xs-6">
+                <span class="label label-warning">CSS</span>
+                <textarea id='css2' readonly class="form-control input-sm"></textarea>
+            </div>
+            </div>
+        </div>
+        
         <div class="row" id='compare-buttons'>
             <div class="column" id='compare-column'>
                 <div class="col-xs-6">
@@ -132,7 +137,7 @@
         </div>
     </div>
 
-    <div  id = "template_page">
+    <div id = "template_page">
         <div id = "template_div">
             <h1 class="header">TEMPLATE BUILDER</h1>
             <div id="template_input">
