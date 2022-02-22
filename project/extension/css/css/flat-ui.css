@@ -471,6 +471,19 @@ address {
   transition: 0.25s;
   -webkit-backface-visibility: hidden;
 }
+.buttonspacing{
+	margin-top: 20px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+.buttontop{
+	margin-top: 20px;
+	margin-bottom: 10px;
+
+}
+.buttonlow{
+	margin-bottom: 20px;
+}
 .btn:active,
 .btn-group.open .btn.dropdown-toggle,
 .btn.active {
