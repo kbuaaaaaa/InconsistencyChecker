@@ -36,14 +36,14 @@
     firstCSS,
     secondCSS,
     addButton = $("#add_button"),
-    clearButton=$("#clear_button"),
+    clearButton = $("#clear_button"),
     saveButton = $("#save_button"),
     inputProperty = $("#input_button"),
     templatePageButton = $("#template_page_button"),
     TemplateComparisonPageButton = $("#template_comparison_page_button"),
     comparePageButton = $("#compare_page_button"),
     downloadTemplateButton = $("#download-template"),
-    resetbutton=$("#reset_button"),
+    resetbutton = $("#reset_button"),
     compareTemplate = $("#compare_template"),
     highlightPrototype = $("#highlight_prototype"),
     displayTemplate = $("#display-template-btn"),
@@ -71,13 +71,13 @@
   detailButton.on("click", showDetail);
   saveButton.on("click", save);
   addButton.on("click", add);
-  clearButton.on("click",clear);
+  clearButton.on("click", clear);
   inputProperty.on("click", switch_to_add);
   comparePageButton.on("click", switch_to_compare);
   templatePageButton.on("click", switch_to_template);
   TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   downloadTemplateButton.on("click", downloadTemplate);
-  resetbutton.on("click",reset);
+  resetbutton.on("click", reset);
   compareTemplate.on("click", startTemplateComparison);
   highlightPrototype.on("click", highlight_prototype);
   displayTemplate.on("click", display_template);
@@ -450,13 +450,12 @@
     const div = document.getElementById(id);
     property_div.removeChild(div);
   }
-  function clear(){
+  function clear() {
     const property_div = document.getElementById("property_div");
     while (property_div.firstChild) {
       property_div.removeChild(property_div.lastChild);
     }
   }
-
 
   function add() {
     data.index++;
@@ -551,29 +550,32 @@
             option.text = key.charAt(0).toUpperCase() + key.slice(1);
             font_weight_input.appendChild(option);
           }
+          font_weight_input.selectedIndex = 9;
           font_weight_input.style =
             "margin-left: 20px;" + "border-radius: 4px;";
           font_div.appendChild(font_weight_input);
 
           var font_size_label = document.createElement("label");
-          font_size_label.innerHTML = " Font Size ";
+          font_size_label.innerHTML = " Font Size (px) ";
           font_size_label.style = "margin-left: 20px;";
           font_div.appendChild(font_size_label);
 
           var font_size_input = document.createElement("input");
           font_size_input.type = "text";
           font_size_input.className = "font_size_value";
+          font_size_input.placeholder = "12";
           font_size_input.style = "margin-left: 20px;" + "border-radius: 4px;";
           font_div.appendChild(font_size_input);
 
           var line_height_label = document.createElement("label");
-          line_height_label.innerHTML = " Line Height ";
+          line_height_label.innerHTML = " Line Height (px) ";
           line_height_label.style = "margin-left: 20px;";
           font_div.appendChild(line_height_label);
 
           var line_height_input = document.createElement("input");
           line_height_input.type = "text";
           line_height_input.className = "line_height_value";
+          line_height_input.placeholder = "20";
           line_height_input.style =
             "margin-left: 20px;" + "border-radius: 4px;";
           font_div.appendChild(line_height_input);
@@ -586,7 +588,10 @@
           var family_name_input = document.createElement("input");
           family_name_input.type = "text";
           family_name_input.className = "family_name_value";
-          family_name_input.style = "margin-left: 20px;"+ "border-radius: 4px;";
+          family_name_input.value = '"Amazon Ember", Arial';
+          family_name_input.style =
+            "margin-left: 20px;" + "border-radius: 4px;";
+
           font_div.appendChild(family_name_input);
 
           var generic_family_label = document.createElement("label");
@@ -614,13 +619,14 @@
           border_div.className = "border_div";
 
           var border_width_label = document.createElement("label");
-          border_width_label.innerHTML = " Border Width ";
+          border_width_label.innerHTML = " Border Width (px) ";
           border_width_label.style = "margin-left: 20px;";
           border_div.appendChild(border_width_label);
 
           var border_width_input = document.createElement("input");
           border_width_input.type = "text";
           border_width_input.className = "border_width_value";
+          border_width_input.placeholder = "2";
           border_width_input.style =
             "margin-left: 20px;" + "border-radius: 4px;";
           border_div.appendChild(border_width_input);
@@ -748,11 +754,11 @@
       filename: name,
     });
   }
-  function reset(){
-    template.name="";
-    template.border=[];
-    template.font=[];
-    template.color=[];
+  function reset() {
+    template.name = "";
+    template.border = [];
+    template.font = [];
+    template.color = [];
   }
 
   function getChildElementCount(code, _callback) {
