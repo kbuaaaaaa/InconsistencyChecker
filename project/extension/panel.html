@@ -16,7 +16,8 @@
 				<a id='template_page_button' class='a1'> Template Builder </a>
 				<a id='compare_page_button' class='a1'> Comparison Tool </button></a>
 				<a id='template_comparison_page_button' class='a1'> Compare template </a>
-    </div> 
+    </div>
+
     <div hidden id = "comparison_page">
 	  <h1 class="header">COMPARISON TOOL</h1>
         <div class="row" id='create-buttons'>
@@ -25,13 +26,14 @@
                     <div class='alert alert-danger'><p> <strong>Error!</strong> <span class='error-message'></span></p></div>
                 </div>
                 <div class="col-xs-6">
-                    <button id='create1' class='btn btn-primary'> Choose the inspected element no.1</button>
+                    <button id='create1' class='btn btn-primary buttontop'> Choose the inspected element no.1</button>
                 </div>
                 <div class="col-xs-6">
-                    <button id='create2' class='btn btn-primary'> Choose the inspected element no.2</button>
+                    <button id='create2' class='btn btn-primary buttontop'> Choose the inspected element no.2</button>
                 </div>
             </div>
         </div>
+        
         <div class="row" id='html'>
           <div class="column" id='textareas-column-1'>
               <div class="col-xs-6">
@@ -43,22 +45,25 @@
                   <textarea id='html2' readonly class="form-control input-sm"></textarea>
               </div>
           </div> 
-        </div>  
-        <div class="column" id='css'>
-          <div class="col-xs-6">
-              <span class="label label-warning">CSS</span>
-              <textarea id='css1' readonly class="form-control input-sm"></textarea>
-          </div>
-          <div class="col-xs-6">
-              <span class="label label-warning">CSS</span>
-              <textarea id='css2' readonly class="form-control input-sm"></textarea>
-          </div>
         </div>
+        <div class="row" id='css'>  
+            <div class="column" id="textareas-column-1">
+            <div class="col-xs-6">
+                <span class="label label-warning">CSS</span>
+                <textarea id='css1' readonly class="form-control input-sm"></textarea>
+            </div>
+            <div class="col-xs-6">
+                <span class="label label-warning">CSS</span>
+                <textarea id='css2' readonly class="form-control input-sm"></textarea>
+            </div>
+            </div>
+        </div>
+        
         <div class="row" id='compare-buttons'>
             <div class="column" id='compare-column'>
                 <div class="col-xs-6">
-                    <button id='compare' class='btn btn-primary'> Compare </button>
-                    <button id='detail' class='btn btn-primary'> Show details </button>
+                    <button id='compare' class='btn btn-primary buttontop'> Compare </button>
+                    <button id='detail' class='btn btn-primary buttonspacing'> Show details </button>
                 </div>
             </div>
         </div>
@@ -133,7 +138,7 @@
         </div>
     </div>
 
-    <div  id = "template_page">
+    <div id = "template_page">
         <div id = "template_div">
             <h1 class="header">TEMPLATE BUILDER</h1>
             <div id="template_input">
@@ -157,26 +162,31 @@
             <br />
                 <div id="property_div"></div>
             <br />
-            <div hidden id="add_and_save">
+            <div hidden id="add_and_save_and_clear">
                 <button id='add_button' class='btn btn-primary'> Add </button>
                 <button id='save_button' class='btn btn-primary' > Save </button>
+                <button id='clear_button' class='btn btn-primary' > Clear </button>
             </div>
             <div class="row" id="template-buttons">
               <div class="column" id="download-column">
                 <div class="col-xs-6">
-                  <button id="download-template" class="btn btn-primary">
+                  <button id="download-template" class="btn btn-primary buttonlow">
                     Download template
                   </button>
                   <input type="file" id="file-selector-template-page" class="custom-input" accept=".json" />
                   <small id="helperText" class="form-text text-muted">Import a template</small></p>
 
                 </div>
+                <button id="reset_button" class="btn btn-primary">Reset</button>
               </div>
             </div>  
             <div class="help-tip">
-                <p>This page is used to upload or create a template. by clicking <em>"Add property"</em> you can choose what exact
-                    properties you would like to compare against. Once you have created your template, click <em>"Save"</em> to save the template
-                    for comparison.<br />
+                <p>
+                    <br><b>Add property or Add</b> to choose the properties you would like to add to the template.
+                    <br><b>Save</b> to save the template.
+                    <br><b>Download Template</b> to export the template.  
+                    <br><b>Upload a Template</b> to import the template.  
+                    <br><b>Reset</b> to reset the current template.                
                 </p>
             </div>
         </div>
@@ -194,14 +204,11 @@
                 <div class="row" id="Template-upload">
                     <div class="column" id="Upload-column">
                       <div class="col-xs-5">
-                        <button  id="compare_template" class="btn btn-primary">
+                        <button  id="compare_template" class="btn btn-primary buttonlow">
                           COMPARE
                         </button>
                         <input type="file" id="file-selector-output-page" class="custom-input" accept=".json" />
                         <small id="helperText" class="form-text text-muted">Import a Template</small></p>
-                        <button  id="highlight_prototype" class="btn btn-primary">
-                            HIGHLIGHT PROTOTYPE
-                        </button>
                         <div id="display-template">
                             <button id="display-template-btn" class="btn btn-primary">Display template</button>
                         </div>
@@ -210,8 +217,8 @@
                   </div>
             </div>
             <div class="help-tip">
-                <p> This page is used to compare templates.Once you have created your template, ensure you have clicked<em>"Save"</em>  on the Template Builder page, once you have done so
-                    simply click <em>"COMPARE"</em> to find the inconsistencies.<br />
+                <p> 
+                    Click <b>Compare</b> to find the inconsistencies on the current webpage.<br>
                 </p>
             </div>
         </div>
