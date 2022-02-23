@@ -125,7 +125,7 @@ h1 {
 }
 
 #add_and_save {
-  margin-left: 20px;
+ /* margin-left: 20px;*/
 }
 
 .a1 {
@@ -218,7 +218,7 @@ h1 {
   width: 40px;
   height: 40px;
   font-size: 24px;
-  line-height: 42px;
+  line-height: 38px;
   cursor: default;
 }
 
@@ -226,6 +226,9 @@ h1 {
   content: "?";
   font-family: sans-serif;
   font-weight: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #444;
 }
 
@@ -241,20 +244,22 @@ h1 {
   font-family: sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  text-align: center;
+  text-align: left;
   background-color: #ffffff;
-  padding: 12px 16px;
-  width: 178px;
+  padding-top: 10px;
+  padding-right: 5px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  width: 200px;
   height: auto;
   position: absolute;
-  left: 50%;
   transform: translate(-50%, 5%);
   border-radius: 3px;
   /* 	border: 1px solid #E0E0E0; */
   box-shadow: 0 0px 20px 0 rgba(0, 0, 0, 0.1);
   color: #37393d;
   font-size: 12px;
-  line-height: 18px;
+  line-height: 14px;
   z-index: 99;
 }
 
