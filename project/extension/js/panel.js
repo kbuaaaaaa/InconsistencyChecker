@@ -45,7 +45,6 @@
     downloadTemplateButton = $("#download-template"),
     resetbutton = $("#reset_button"),
     compareTemplate = $("#compare_template"),
-    highlightPrototype = $("#highlight_prototype"),
     displayTemplate = $("#display-template-btn"),
     data = {},
     console = chrome.extension.getBackgroundPage().console,
@@ -79,7 +78,6 @@
   downloadTemplateButton.on("click", downloadTemplate);
   resetbutton.on("click", reset);
   compareTemplate.on("click", startTemplateComparison);
-  highlightPrototype.on("click", highlight_prototype);
   displayTemplate.on("click", display_template);
 
   data.index = 0;
@@ -1027,18 +1025,4 @@
     });
   }
 
-  function highlight_prototype() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(
-        tabId,
-        {
-          code: "document.getElementsByClassName(\"nav-left\")[0].style.background = 'red'",
-        },
-        function (result) {
-          console.log("highlighted logo");
-        }
-      );
-    });
-  }
 })();
