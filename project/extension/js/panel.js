@@ -46,6 +46,7 @@
     resetbutton = $("#reset_button"),
     compareTemplate = $("#compare_template"),
     displayTemplate = $("#display-template-btn"),
+    truncateButton = $('#truncateBtn'),
     data = {},
     console = chrome.extension.getBackgroundPage().console,
     template = new Template(),
@@ -79,6 +80,7 @@
   resetbutton.on("click", reset);
   compareTemplate.on("click", startTemplateComparison);
   displayTemplate.on("click", display_template);
+  truncateButton.on("click", truncate_switch);
 
   data.index = 0;
   data.list = ["select", "color", "font", "border"];
@@ -420,6 +422,27 @@
       button.childNodes[0].nodeValue = "Show Detail";
     }
   }
+
+	function truncate(){
+		const regex = /(?<=\{\s*)[\s\S]*?(?=\s*\})/gs;
+		cssTextarea1.val(firstCSS.replaceAll(regex, '\n...'));
+		cssTextarea2.val(secondCSS.replaceAll(regex, '\n...'));
+
+	}
+
+	function truncate_switch(){
+		if(truncateButton.attr("truncated") == "true"){
+			truncateButton.attr("truncated", "false");
+			truncateButton.html("Truncate classes");
+			processFirstSnapshot();
+			processSecondSnapshot();
+		}
+		else{
+			truncate();
+			truncateButton.html("Restore classes");
+			truncateButton.attr("truncated", "true");
+		}
+	}
 
   function switch_to_add() {
     add();
@@ -1026,3 +1049,4 @@
   }
 
 })();
+
