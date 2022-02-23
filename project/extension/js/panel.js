@@ -44,6 +44,7 @@
     comparePageButton = $("#compare_page_button"),
     downloadTemplateButton = $("#download-template"),
     resetbutton = $("#reset_button"),
+    clearAllbutton=$("#clearAll_button"),
     compareTemplate = $("#compare_template"),
     displayTemplate = $("#display-template-btn"),
     truncateButton = $('#truncateBtn'),
@@ -78,6 +79,7 @@
   TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   downloadTemplateButton.on("click", downloadTemplate);
   resetbutton.on("click", reset);
+  clearAllbutton.on("click",clearAll);
   compareTemplate.on("click", startTemplateComparison);
   displayTemplate.on("click", display_template);
   truncateButton.on("click", truncate_switch);
@@ -709,6 +711,13 @@
       .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
       .join("")}`;
 
+  function clearAll(){
+    console.log("22");
+    var elem = document.getElementById("template_comparison_output");
+    elem.innerHTML="";
+    
+
+  }
   function save() {
     template.name = document.getElementById("template_name").value;
 
@@ -776,10 +785,9 @@
     });
   }
   function reset() {
-    template.name = "";
-    template.border = [];
-    template.font = [];
-    template.color = [];
+    borders = [];
+    fonts = [];
+    colors = [];
   }
 
   function getChildElementCount(code, _callback) {
@@ -936,6 +944,7 @@
   }
 
   function compareAgainstTemplate(elementStyle) {
+    
     var [flag, fontFlag, colorFlag, borderFlag] =
       template.compare(elementStyle);
     if (flag) {
@@ -1001,6 +1010,7 @@
     panel_div.appendChild(showElementBtn);
     div.appendChild(togglePanelBtn);
     div.appendChild(panel_div);
+    console.log(div);
     document.getElementById("template_comparison_output").appendChild(div);
   }
 
