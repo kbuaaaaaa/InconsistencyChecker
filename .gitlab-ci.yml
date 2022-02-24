@@ -1,19 +1,23 @@
 image: node
 
-stage:
- # I just want to lint, so I will create a "lint" stage
+stages:
  - lint
+ - build
+ - test
 
-# Lets name our Job eslint, because that's what it's doing.
 eslint:
- # tell eslint what stage it is. (This could also be build or test for example)
- stage: lint
- # What scripts do we want to run?
- script:
-    # install eslint
-    - npm i eslint
-    # Run eslint
+  stage: lint
+  script:
+    - npm install eslint \
+      eslint-config-airbnb \
+      eslint-config-prettier \
+      eslint-plugin-flowtype \
+      eslint-plugin-import \
+      eslint-plugin-jsx-a11y \
+      eslint-plugin-prettier \
+      eslint-plugin-react
     - node_modules/eslint/bin/eslint.js .
+
 build-job:
   tags:
     - docker
