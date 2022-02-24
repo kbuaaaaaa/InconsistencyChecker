@@ -120,3 +120,6 @@ dmypy.json
 
 # Ignore Mac system files
 .DS_Store
+
+# node
+node_modules/
