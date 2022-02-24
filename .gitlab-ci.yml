@@ -6,6 +6,8 @@ stages:
  - test
 
 eslint:
+  tags:
+    - docker
   stage: lint
   script:
     - npm install eslint \
