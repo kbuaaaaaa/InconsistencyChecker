@@ -12,7 +12,7 @@ eslint:
   script:
     - npm install eslint
     - npm init @eslint/config
-    - node_modules/eslint/bin/eslint.js .
+    - ./node_modules/eslint/bin/eslint.js .
 
 build-job:
   tags:
