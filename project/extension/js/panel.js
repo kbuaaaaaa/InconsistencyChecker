@@ -1,11 +1,11 @@
 (function () {
   "use strict";
   var firstSnapshot,
-    cssStringifier1 = new CSSStringifier(),
-    shorthandPropertyFilter1 = new ShorthandPropertyFilter(),
-    webkitPropertiesFilter1 = new WebkitPropertiesFilter(),
-    defaultValueFilter1 = new DefaultValueFilter(),
-    sameRulesCombiner1 = new SameRulesCombiner(),
+    cssStringifier = new CSSStringifier(),
+    shorthandPropertyFilter = new ShorthandPropertyFilter(),
+    webkitPropertiesFilter = new WebkitPropertiesFilter(),
+    defaultValueFilter = new DefaultValueFilter(),
+    sameRulesCombiner = new SameRulesCombiner(),
     borderRadiusWorkaround1 = new BorderRadiusWorkaround(),
     createButton1 = $("#create1"),
     htmlTextarea1 = $("#html1"),
@@ -19,22 +19,17 @@
     errorBox = $("#error-box"),
     loader = $("#loader"),
     secondSnapshot,
-    cssStringifier2 = new CSSStringifier(),
-    shorthandPropertyFilter2 = new ShorthandPropertyFilter(),
-    webkitPropertiesFilter2 = new WebkitPropertiesFilter(),
-    defaultValueFilter2 = new DefaultValueFilter(),
-    sameRulesCombiner2 = new SameRulesCombiner(),
-    borderRadiusWorkaround2 = new BorderRadiusWorkaround(),
     createButton2 = $("#create2"),
     htmlTextarea2 = $("#html2"),
     cssTextarea2 = $("#css2"),
     compareButton = $("#compare"),
     detailButton = $("#detail"),
     report = $("#report"),
-    firstHTML,
-    secondHTML,
-    firstCSS,
-    secondCSS,
+    firstHTML = {value : ""},
+    secondHTML = {value : ""},
+    firstCSS = {value : ""},
+    secondCSS = {value : ""},
+    htmlAndCSS = [],
     addButton = $("#add_button"),
     clearButton = $("#clear_button"),
     saveButton = $("#save_button"),
@@ -58,6 +53,7 @@
   restoreSettings();
 
   const INITIAL_CODE = "document.body";
+  console.log(firstCSS);
 
   propertiesCleanUpInput.on("change", persistSettingAndProcessSnapshot);
   removeDefaultValuesInput.on("change", persistSettingAndProcessSnapshot);
@@ -66,8 +62,8 @@
   combineSameRulesInput.on("change", persistSettingAndProcessSnapshot);
   includeAncestors.on("change", persistSettingAndProcessSnapshot);
 
-  createButton1.on("click", makeFirstSnapshot);
-  createButton2.on("click", makeSecondSnapshot);
+  createButton1.on("click", () => {makeSnapshot(firstSnapshot,firstHTML,firstCSS,htmlTextarea1,cssTextarea1);});
+  createButton2.on("click", () => {makeSnapshot(secondSnapshot,secondHTML,secondCSS,htmlTextarea2,cssTextarea2);});
   compareButton.on("click", compareSnapshots);
   detailButton.on("click", showDetail);
   saveButton.on("click", save);
@@ -225,7 +221,7 @@
 	Making & processing snippets
 	 */
 
-  function makeFirstSnapshot() {
+  function makeSnapshot(snapshot,html,css,htmlTextArea,cssTextArea){
     loader.addClass("creating");
     errorBox.removeClass("active");
 
@@ -233,7 +229,7 @@
       "(" + Snapshooter.toString() + ")($0)",
       function (result) {
         try {
-          firstSnapshot = JSON.parse(result);
+          snapshot = JSON.parse(result);
         } catch (e) {
           errorBox
             .find(".error-message")
@@ -242,76 +238,49 @@
             );
           errorBox.addClass("active");
         }
-
-        processFirstSnapshot();
-
+        processSnapshot(snapshot,html,css,htmlTextArea,cssTextArea);
         loader.removeClass("creating");
       }
     );
   }
 
-  function makeSecondSnapshot() {
-    loader.addClass("creating");
-    errorBox.removeClass("active");
-
-    chrome.devtools.inspectedWindow.eval(
-      "(" + Snapshooter.toString() + ")($0)",
-      function (result) {
-        try {
-          secondSnapshot = JSON.parse(result);
-        } catch (e) {
-          errorBox
-            .find(".error-message")
-            .text(
-              "DOM snapshot could not be created. Make sure that you have inspected some element."
-            );
-          errorBox.addClass("active");
-        }
-
-        processSecondSnapshot();
-
-        loader.removeClass("creating");
-      }
-    );
-  }
-
-  function processFirstSnapshot() {
-    if (!firstSnapshot) {
+  function processSnapshot(snapshot,html,css,htmlTextArea,cssTextArea){
+    if (!snapshot) {
       console.log("first error");
       return;
     }
 
-    var styles = firstSnapshot.css,
-      html = firstSnapshot.html;
+    var styles = snapshot.css,
+      snapshothtml = snapshot.html;
 
     if (includeAncestors.is(":checked")) {
-      styles = firstSnapshot.ancestorCss.concat(styles);
-      html =
-        firstSnapshot.leadingAncestorHtml +
-        html +
-        firstSnapshot.trailingAncestorHtml;
+      styles = snapshot.ancestorCss.concat(styles);
+      snapshothtml =
+        snapshot.leadingAncestorHtml +
+        snapshothtml +
+        snapshot.trailingAncestorHtml;
     }
 
     loader.addClass("processing");
 
     if (removeDefaultValuesInput.is(":checked")) {
-      styles = defaultValueFilter1.process(styles);
+      styles = defaultValueFilter.process(styles);
     }
 
     borderRadiusWorkaround1.process(styles);
 
     if (propertiesCleanUpInput.is(":checked")) {
-      styles = shorthandPropertyFilter1.process(styles);
+      styles = shorthandPropertyFilter.process(styles);
     }
     if (removeWebkitPropertiesInput.is(":checked")) {
-      styles = webkitPropertiesFilter1.process(styles);
+      styles = webkitPropertiesFilter.process(styles);
     }
     if (combineSameRulesInput.is(":checked")) {
-      styles = sameRulesCombiner1.process(styles);
+      styles = sameRulesCombiner.process(styles);
     }
 
     if (fixHTMLIndentationInput.is(":checked")) {
-      html = $.htmlClean(html, {
+      snapshothtml = $.htmlClean(snapshothtml, {
         removeTags: ["class"],
         allowedAttributes: [
           ["id"],
@@ -329,81 +298,17 @@
         allowComments: true,
       });
     }
-
-    firstHTML = html;
-    firstCSS = cssStringifier1.process(styles);
-    htmlTextarea1.val(firstHTML);
-    cssTextarea1.val(firstCSS);
-
+    htmlTextArea.val(snapshothtml);
+    cssTextArea.val(cssStringifier.process(styles));
     loader.removeClass("processing");
-  }
-
-  function processSecondSnapshot() {
-    if (!secondSnapshot) {
-      return;
-    }
-
-    var styles = secondSnapshot.css,
-      html = secondSnapshot.html;
-
-    if (includeAncestors.is(":checked")) {
-      styles = secondSnapshot.ancestorCss.concat(styles);
-      html =
-        secondSnapshot.leadingAncestorHtml +
-        html +
-        secondSnapshot.trailingAncestorHtml;
-    }
-
-    loader.addClass("processing");
-
-    if (removeDefaultValuesInput.is(":checked")) {
-      styles = defaultValueFilter2.process(styles);
-    }
-
-    borderRadiusWorkaround2.process(styles);
-
-    if (propertiesCleanUpInput.is(":checked")) {
-      styles = shorthandPropertyFilter2.process(styles);
-    }
-    if (removeWebkitPropertiesInput.is(":checked")) {
-      styles = webkitPropertiesFilter2.process(styles);
-    }
-    if (combineSameRulesInput.is(":checked")) {
-      styles = sameRulesCombiner2.process(styles);
-    }
-
-    if (fixHTMLIndentationInput.is(":checked")) {
-      html = $.htmlClean(html, {
-        removeTags: ["class"],
-        allowedAttributes: [
-          ["id"],
-          ["placeholder", ["input", "textarea"]],
-          ["disabled", ["input", "textarea", "select", "option", "button"]],
-          ["value", ["input", "button"]],
-          ["readonly", ["input", "textarea", "option"]],
-          ["label", ["option"]],
-          ["selected", ["option"]],
-          ["checked", ["input"]],
-        ],
-        format: true,
-        replace: [],
-        replaceStyles: [],
-        allowComments: true,
-      });
-    }
-
-    htmlTextarea2.val(secondHTML);
-    cssTextarea2.val(secondCSS);
-    secondHTML = html;
-    secondCSS = cssStringifier2.process(styles);
-
-    loader.removeClass("processing");
+    return (html.value = snapshothtml)&&(css.value = cssStringifier.process(styles))
   }
 
   function compareSnapshots() {
     var dmp = new diff_match_patch();
-    var diffHTML = dmp.diff_main(firstHTML, secondHTML);
-    var diffCSS = dmp.diff_main(firstCSS, secondCSS);
+    console.log(firstCSS.value);
+    var diffHTML = dmp.diff_main(firstHTML.value, secondHTML.value);
+    var diffCSS = dmp.diff_main(firstCSS.value, secondCSS.value);
     dmp.diff_cleanupSemantic(diffHTML);
     dmp.diff_cleanupSemantic(diffCSS);
     var dsHTML = dmp.diff_prettyHtml(diffHTML);
