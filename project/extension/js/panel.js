@@ -712,9 +712,12 @@
       .join("")}`;
 
   function clearAll(){
-    console.log("22");
     var elem = document.getElementById("template_comparison_output");
     elem.innerHTML="";
+    borders = [];
+    fonts = [];
+    colors = [];
+
     
 
   }
