@@ -79,8 +79,10 @@ class Template{
 }
 
 class Element{
-  constructor(code = "", color = new Color(), font = new Font(), border = new Border()){
+  constructor(code = "", id = "", className = "", color = new Color(), font = new Font(), border = new Border()){
       this.code = code;
+      this.id = id;
+      this.className = className;
       this.color = color;
       this.font = font;
       this.border = border;
