@@ -1,4 +1,9 @@
-image: alpine:latest
+image: node
+
+stages:
+ - build
+ - test
+
 build-job:
   tags:
     - docker
@@ -6,9 +11,11 @@ build-job:
   script:
     - echo "Hello world!"
 
-test-job-1:
+test-job-example:
   tags:
     - docker
   stage: test
   script:
-    - echo "This job tests something"
+    - npm install unit.js
+    - npm install -g mocha
+    - mocha test

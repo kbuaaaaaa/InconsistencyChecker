@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "mocha": "^9.2.1",
+    "unit.js": "^2.1.1"
+  }
+}
