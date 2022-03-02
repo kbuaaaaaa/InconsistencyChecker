@@ -820,7 +820,9 @@
           + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
           + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
           + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.color`,
+          + ${styleCode}.color + '${PARSING_DELIMITER}'
+          + ${code}.id + '${PARSING_DELIMITER}'
+          + ${code}.className + '${PARSING_DELIMITER}'`,
         },
         function (result) {
           _callback(result[0]);
@@ -854,6 +856,8 @@
       border_style,
       border_color,
       color,
+      id,
+      className
     ] = styleString.split(PARSING_DELIMITER);
     return {
       code,
@@ -867,6 +871,8 @@
       border_style,
       border_color,
       color,
+      id,
+      className
     };
   };
 
@@ -896,6 +902,8 @@
               let elementColor = new Color(parsedStyle.color);
               let elementStyle = new Element(
                 code,
+                parsedStyle.id,
+                parsedStyle.className,
                 elementColor,
                 elementFont,
                 elementBorder
@@ -927,6 +935,8 @@
               let elementColor = new Color(parsedStyle.color);
               let elementStyle = new Element(
                 code,
+                parsedStyle.id,
+                parsedStyle.className,
                 elementColor,
                 elementFont,
                 elementBorder
@@ -947,7 +957,7 @@
   }
 
   function compareAgainstTemplate(elementStyle) {
-    
+    console.log(elementStyle);
     var [flag, fontFlag, colorFlag, borderFlag] =
       template.compare(elementStyle);
     if (flag) {
@@ -980,6 +990,16 @@
     var panel_div = document.createElement("div");
     panel_div.className = "panel-template-comparison";
     panel_div.style.display = "none";
+    let identifier = "";
+    if (elementStyle.id !== ""){
+      identifier += `&emsp;Element ID : ${elementStyle.id}<br>`
+    }
+    if (elementStyle.className !== "" && elementStyle.id === ""){
+      identifier += `&emsp;Element Class : ${elementStyle.className}<br>`
+    }
+    let identifier_div  = document.createElement("div");
+    identifier_div.innerHTML = identifier;
+    panel_div.appendChild(identifier_div);
     if (fontFlag !== PROPERTY.None) {
       var font_div = document.createElement("div");
       font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
