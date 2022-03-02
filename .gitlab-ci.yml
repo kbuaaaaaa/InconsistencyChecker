@@ -18,4 +18,4 @@ test-job-example:
   script:
     - npm install unit.js
     - npm install -g mocha
-    - mocha test test/example.js 
+    - mocha test
