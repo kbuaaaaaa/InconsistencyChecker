@@ -1022,23 +1022,26 @@
     var templateProperties = document.createElement("p");
     var code = "";
     if (template.font.length > 0) {
-      code += "<h6>Font</h6><br>";
+      code += "<h6>Font</h6>";
       for (let index = 0; index < template.font.length; index++) {
         code += `Font no.${index + 1}<br>` + template.font[index].toString();
       }
+      code += "<br>";
     }
     if (template.color.length > 0) {
-      code += "<h6>Color</h6><br>";
+      code += "<h6>Color</h6>";
       for (let index = 0; index < template.color.length; index++) {
         code += `Color no.${index + 1}<br>` + template.color[index].toString();
       }
+      code += "<br>";
     }
     if (template.border.length > 0) {
-      code += "<h6>Border</h6><br>";
+      code += "<h6>Border</h6>";
       for (let index = 0; index < template.border.length; index++) {
         code +=
           `Border no.${index + 1}<br>` + template.border[index].toString();
       }
+      code += "<br>";
     }
 
     templateProperties.innerHTML = code;
