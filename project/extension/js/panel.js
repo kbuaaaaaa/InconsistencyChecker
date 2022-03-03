@@ -30,25 +30,25 @@
     firstCSS = {value : ""},
     secondCSS = {value : ""},
     htmlAndCSS = [],
-    addButton = $("#add_button"),
-    clearButton = $("#clear_button"),
-    saveButton = $("#save_button"),
-    inputProperty = $("#input_button"),
+    // addButton = $("#add_button"),
+    // clearButton = $("#clear_button"),
+    // saveButton = $("#save_button"),
+    // inputProperty = $("#input_button"),
     templatePageButton = $("#template_page_button"),
     TemplateComparisonPageButton = $("#template_comparison_page_button"),
     comparePageButton = $("#compare_page_button"),
-    downloadTemplateButton = $("#download-template"),
-    resetbutton = $("#reset_button"),
+    // downloadTemplateButton = $("#download-template"),
+    // resetbutton = $("#reset_button"),
     clearAllbutton=$("#clearAll_button"),
     compareTemplate = $("#compare_template"),
     displayTemplate = $("#display-template-btn"),
     truncateButton = $('#truncateBtn'),
-    data = {},
-    console = chrome.extension.getBackgroundPage().console,
-    template = new Template(),
-    colors = [],
-    fonts = [],
-    borders = [];
+    // data = {},
+    console = chrome.extension.getBackgroundPage().console;
+    // template = new Template(),
+    // colors = [],
+    // fonts = [],
+    // borders = [];
 
   restoreSettings();
 
@@ -66,22 +66,22 @@
   createButton2.on("click", () => {makeSnapshot(secondSnapshot,secondHTML,secondCSS,htmlTextarea2,cssTextarea2);});
   compareButton.on("click", compareSnapshots);
   detailButton.on("click", showDetail);
-  saveButton.on("click", save);
-  addButton.on("click", add);
-  clearButton.on("click", clear);
-  inputProperty.on("click", switch_to_add);
+  // saveButton.on("click", save);
+  // addButton.on("click", add);
+  // clearButton.on("click", clear);
+  // inputProperty.on("click", switch_to_add);
   comparePageButton.on("click", switch_to_compare);
   templatePageButton.on("click", switch_to_template);
   TemplateComparisonPageButton.on("click", switch_to_template_comparison);
-  downloadTemplateButton.on("click", downloadTemplate);
-  resetbutton.on("click", reset);
+  // downloadTemplateButton.on("click", downloadTemplate);
+  // resetbutton.on("click", reset);
   clearAllbutton.on("click",clearAll);
   compareTemplate.on("click", startTemplateComparison);
   displayTemplate.on("click", display_template);
   truncateButton.on("click", truncate_switch);
 
-  data.index = 0;
-  data.list = ["select", "color", "font", "border"];
+  // data.index = 0;
+  // data.list = ["select", "color", "font", "border"];
 
   htmlTextarea1.on("click", function () {
     $(this).select();
@@ -351,11 +351,11 @@
 		}
 	}
 
-  function switch_to_add() {
-    add();
-    document.getElementById("add_and_save_and_clear").hidden = false;
-    document.getElementById("input_button").style.display = "none";
-  }
+  // function switch_to_add() {
+  //   add();
+  //   document.getElementById("add_and_save_and_clear").hidden = false;
+  //   document.getElementById("input_button").style.display = "none";
+  // }
 
   function switch_to_compare() {
     document.getElementById("template_page").hidden = true;
@@ -373,241 +373,242 @@
     document.getElementById("template_comparison_page").hidden = true;
   }
 
-  function del(id) {
-    const property_div = document.getElementById("property_div");
-    const div = document.getElementById(id);
-    property_div.removeChild(div);
-  }
-  function clear() {
-    const property_div = document.getElementById("property_div");
-    while (property_div.firstChild) {
-      property_div.removeChild(property_div.lastChild);
-    }
-  }
+  // function del(id) {
+  //   const property_div = document.getElementById("property_div");
+  //   const div = document.getElementById(id);
+  //   property_div.removeChild(div);
+  // }
+  // function clear() {
+  //   const property_div = document.getElementById("property_div");
+  //   while (property_div.firstChild) {
+  //     property_div.removeChild(property_div.lastChild);
+  //   }
+  // }
 
-  function add() {
-    data.index++;
-    var div = document.createElement("div");
-    div.id = "div_" + data.index;
-    var select_label = document.createElement("label");
-    select_label.innerHTML = " Select Property ";
+  // function add() {
+  //   data.index++;
+  //   var div = document.createElement("div");
+  //   div.id = "div_" + data.index;
+  //   var select_label = document.createElement("label");
+  //   select_label.innerHTML = " Select Property ";
 
-    var property_value_div = document.createElement("div");
+  //   var property_value_div = document.createElement("div");
 
-    var select = document.createElement("select");
-    select.className = "select_property";
-    for (const val of data.list) {
-      var option = document.createElement("option");
-      option.value = val;
-      option.text = val.charAt(0).toUpperCase() + val.slice(1);
-      select.appendChild(option);
-    }
-    select.style = "margin-left: 20px;" + "border-radius: 4px;";
-    select.onchange = function () {
-      var value = select.options[select.selectedIndex].value;
-      if (property_value_div.childElementCount > 0) {
-        property_value_div.removeChild(property_value_div.lastChild);
-      }
-      switch (value) {
-        case "color":
-          var color_div = document.createElement("div");
-          color_div.className = "color_div";
+  //   var select = document.createElement("select");
+  //   select.className = "select_property";
+  //   for (const val of data.list) {
+  //     var option = document.createElement("option");
+  //     option.value = val;
+  //     option.text = val.charAt(0).toUpperCase() + val.slice(1);
+  //     select.appendChild(option);
+  //   }
+  //   select.style = "margin-left: 20px;" + "border-radius: 4px;";
+  //   select.onchange = function () {
+  //     var value = select.options[select.selectedIndex].value;
+  //     if (property_value_div.childElementCount > 0) {
+  //       property_value_div.removeChild(property_value_div.lastChild);
+  //     }
+  //     switch (value) {
+  //       case "color":
+  //         var color_div = document.createElement("div");
+  //         color_div.className = "color_div";
 
-          var color_label = document.createElement("label");
-          color_label.innerHTML = " Color ";
-          color_label.style = "margin-left: 20px;";
-          color_div.appendChild(color_label);
+  //         var color_label = document.createElement("label");
+  //         color_label.innerHTML = " Color ";
+  //         color_label.style = "margin-left: 20px;";
+  //         color_div.appendChild(color_label);
 
-          var color_input = document.createElement("input");
-          color_input.type = "text";
-          color_input.className = "color_value";
-          color_input.style = "margin-left: 20px;" + "border-radius: 4px;";
-          color_input.placeholder = "#FFFFFF";
-          color_div.appendChild(color_input);
+  //         var color_input = document.createElement("input");
+  //         color_input.type = "text";
+  //         color_input.className = "color_value";
+  //         color_input.style = "margin-left: 20px;" + "border-radius: 4px;";
+  //         color_input.placeholder = "#FFFFFF";
+  //         color_div.appendChild(color_input);
 
-          property_value_div.appendChild(color_div);
-          break;
+  //         property_value_div.appendChild(color_div);
+  //         break;
 
-        case "font":
-          var font_div = document.createElement("div");
-          font_div.className = "font_div";
+  //       case "font":
+  //         var font_div = document.createElement("div");
+  //         font_div.className = "font_div";
 
-          var font_style_label = document.createElement("label");
-          font_style_label.innerHTML = " Font Style ";
-          font_style_label.style = "margin-left: 20px;";
-          font_div.appendChild(font_style_label);
+  //         var font_style_label = document.createElement("label");
+  //         font_style_label.innerHTML = " Font Style ";
+  //         font_style_label.style = "margin-left: 20px;";
+  //         font_div.appendChild(font_style_label);
 
-          var font_style_input = document.createElement("select");
-          font_style_input.className = "font_style_input";
-          for (const key of Object.keys(FONT_STYLE)) {
-            var option = document.createElement("option");
-            option.value = key;
-            option.text = key.charAt(0).toUpperCase() + key.slice(1);
-            font_style_input.appendChild(option);
-          }
-          font_style_input.style = "margin-left: 20px;" + "border-radius: 4px;";
-          font_div.appendChild(font_style_input);
+  //         var font_style_input = document.createElement("select");
+  //         font_style_input.className = "font_style_input";
+  //         for (const key of Object.keys(FONT_STYLE)) {
+  //           var option = document.createElement("option");
+  //           option.value = key;
+  //           option.text = key.charAt(0).toUpperCase() + key.slice(1);
+  //           font_style_input.appendChild(option);
+  //         }
+  //         font_style_input.style = "margin-left: 20px;" + "border-radius: 4px;";
+  //         font_div.appendChild(font_style_input);
 
-          var font_variant_label = document.createElement("label");
-          font_variant_label.innerHTML = " Font Variant ";
-          font_variant_label.style = "margin-left: 20px;";
-          font_div.appendChild(font_variant_label);
+  //         var font_variant_label = document.createElement("label");
+  //         font_variant_label.innerHTML = " Font Variant ";
+  //         font_variant_label.style = "margin-left: 20px;";
+  //         font_div.appendChild(font_variant_label);
 
-          var font_variant_input = document.createElement("select");
-          font_variant_input.className = "font_variant_input";
-          for (const key of Object.keys(FONT_VARIANT)) {
-            var option = document.createElement("option");
-            option.value = key;
-            option.text = key.charAt(0).toUpperCase() + key.slice(1);
-            font_variant_input.appendChild(option);
-          }
-          font_variant_input.style =
-            "margin-left: 20px;" + "border-radius: 4px;";
-          font_div.appendChild(font_variant_input);
+  //         var font_variant_input = document.createElement("select");
+  //         font_variant_input.className = "font_variant_input";
+  //         for (const key of Object.keys(FONT_VARIANT)) {
+  //           var option = document.createElement("option");
+  //           option.value = key;
+  //           option.text = key.charAt(0).toUpperCase() + key.slice(1);
+  //           font_variant_input.appendChild(option);
+  //         }
+  //         font_variant_input.style =
+  //           "margin-left: 20px;" + "border-radius: 4px;";
+  //         font_div.appendChild(font_variant_input);
 
-          var font_weight_label = document.createElement("label");
-          font_weight_label.innerHTML = " Font Weight ";
-          font_weight_label.style = "margin-left: 20px;";
-          font_div.appendChild(font_weight_label);
+  //         var font_weight_label = document.createElement("label");
+  //         font_weight_label.innerHTML = " Font Weight ";
+  //         font_weight_label.style = "margin-left: 20px;";
+  //         font_div.appendChild(font_weight_label);
 
-          var font_weight_input = document.createElement("select");
-          font_weight_input.className = "font_weight_input";
-          for (const key of Object.keys(FONT_WEIGHT)) {
-            var option = document.createElement("option");
-            option.value = key;
-            option.text = key.charAt(0).toUpperCase() + key.slice(1);
-            font_weight_input.appendChild(option);
-          }
-          font_weight_input.selectedIndex = 9;
-          font_weight_input.style =
-            "margin-left: 20px;" + "border-radius: 4px;";
-          font_div.appendChild(font_weight_input);
+  //         var font_weight_input = document.createElement("select");
+  //         font_weight_input.className = "font_weight_input";
+  //         for (const key of Object.keys(FONT_WEIGHT)) {
+  //           var option = document.createElement("option");
+  //           option.value = key;
+  //           option.text = key.charAt(0).toUpperCase() + key.slice(1);
+  //           font_weight_input.appendChild(option);
+  //         }
+  //         font_weight_input.selectedIndex = 9;
+  //         font_weight_input.style =
+  //           "margin-left: 20px;" + "border-radius: 4px;";
+  //         font_div.appendChild(font_weight_input);
 
-          var font_size_label = document.createElement("label");
-          font_size_label.innerHTML = " Font Size (px) ";
-          font_size_label.style = "margin-left: 20px;";
-          font_div.appendChild(font_size_label);
+  //         var font_size_label = document.createElement("label");
+  //         font_size_label.innerHTML = " Font Size (px) ";
+  //         font_size_label.style = "margin-left: 20px;";
+  //         font_div.appendChild(font_size_label);
 
-          var font_size_input = document.createElement("input");
-          font_size_input.type = "text";
-          font_size_input.className = "font_size_value";
-          font_size_input.placeholder = "12";
-          font_size_input.style = "margin-left: 20px;" + "border-radius: 4px;";
-          font_div.appendChild(font_size_input);
+  //         var font_size_input = document.createElement("input");
+  //         font_size_input.type = "text";
+  //         font_size_input.className = "font_size_value";
+  //         font_size_input.placeholder = "12";
+  //         font_size_input.style = "margin-left: 20px;" + "border-radius: 4px;";
+  //         font_div.appendChild(font_size_input);
 
-          var line_height_label = document.createElement("label");
-          line_height_label.innerHTML = " Line Height (px) ";
-          line_height_label.style = "margin-left: 20px;";
-          font_div.appendChild(line_height_label);
+  //         var line_height_label = document.createElement("label");
+  //         line_height_label.innerHTML = " Line Height (px) ";
+  //         line_height_label.style = "margin-left: 20px;";
+  //         font_div.appendChild(line_height_label);
 
-          var line_height_input = document.createElement("input");
-          line_height_input.type = "text";
-          line_height_input.className = "line_height_value";
-          line_height_input.placeholder = "20";
-          line_height_input.style =
-            "margin-left: 20px;" + "border-radius: 4px;";
-          font_div.appendChild(line_height_input);
+  //         var line_height_input = document.createElement("input");
+  //         line_height_input.type = "text";
+  //         line_height_input.className = "line_height_value";
+  //         line_height_input.placeholder = "20";
+  //         line_height_input.style =
+  //           "margin-left: 20px;" + "border-radius: 4px;";
+  //         font_div.appendChild(line_height_input);
 
-          var family_name_label = document.createElement("label");
-          family_name_label.innerHTML = " Family Name ";
-          family_name_label.style = "margin-left: 20px;";
-          font_div.appendChild(family_name_label);
+  //         var family_name_label = document.createElement("label");
+  //         family_name_label.innerHTML = " Family Name ";
+  //         family_name_label.style = "margin-left: 20px;";
+  //         font_div.appendChild(family_name_label);
 
-          var family_name_input = document.createElement("input");
-          family_name_input.type = "text";
-          family_name_input.className = "family_name_value";
-          family_name_input.value = '"Amazon Ember", Arial';
-          family_name_input.style =
-            "margin-left: 20px;" + "border-radius: 4px;";
+  //         var family_name_input = document.createElement("input");
+  //         family_name_input.type = "text";
+  //         family_name_input.className = "family_name_value";
+  //         family_name_input.value = '"Amazon Ember", Arial';
+  //         family_name_input.style =
+  //           "margin-left: 20px;" + "border-radius: 4px;";
 
-          font_div.appendChild(family_name_input);
+  //         font_div.appendChild(family_name_input);
 
-          var generic_family_label = document.createElement("label");
-          generic_family_label.innerHTML = " Generic Family ";
-          generic_family_label.style = "margin-left: 20px;";
-          font_div.appendChild(generic_family_label);
+  //         var generic_family_label = document.createElement("label");
+  //         generic_family_label.innerHTML = " Generic Family ";
+  //         generic_family_label.style = "margin-left: 20px;";
+  //         font_div.appendChild(generic_family_label);
 
-          var generic_family_input = document.createElement("select");
-          generic_family_input.className = "generic_family_input";
-          for (const key of Object.keys(GENERIC_FAMILY)) {
-            var option = document.createElement("option");
-            option.value = key;
-            option.text = key.charAt(0).toUpperCase() + key.slice(1);
-            generic_family_input.appendChild(option);
-          }
-          generic_family_input.style =
-            "margin-left: 20px;" + "border-radius: 4px;";
-          font_div.appendChild(generic_family_input);
+  //         var generic_family_input = document.createElement("select");
+  //         generic_family_input.className = "generic_family_input";
+  //         for (const key of Object.keys(GENERIC_FAMILY)) {
+  //           var option = document.createElement("option");
+  //           option.value = key;
+  //           option.text = key.charAt(0).toUpperCase() + key.slice(1);
+  //           generic_family_input.appendChild(option);
+  //         }
+  //         generic_family_input.style =
+  //           "margin-left: 20px;" + "border-radius: 4px;";
+  //         font_div.appendChild(generic_family_input);
 
-          property_value_div.appendChild(font_div);
-          break;
+  //         property_value_div.appendChild(font_div);
+  //         break;
 
-        case "border":
-          var border_div = document.createElement("div");
-          border_div.className = "border_div";
+  //       case "border":
+  //         var border_div = document.createElement("div");
+  //         border_div.className = "border_div";
 
-          var border_width_label = document.createElement("label");
-          border_width_label.innerHTML = " Border Width (px) ";
-          border_width_label.style = "margin-left: 20px;";
-          border_div.appendChild(border_width_label);
+  //         var border_width_label = document.createElement("label");
+  //         border_width_label.innerHTML = " Border Width (px) ";
+  //         border_width_label.style = "margin-left: 20px;";
+  //         border_div.appendChild(border_width_label);
 
-          var border_width_input = document.createElement("input");
-          border_width_input.type = "text";
-          border_width_input.className = "border_width_value";
-          border_width_input.placeholder = "2";
-          border_width_input.style =
-            "margin-left: 20px;" + "border-radius: 4px;";
-          border_div.appendChild(border_width_input);
+  //         var border_width_input = document.createElement("input");
+  //         border_width_input.type = "text";
+  //         border_width_input.className = "border_width_value";
+  //         border_width_input.placeholder = "2";
+  //         border_width_input.style =
+  //           "margin-left: 20px;" + "border-radius: 4px;";
+  //         border_div.appendChild(border_width_input);
 
-          var border_style_label = document.createElement("label");
-          border_style_label.innerHTML = " Border Style ";
-          border_style_label.style = "margin-left: 20px;";
-          border_div.appendChild(border_style_label);
+  //         var border_style_label = document.createElement("label");
+  //         border_style_label.innerHTML = " Border Style ";
+  //         border_style_label.style = "margin-left: 20px;";
+  //         border_div.appendChild(border_style_label);
 
-          var border_style_input = document.createElement("select");
-          border_style_input.className = "border_style_input";
-          for (const key of Object.keys(BORDER_STYLE)) {
-            var option = document.createElement("option");
-            option.value = key;
-            option.text = key.charAt(0).toUpperCase() + key.slice(1);
-            border_style_input.appendChild(option);
-          }
-          border_style_input.style =
-            "margin-left: 20px;" + "border-radius: 4px;";
-          border_div.appendChild(border_style_input);
+  //         var border_style_input = document.createElement("select");
+  //         border_style_input.className = "border_style_input";
+  //         for (const key of Object.keys(BORDER_STYLE)) {
+  //           var option = document.createElement("option");
+  //           option.value = key;
+  //           option.text = key.charAt(0).toUpperCase() + key.slice(1);
+  //           border_style_input.appendChild(option);
+  //         }
+  //         border_style_input.style =
+  //           "margin-left: 20px;" + "border-radius: 4px;";
+  //         border_div.appendChild(border_style_input);
 
-          var border_color_label = document.createElement("label");
-          border_color_label.innerHTML = " Border Color ";
-          border_color_label.style = "margin-left: 20px;";
-          border_div.appendChild(border_color_label);
+  //         var border_color_label = document.createElement("label");
+  //         border_color_label.innerHTML = " Border Color ";
+  //         border_color_label.style = "margin-left: 20px;";
+  //         border_div.appendChild(border_color_label);
 
-          var border_color_input = document.createElement("input");
-          border_color_input.type = "text";
-          border_color_input.placeholder = "#FFFFFF";
-          border_color_input.className = "border_color_value";
-          border_color_input.style =
-            "margin-left: 20px;" + "border-radius: 4px;";
-          border_div.appendChild(border_color_input);
+  //         var border_color_input = document.createElement("input");
+  //         border_color_input.type = "text";
+  //         border_color_input.placeholder = "#FFFFFF";
+  //         border_color_input.className = "border_color_value";
+  //         border_color_input.style =
+  //           "margin-left: 20px;" + "border-radius: 4px;";
+  //         border_div.appendChild(border_color_input);
 
-          property_value_div.appendChild(border_div);
-          break;
-        default:
-          break;
-      }
-    };
+  //         property_value_div.appendChild(border_div);
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   };
 
-    var delete_button = document.createElement("div");
-    delete_button.className = "glyphicon glyphicon-trash";
-    delete_button.innerHTML = " Delete ";
-    delete_button.onclick = () => del(div.id);
+  //   var delete_button = document.createElement("div");
+  //   delete_button.className = "glyphicon glyphicon-trash";
+  //   delete_button.innerHTML = " Delete ";
+  //   delete_button.onclick = () => del(div.id);
 
-    div.appendChild(select_label);
-    div.appendChild(select);
-    div.appendChild(property_value_div);
-    div.appendChild(delete_button);
-    var property_div = document.getElementById("property_div");
-    property_div.appendChild(div);
-  }
+  //   div.appendChild(select_label);
+  //   div.appendChild(select);
+  //   div.appendChild(property_value_div);
+  //   div.appendChild(delete_button);
+  //   var property_div = document.getElementById("property_div");
+  //   property_div.appendChild(div);
+  // }
+
   // Convert rgb to hex
   const rgb2hex = (rgb) =>
     `#${rgb
@@ -626,77 +627,77 @@
     
 
   }
-  function save() {
-    template.name = document.getElementById("template_name").value;
+  // function save() {
+  //   template.name = document.getElementById("template_name").value;
 
-    let color_inputs = document.getElementsByClassName("color_div");
-    for (const inputs of color_inputs) {
-      let color = inputs.children[1].value;
-      color = new Color(color);
-      colors.push(color);
-    }
-    template.color = colors;
+  //   let color_inputs = document.getElementsByClassName("color_div");
+  //   for (const inputs of color_inputs) {
+  //     let color = inputs.children[1].value;
+  //     color = new Color(color);
+  //     colors.push(color);
+  //   }
+  //   template.color = colors;
 
-    let font_inputs = document.getElementsByClassName("font_div");
-    for (const inputs of font_inputs) {
-      let font_style = FONT_STYLE[inputs.children[1].value],
-        font_variant = FONT_VARIANT[inputs.children[3].value],
-        font_weight = FONT_WEIGHT[inputs.children[5].value],
-        font_size = inputs.children[7].value,
-        line_height = inputs.children[9].value,
-        family_name = inputs.children[11].value,
-        generic_family = GENERIC_FAMILY[inputs.children[13].value],
-        font_family = "";
-      if (font_size !== "") {
-        font_size += "px";
-      }
-      if (line_height !== "") {
-        line_height += "px";
-      }
-      if (family_name !== "") {
-        font_family = family_name + ", " + generic_family;
-      }
-      let font = new Font(
-        font_style,
-        font_variant,
-        font_weight,
-        font_size,
-        line_height,
-        font_family
-      );
-      fonts.push(font);
-    }
-    template.font = fonts;
+  //   let font_inputs = document.getElementsByClassName("font_div");
+  //   for (const inputs of font_inputs) {
+  //     let font_style = FONT_STYLE[inputs.children[1].value],
+  //       font_variant = FONT_VARIANT[inputs.children[3].value],
+  //       font_weight = FONT_WEIGHT[inputs.children[5].value],
+  //       font_size = inputs.children[7].value,
+  //       line_height = inputs.children[9].value,
+  //       family_name = inputs.children[11].value,
+  //       generic_family = GENERIC_FAMILY[inputs.children[13].value],
+  //       font_family = "";
+  //     if (font_size !== "") {
+  //       font_size += "px";
+  //     }
+  //     if (line_height !== "") {
+  //       line_height += "px";
+  //     }
+  //     if (family_name !== "") {
+  //       font_family = family_name + ", " + generic_family;
+  //     }
+  //     let font = new Font(
+  //       font_style,
+  //       font_variant,
+  //       font_weight,
+  //       font_size,
+  //       line_height,
+  //       font_family
+  //     );
+  //     fonts.push(font);
+  //   }
+  //   template.font = fonts;
 
-    let border_inputs = document.getElementsByClassName("border_div");
-    for (const inputs of border_inputs) {
-      let border_width = inputs.children[1].value,
-        border_style = BORDER_STYLE[inputs.children[3].value],
-        border_color = inputs.children[5].value;
-      if (border_width !== "") {
-        border_width += "px";
-      }
-      let border = new Border(border_width, border_style, border_color);
-      borders.push(border);
-    }
-    template.border = borders;
-  }
+  //   let border_inputs = document.getElementsByClassName("border_div");
+  //   for (const inputs of border_inputs) {
+  //     let border_width = inputs.children[1].value,
+  //       border_style = BORDER_STYLE[inputs.children[3].value],
+  //       border_color = inputs.children[5].value;
+  //     if (border_width !== "") {
+  //       border_width += "px";
+  //     }
+  //     let border = new Border(border_width, border_style, border_color);
+  //     borders.push(border);
+  //   }
+  //   template.border = borders;
+  // }
 
-  function downloadTemplate() {
-    var content = JSON.stringify(template, null, 2);
-    var blob = new Blob([content], { type: "application/json" });
-    var name = String(template.name) + ".json";
+  // function downloadTemplate() {
+  //   var content = JSON.stringify(template, null, 2);
+  //   var blob = new Blob([content], { type: "application/json" });
+  //   var name = String(template.name) + ".json";
 
-    chrome.downloads.download({
-      url: window.URL.createObjectURL(blob),
-      filename: name,
-    });
-  }
-  function reset() {
-    borders = [];
-    fonts = [];
-    colors = [];
-  }
+  //   chrome.downloads.download({
+  //     url: window.URL.createObjectURL(blob),
+  //     filename: name,
+  //   });
+  // }
+  // function reset() {
+  //   borders = [];
+  //   fonts = [];
+  //   colors = [];
+  // }
 
   function getChildElementCount(code, _callback) {
     code += ".childElementCount";
