@@ -53,7 +53,8 @@
     template = new Template(),
     colors = [],
     fonts = [],
-    borders = [];
+    borders = [],
+    elementNumber = 1;
 
   restoreSettings();
 
@@ -876,7 +877,7 @@
     };
   };
 
-  const RELEVANT_TAGNAMES = ["DIV", "SPAN"];
+  const RELEVANT_TAGNAMES = ["DIV"];
   function traverseAndCompare(code) {
     getChildElementCount(code, (childnum) => {
       if (childnum == 0) {
@@ -904,10 +905,12 @@
                 code,
                 parsedStyle.id,
                 parsedStyle.className,
+                elementNumber,
                 elementColor,
                 elementFont,
                 elementBorder
               );
+              elementNumber+=1;
               compareAgainstTemplate(elementStyle);
             });
           }
@@ -937,10 +940,12 @@
                 code,
                 parsedStyle.id,
                 parsedStyle.className,
+                elementNumber,
                 elementColor,
                 elementFont,
                 elementBorder
               );
+              elementNumber += 1;
               compareAgainstTemplate(elementStyle);
             });
           }
@@ -963,7 +968,17 @@
     if (flag) {
       var div = document.createElement("div");
       var togglePanelBtn = document.createElement("button");
-      togglePanelBtn.innerHTML = " Show Details ";
+      let identifier = "";
+      if (elementStyle.id !== ""){
+        identifier = `Element ID : ${elementStyle.id}`;
+      }
+      else if (elementStyle.className !== "" && elementStyle.id === ""){
+        identifier = `Element Class : ${elementStyle.className}`;
+      }
+      else{
+        identifier = `Element Number : ${elementStyle.number}`;
+      }
+      togglePanelBtn.innerHTML = identifier;
       togglePanelBtn.className = "accordion";
       togglePanelBtn.parent = div;
       togglePanelBtn.onclick = function () {
@@ -986,55 +1001,45 @@
         }
         panel_div.appendChild(font_div);
       }
-    }
-    var panel_div = document.createElement("div");
-    panel_div.className = "panel-template-comparison";
-    panel_div.style.display = "none";
-    let identifier = "";
-    if (elementStyle.id !== ""){
-      identifier += `&emsp;Element ID : ${elementStyle.id}<br>`
-    }
-    if (elementStyle.className !== "" && elementStyle.id === ""){
-      identifier += `&emsp;Element Class : ${elementStyle.className}<br>`
-    }
-    let identifier_div  = document.createElement("div");
-    identifier_div.innerHTML = identifier;
-    panel_div.appendChild(identifier_div);
-    if (fontFlag !== PROPERTY.None) {
-      var font_div = document.createElement("div");
-      font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
-      if (fontFlag == PROPERTY.Inconsistent) {
-        // console.log(template.font[0], elementStyle.font);
-        font_div.style.backgroundColor = "rgb(240, 100, 110)";
+    
+      var panel_div = document.createElement("div");
+      panel_div.className = "panel-template-comparison";
+      panel_div.style.display = "none";
+      if (fontFlag !== PROPERTY.None) {
+        var font_div = document.createElement("div");
+        font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
+        if (fontFlag == PROPERTY.Inconsistent) {
+          // console.log(template.font[0], elementStyle.font);
+          font_div.style.backgroundColor = "rgb(240, 100, 110)";
+        }
+        panel_div.appendChild(font_div);
       }
-      panel_div.appendChild(font_div);
-    }
-    if (borderFlag !== PROPERTY.None) {
-      var border_div = document.createElement("div");
-      border_div.innerHTML =
-        "<h6>Border</h6><br>" + elementStyle.border.toString();
-      if (borderFlag == PROPERTY.Inconsistent) {
-        border_div.style.backgroundColor = "rgb(240, 100, 110)";
+      if (borderFlag !== PROPERTY.None) {
+        var border_div = document.createElement("div");
+        border_div.innerHTML =
+          "<h6>Border</h6><br>" + elementStyle.border.toString();
+        if (borderFlag == PROPERTY.Inconsistent) {
+          border_div.style.backgroundColor = "rgb(240, 100, 110)";
+        }
+        panel_div.appendChild(border_div);
       }
-      panel_div.appendChild(border_div);
-    }
-    if (colorFlag !== PROPERTY.None) {
-      var color_div = document.createElement("div");
-      color_div.innerHTML =
-        "<h6>Color</h6><br>" + elementStyle.color.toString();
-      if (colorFlag == PROPERTY.Inconsistent) {
-        color_div.style.backgroundColor = "rgb(240, 100, 110)";
+      if (colorFlag !== PROPERTY.None) {
+        var color_div = document.createElement("div");
+        color_div.innerHTML =
+          "<h6>Color</h6><br>" + elementStyle.color.toString();
+        if (colorFlag == PROPERTY.Inconsistent) {
+          color_div.style.backgroundColor = "rgb(240, 100, 110)";
+        }
+        panel_div.appendChild(color_div);
       }
-      panel_div.appendChild(color_div);
+      var showElementBtn = document.createElement("button");
+      showElementBtn.innerHTML = " Highlight ";
+      showElementBtn.onclick = () => highlightElement(elementStyle.code);
+      panel_div.appendChild(showElementBtn);
+      div.appendChild(togglePanelBtn);
+      div.appendChild(panel_div);
+      document.getElementById("template_comparison_output").appendChild(div);
     }
-    var showElementBtn = document.createElement("button");
-    showElementBtn.innerHTML = " Highlight ";
-    showElementBtn.onclick = () => highlightElement(elementStyle.code);
-    panel_div.appendChild(showElementBtn);
-    div.appendChild(togglePanelBtn);
-    div.appendChild(panel_div);
-    console.log(div);
-    document.getElementById("template_comparison_output").appendChild(div);
   }
 
   function display_template() {
