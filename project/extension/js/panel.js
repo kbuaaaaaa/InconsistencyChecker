@@ -53,9 +53,9 @@
     comparePageButton = $("#compare_page_button"),
     // downloadTemplateButton = $("#download-template"),
     // resetbutton = $("#reset_button"),
-    clearAllbutton=$("#clearAll_button"),
-    compareTemplate = $("#compare_template"),
-    displayTemplate = $("#display-template-btn"),
+    // clearAllbutton=$("#clearAll_button"),
+    // compareTemplate = $("#compare_template"),
+    // displayTemplate = $("#display-template-btn"),
     // truncateButton = $('#truncateBtn'),
     // data = {},
     console = chrome.extension.getBackgroundPage().console;
@@ -66,8 +66,8 @@
 
   restoreSettings();
 
-  const INITIAL_CODE = "document.body";
-  console.log(firstCSS);
+  // const INITIAL_CODE = "document.body";
+  // console.log(firstCSS);
 
   // propertiesCleanUpInput.on("change", persistSettingAndProcessSnapshot);
   // removeDefaultValuesInput.on("change", persistSettingAndProcessSnapshot);
@@ -89,9 +89,9 @@
   TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   // downloadTemplateButton.on("click", downloadTemplate);
   // resetbutton.on("click", reset);
-  clearAllbutton.on("click",clearAll);
-  compareTemplate.on("click", startTemplateComparison);
-  displayTemplate.on("click", display_template);
+  // clearAllbutton.on("click",clearAll);
+  // compareTemplate.on("click", startTemplateComparison);
+  // displayTemplate.on("click", display_template);
   // truncateButton.on("click", truncate_switch);
 
   // data.index = 0;
@@ -114,81 +114,81 @@
   //   $(this).checkbox();
   // });
 
-  function readTemplate() {
-    document
-      .querySelector("#file-selector-output-page")
-      .addEventListener("change", function () {
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-          localStorage.setItem("json-file", reader.result);
-          var styleFromJSON = JSON.parse(reader.result);
-          var templateParsed = new Template([], [], []);
-          for (const font of styleFromJSON.font) {
-            var temp = new Font(
-              font.font_style,
-              font.font_variant,
-              font.font_weight,
-              font.font_size,
-              font.line_height,
-              font.font_family
-            );
-            templateParsed.font.push(temp);
-          }
-          for (const border of styleFromJSON.border) {
-            var temp = new Border(
-              border.border_width,
-              border.border_style,
-              border.border_color
-            );
-            templateParsed.border.push(temp);
-          }
-          for (const color of styleFromJSON.color) {
-            var temp = new Color(color.color);
-            templateParsed.color.push(temp);
-          }
+  // function readTemplate() {
+  //   document
+  //     .querySelector("#file-selector-output-page")
+  //     .addEventListener("change", function () {
+  //       const reader = new FileReader();
+  //       reader.addEventListener("load", () => {
+  //         localStorage.setItem("json-file", reader.result);
+  //         var styleFromJSON = JSON.parse(reader.result);
+  //         var templateParsed = new Template([], [], []);
+  //         for (const font of styleFromJSON.font) {
+  //           var temp = new Font(
+  //             font.font_style,
+  //             font.font_variant,
+  //             font.font_weight,
+  //             font.font_size,
+  //             font.line_height,
+  //             font.font_family
+  //           );
+  //           templateParsed.font.push(temp);
+  //         }
+  //         for (const border of styleFromJSON.border) {
+  //           var temp = new Border(
+  //             border.border_width,
+  //             border.border_style,
+  //             border.border_color
+  //           );
+  //           templateParsed.border.push(temp);
+  //         }
+  //         for (const color of styleFromJSON.color) {
+  //           var temp = new Color(color.color);
+  //           templateParsed.color.push(temp);
+  //         }
 
-          template = templateParsed;
-        });
-        reader.readAsText(this.files[0]);
-      });
-    document
-      .querySelector("#file-selector-template-page")
-      .addEventListener("change", function () {
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-          localStorage.setItem("json-file", reader.result);
-          var styleFromJSON = JSON.parse(reader.result);
-          var templateParsed = new Template([], [], []);
-          for (const font of styleFromJSON.font) {
-            var temp = new Font(
-              font.font_style,
-              font.font_variant,
-              font.font_weight,
-              font.font_size,
-              font.line_height,
-              font.font_family
-            );
-            templateParsed.font.push(temp);
-          }
-          for (const border of styleFromJSON.border) {
-            var temp = new Border(
-              border.border_width,
-              border.border_style,
-              border.border_color
-            );
-            templateParsed.border.push(temp);
-          }
-          for (const color of styleFromJSON.color) {
-            var temp = new Color(color.color);
-            templateParsed.color.push(temp);
-          }
+  //         template = templateParsed;
+  //       });
+  //       reader.readAsText(this.files[0]);
+  //     });
+  //   document
+  //     .querySelector("#file-selector-template-page")
+  //     .addEventListener("change", function () {
+  //       const reader = new FileReader();
+  //       reader.addEventListener("load", () => {
+  //         localStorage.setItem("json-file", reader.result);
+  //         var styleFromJSON = JSON.parse(reader.result);
+  //         var templateParsed = new Template([], [], []);
+  //         for (const font of styleFromJSON.font) {
+  //           var temp = new Font(
+  //             font.font_style,
+  //             font.font_variant,
+  //             font.font_weight,
+  //             font.font_size,
+  //             font.line_height,
+  //             font.font_family
+  //           );
+  //           templateParsed.font.push(temp);
+  //         }
+  //         for (const border of styleFromJSON.border) {
+  //           var temp = new Border(
+  //             border.border_width,
+  //             border.border_style,
+  //             border.border_color
+  //           );
+  //           templateParsed.border.push(temp);
+  //         }
+  //         for (const color of styleFromJSON.color) {
+  //           var temp = new Color(color.color);
+  //           templateParsed.color.push(temp);
+  //         }
 
-          template = templateParsed;
-        });
-        reader.readAsText(this.files[0]);
-      });
-  }
-  readTemplate();
+  //         template = templateParsed;
+  //       });
+  //       reader.readAsText(this.files[0]);
+  //     });
+  // }
+  readTemplate("#file-selector-output-page");
 
   // function restoreSettings() {
   //   // Since we can't access localStorage from here, we need to ask background page to handle the settings.
@@ -716,23 +716,20 @@
   // }
 
   // Convert rgb to hex
-  const rgb2hex = (rgb) =>
-    `#${rgb
-      .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
-      .slice(1)
-      .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
-      .join("")}`;
+  // const rgb2hex = (rgb) =>
+  //   `#${rgb
+  //     .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
+  //     .slice(1)
+  //     .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
+  //     .join("")}`;
 
-  function clearAll(){
-    var elem = document.getElementById("template_comparison_output");
-    elem.innerHTML="";
-    borders = [];
-    fonts = [];
-    colors = [];
-
-    
-
-  }
+  // function clearAll(){
+  //   var elem = document.getElementById("template_comparison_output");
+  //   elem.innerHTML="";
+  //   borders = [];
+  //   fonts = [];
+  //   colors = [];
+  // }
   // function save() {
   //   template.name = document.getElementById("template_name").value;
 
@@ -805,276 +802,276 @@
   //   colors = [];
   // }
 
-  function getChildElementCount(code, _callback) {
-    code += ".childElementCount";
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(tabId, { code }, (result) => {
-        _callback(result);
-      });
-    });
-  }
+  // function getChildElementCount(code, _callback) {
+  //   code += ".childElementCount";
+  //   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  //     const { id: tabId } = tabs[0].url;
+  //     chrome.tabs.executeScript(tabId, { code }, (result) => {
+  //       _callback(result);
+  //     });
+  //   });
+  // }
 
-  const PARSING_DELIMITER = "|";
-  function getStyle(code, _callback) {
-    var styleCode = "window.getComputedStyle(" + code + ")";
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(
-        tabId,
-        {
-          code: `${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.getPropertyValue("font-variant") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.getPropertyValue("font-weight") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}'
-          + ${styleCode}.getPropertyValue("line-height") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.getPropertyValue("font-family") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
-          + ${styleCode}.color`,
-        },
-        function (result) {
-          _callback(result[0]);
-        }
-      );
-    });
-  }
+  // const PARSING_DELIMITER = "|";
+  // function getStyle(code, _callback) {
+  //   var styleCode = "window.getComputedStyle(" + code + ")";
+  //   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  //     const { id: tabId } = tabs[0].url;
+  //     chrome.tabs.executeScript(
+  //       tabId,
+  //       {
+  //         code: `${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
+  //         + ${styleCode}.getPropertyValue("font-variant") + '${PARSING_DELIMITER}' 
+  //         + ${styleCode}.getPropertyValue("font-weight") + '${PARSING_DELIMITER}' 
+  //         + ${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}'
+  //         + ${styleCode}.getPropertyValue("line-height") + '${PARSING_DELIMITER}' 
+  //         + ${styleCode}.getPropertyValue("font-family") + '${PARSING_DELIMITER}' 
+  //         + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
+  //         + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
+  //         + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
+  //         + ${styleCode}.color`,
+  //       },
+  //       function (result) {
+  //         _callback(result[0]);
+  //       }
+  //     );
+  //   });
+  // }
 
-  function getTagName(code, _callback) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(
-        tabId,
-        { code: `${code}.tagName` },
-        function (result) {
-          _callback(result[0]);
-        }
-      );
-    });
-  }
+  // function getTagName(code, _callback) {
+  //   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  //     const { id: tabId } = tabs[0].url;
+  //     chrome.tabs.executeScript(
+  //       tabId,
+  //       { code: `${code}.tagName` },
+  //       function (result) {
+  //         _callback(result[0]);
+  //       }
+  //     );
+  //   });
+  // }
 
-  const parseStyleString = (styleString, code) => {
-    const [
-      font_style,
-      font_variant,
-      font_weight,
-      font_size,
-      line_height,
-      font_family,
-      border_width,
-      border_style,
-      border_color,
-      color,
-    ] = styleString.split(PARSING_DELIMITER);
-    return {
-      code,
-      font_style,
-      font_variant,
-      font_weight,
-      font_size,
-      line_height,
-      font_family,
-      border_width,
-      border_style,
-      border_color,
-      color,
-    };
-  };
+  // const parseStyleString = (styleString, code) => {
+  //   const [
+  //     font_style,
+  //     font_variant,
+  //     font_weight,
+  //     font_size,
+  //     line_height,
+  //     font_family,
+  //     border_width,
+  //     border_style,
+  //     border_color,
+  //     color,
+  //   ] = styleString.split(PARSING_DELIMITER);
+  //   return {
+  //     code,
+  //     font_style,
+  //     font_variant,
+  //     font_weight,
+  //     font_size,
+  //     line_height,
+  //     font_family,
+  //     border_width,
+  //     border_style,
+  //     border_color,
+  //     color,
+  //   };
+  // };
 
-  const RELEVANT_TAGNAMES = ["DIV", "SPAN"];
-  function traverseAndCompare(code) {
-    getChildElementCount(code, (childnum) => {
-      if (childnum == 0) {
-        getTagName(code, (tagName) => {
-          if (RELEVANT_TAGNAMES.includes(tagName)) {
-            getStyle(code, (styleString) => {
-              const parsedStyle = parseStyleString(styleString, code);
-              parsedStyle.color = rgb2hex(parsedStyle.color);
-              parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
-              let elementFont = new Font(
-                parsedStyle.font_style,
-                parsedStyle.font_variant,
-                parsedStyle.font_weight,
-                parsedStyle.font_size,
-                parsedStyle.line_height,
-                parsedStyle.font_family
-              );
-              let elementBorder = new Border(
-                parsedStyle.border_width,
-                parsedStyle.border_style,
-                parsedStyle.border_color
-              );
-              let elementColor = new Color(parsedStyle.color);
-              let elementStyle = new Element(
-                code,
-                elementColor,
-                elementFont,
-                elementBorder
-              );
-              compareAgainstTemplate(elementStyle);
-            });
-          }
-        });
-      } else {
-        getTagName(code, (tagName) => {
-          if (RELEVANT_TAGNAMES.includes(tagName)) {
-            getStyle(code, (styleString) => {
-              const parsedStyle = parseStyleString(styleString, code);
-              parsedStyle.color = rgb2hex(parsedStyle.color);
-              parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
-              let elementFont = new Font(
-                parsedStyle.font_style,
-                parsedStyle.font_variant,
-                parsedStyle.font_weight,
-                parsedStyle.font_size,
-                parsedStyle.line_height,
-                parsedStyle.font_family
-              );
-              let elementBorder = new Border(
-                parsedStyle.border_width,
-                parsedStyle.border_style,
-                parsedStyle.border_color
-              );
-              let elementColor = new Color(parsedStyle.color);
-              let elementStyle = new Element(
-                code,
-                elementColor,
-                elementFont,
-                elementBorder
-              );
-              compareAgainstTemplate(elementStyle);
-            });
-          }
-        });
-        for (let index = 0; index < childnum; index++) {
-          traverseAndCompare(code + `.children[${index}]`);
-        }
-      }
-    });
-  }
+  // const RELEVANT_TAGNAMES = ["DIV", "SPAN"];
+  // function traverseAndCompare(code) {
+  //   getChildElementCount(code, (childnum) => {
+  //     if (childnum == 0) {
+  //       getTagName(code, (tagName) => {
+  //         if (RELEVANT_TAGNAMES.includes(tagName)) {
+  //           getStyle(code, (styleString) => {
+  //             const parsedStyle = parseStyleString(styleString, code);
+  //             parsedStyle.color = rgb2hex(parsedStyle.color);
+  //             parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
+  //             let elementFont = new Font(
+  //               parsedStyle.font_style,
+  //               parsedStyle.font_variant,
+  //               parsedStyle.font_weight,
+  //               parsedStyle.font_size,
+  //               parsedStyle.line_height,
+  //               parsedStyle.font_family
+  //             );
+  //             let elementBorder = new Border(
+  //               parsedStyle.border_width,
+  //               parsedStyle.border_style,
+  //               parsedStyle.border_color
+  //             );
+  //             let elementColor = new Color(parsedStyle.color);
+  //             let elementStyle = new Element(
+  //               code,
+  //               elementColor,
+  //               elementFont,
+  //               elementBorder
+  //             );
+  //             compareAgainstTemplate(elementStyle);
+  //           });
+  //         }
+  //       });
+  //     } else {
+  //       getTagName(code, (tagName) => {
+  //         if (RELEVANT_TAGNAMES.includes(tagName)) {
+  //           getStyle(code, (styleString) => {
+  //             const parsedStyle = parseStyleString(styleString, code);
+  //             parsedStyle.color = rgb2hex(parsedStyle.color);
+  //             parsedStyle.border_color = rgb2hex(parsedStyle.border_color);
+  //             let elementFont = new Font(
+  //               parsedStyle.font_style,
+  //               parsedStyle.font_variant,
+  //               parsedStyle.font_weight,
+  //               parsedStyle.font_size,
+  //               parsedStyle.line_height,
+  //               parsedStyle.font_family
+  //             );
+  //             let elementBorder = new Border(
+  //               parsedStyle.border_width,
+  //               parsedStyle.border_style,
+  //               parsedStyle.border_color
+  //             );
+  //             let elementColor = new Color(parsedStyle.color);
+  //             let elementStyle = new Element(
+  //               code,
+  //               elementColor,
+  //               elementFont,
+  //               elementBorder
+  //             );
+  //             compareAgainstTemplate(elementStyle);
+  //           });
+  //         }
+  //       });
+  //       for (let index = 0; index < childnum; index++) {
+  //         traverseAndCompare(code + `.children[${index}]`);
+  //       }
+  //     }
+  //   });
+  // }
 
-  function startTemplateComparison() {
-    traverseAndCompare(INITIAL_CODE);
-  }
+  // function startTemplateComparison() {
+  //   traverseAndCompare(INITIAL_CODE);
+  // }
 
-  function compareAgainstTemplate(elementStyle) {
+  // function compareAgainstTemplate(elementStyle) {
     
-    var [flag, fontFlag, colorFlag, borderFlag] =
-      template.compare(elementStyle);
-    if (flag) {
-      var div = document.createElement("div");
-      var togglePanelBtn = document.createElement("button");
-      togglePanelBtn.innerHTML = " Show Details ";
-      togglePanelBtn.className = "accordion";
-      togglePanelBtn.parent = div;
-      togglePanelBtn.onclick = function () {
-        $(this).toggleClass("active");
-        var panel = $(this).siblings()[0];
-        if (panel.style.display === "none") {
-          panel.style.display = "block";
-        } else {
-          panel.style.display = "none";
-        }
-      };
-      var panel_div = document.createElement("div");
-      panel_div.className = "panel-template-comparison";
-      panel_div.style.display = "none";
-      if (fontFlag !== PROPERTY.None) {
-        var font_div = document.createElement("div");
-        font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
-        if (fontFlag == PROPERTY.Inconsistent) {
-          font_div.style.backgroundColor = "rgb(240, 100, 110)";
-        }
-        panel_div.appendChild(font_div);
-      }
-    }
-    var panel_div = document.createElement("div");
-    panel_div.className = "panel-template-comparison";
-    panel_div.style.display = "none";
-    if (fontFlag !== PROPERTY.None) {
-      var font_div = document.createElement("div");
-      font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
-      if (fontFlag == PROPERTY.Inconsistent) {
-        // console.log(template.font[0], elementStyle.font);
-        font_div.style.backgroundColor = "rgb(240, 100, 110)";
-      }
-      panel_div.appendChild(font_div);
-    }
-    if (borderFlag !== PROPERTY.None) {
-      var border_div = document.createElement("div");
-      border_div.innerHTML =
-        "<h6>Border</h6><br>" + elementStyle.border.toString();
-      if (borderFlag == PROPERTY.Inconsistent) {
-        border_div.style.backgroundColor = "rgb(240, 100, 110)";
-      }
-      panel_div.appendChild(border_div);
-    }
-    if (colorFlag !== PROPERTY.None) {
-      var color_div = document.createElement("div");
-      color_div.innerHTML =
-        "<h6>Color</h6><br>" + elementStyle.color.toString();
-      if (colorFlag == PROPERTY.Inconsistent) {
-        color_div.style.backgroundColor = "rgb(240, 100, 110)";
-      }
-      panel_div.appendChild(color_div);
-    }
-    var showElementBtn = document.createElement("button");
-    showElementBtn.innerHTML = " Highlight ";
-    showElementBtn.onclick = () => highlightElement(elementStyle.code);
-    panel_div.appendChild(showElementBtn);
-    div.appendChild(togglePanelBtn);
-    div.appendChild(panel_div);
-    console.log(div);
-    document.getElementById("template_comparison_output").appendChild(div);
-  }
+  //   var [flag, fontFlag, colorFlag, borderFlag] =
+  //     template.compare(elementStyle);
+  //   if (flag) {
+  //     var div = document.createElement("div");
+  //     var togglePanelBtn = document.createElement("button");
+  //     togglePanelBtn.innerHTML = " Show Details ";
+  //     togglePanelBtn.className = "accordion";
+  //     togglePanelBtn.parent = div;
+  //     togglePanelBtn.onclick = function () {
+  //       $(this).toggleClass("active");
+  //       var panel = $(this).siblings()[0];
+  //       if (panel.style.display === "none") {
+  //         panel.style.display = "block";
+  //       } else {
+  //         panel.style.display = "none";
+  //       }
+  //     };
+  //     var panel_div = document.createElement("div");
+  //     panel_div.className = "panel-template-comparison";
+  //     panel_div.style.display = "none";
+  //     if (fontFlag !== PROPERTY.None) {
+  //       var font_div = document.createElement("div");
+  //       font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
+  //       if (fontFlag == PROPERTY.Inconsistent) {
+  //         font_div.style.backgroundColor = "rgb(240, 100, 110)";
+  //       }
+  //       panel_div.appendChild(font_div);
+  //     }
+  //   }
+  //   var panel_div = document.createElement("div");
+  //   panel_div.className = "panel-template-comparison";
+  //   panel_div.style.display = "none";
+  //   if (fontFlag !== PROPERTY.None) {
+  //     var font_div = document.createElement("div");
+  //     font_div.innerHTML = "<h6>Font</h6><br>" + elementStyle.font.toString();
+  //     if (fontFlag == PROPERTY.Inconsistent) {
+  //       // console.log(template.font[0], elementStyle.font);
+  //       font_div.style.backgroundColor = "rgb(240, 100, 110)";
+  //     }
+  //     panel_div.appendChild(font_div);
+  //   }
+  //   if (borderFlag !== PROPERTY.None) {
+  //     var border_div = document.createElement("div");
+  //     border_div.innerHTML =
+  //       "<h6>Border</h6><br>" + elementStyle.border.toString();
+  //     if (borderFlag == PROPERTY.Inconsistent) {
+  //       border_div.style.backgroundColor = "rgb(240, 100, 110)";
+  //     }
+  //     panel_div.appendChild(border_div);
+  //   }
+  //   if (colorFlag !== PROPERTY.None) {
+  //     var color_div = document.createElement("div");
+  //     color_div.innerHTML =
+  //       "<h6>Color</h6><br>" + elementStyle.color.toString();
+  //     if (colorFlag == PROPERTY.Inconsistent) {
+  //       color_div.style.backgroundColor = "rgb(240, 100, 110)";
+  //     }
+  //     panel_div.appendChild(color_div);
+  //   }
+  //   var showElementBtn = document.createElement("button");
+  //   showElementBtn.innerHTML = " Highlight ";
+  //   showElementBtn.onclick = () => highlightElement(elementStyle.code);
+  //   panel_div.appendChild(showElementBtn);
+  //   div.appendChild(togglePanelBtn);
+  //   div.appendChild(panel_div);
+  //   console.log(div);
+  //   document.getElementById("template_comparison_output").appendChild(div);
+  // }
 
-  function display_template() {
-    var div = document.createElement("div");
-    var templateProperties = document.createElement("p");
-    var code = "";
-    if (template.font.length > 0) {
-      code += "<h6>Font</h6>";
-      for (let index = 0; index < template.font.length; index++) {
-        code += `Font no.${index + 1}<br>` + template.font[index].toString();
-      }
-      code += "<br>";
-    }
-    if (template.color.length > 0) {
-      code += "<h6>Color</h6>";
-      for (let index = 0; index < template.color.length; index++) {
-        code += `Color no.${index + 1}<br>` + template.color[index].toString();
-      }
-      code += "<br>";
-    }
-    if (template.border.length > 0) {
-      code += "<h6>Border</h6>";
-      for (let index = 0; index < template.border.length; index++) {
-        code +=
-          `Border no.${index + 1}<br>` + template.border[index].toString();
-      }
-      code += "<br>";
-    }
+  // function display_template() {
+  //   var div = document.createElement("div");
+  //   var templateProperties = document.createElement("p");
+  //   var code = "";
+  //   if (template.font.length > 0) {
+  //     code += "<h6>Font</h6>";
+  //     for (let index = 0; index < template.font.length; index++) {
+  //       code += `Font no.${index + 1}<br>` + template.font[index].toString();
+  //     }
+  //     code += "<br>";
+  //   }
+  //   if (template.color.length > 0) {
+  //     code += "<h6>Color</h6>";
+  //     for (let index = 0; index < template.color.length; index++) {
+  //       code += `Color no.${index + 1}<br>` + template.color[index].toString();
+  //     }
+  //     code += "<br>";
+  //   }
+  //   if (template.border.length > 0) {
+  //     code += "<h6>Border</h6>";
+  //     for (let index = 0; index < template.border.length; index++) {
+  //       code +=
+  //         `Border no.${index + 1}<br>` + template.border[index].toString();
+  //     }
+  //     code += "<br>";
+  //   }
 
-    templateProperties.innerHTML = code;
+  //   templateProperties.innerHTML = code;
 
-    templateProperties.parent = div;
-    div.appendChild(templateProperties);
-    document.getElementById("display-template").appendChild(div);
-  }
+  //   templateProperties.parent = div;
+  //   div.appendChild(templateProperties);
+  //   document.getElementById("display-template").appendChild(div);
+  // }
 
-  function highlightElement(code) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(
-        tabId,
-        { code: `${code}.style.background = 'red'` },
-        function (result) {
-          console.log(code + "is highlighted");
-        }
-      );
-    });
-  }
+  // function highlightElement(code) {
+  //   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  //     const { id: tabId } = tabs[0].url;
+  //     chrome.tabs.executeScript(
+  //       tabId,
+  //       { code: `${code}.style.background = 'red'` },
+  //       function (result) {
+  //         console.log(code + "is highlighted");
+  //       }
+  //     );
+  //   });
+  // }
 
 })();
 
