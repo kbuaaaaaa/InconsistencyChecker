@@ -1,40 +1,54 @@
+// import { CSSStringifier } from "../tools/CSSStringifier";
+// import { ShorthandPropertyFilter } from "../filters/ShorthandPropertyFilter";
+// import { WebkitPropertiesFilter } from "../filters/WebkitPropertiesFilter";
+// import { DefaultValueFilter } from "../filters/DefaultValueFilter";
+// import { SameRulesCombiner } from "../tools/SameRulesCombiner";
+// import { BorderRadiusWorkaround } from "../tools/BorderRadiusWorkaround";
+
 (function () {
-  "use strict";
-  var firstSnapshot,
-    cssStringifier = new CSSStringifier(),
-    shorthandPropertyFilter = new ShorthandPropertyFilter(),
-    webkitPropertiesFilter = new WebkitPropertiesFilter(),
-    defaultValueFilter = new DefaultValueFilter(),
-    sameRulesCombiner = new SameRulesCombiner(),
-    borderRadiusWorkaround1 = new BorderRadiusWorkaround(),
-    createButton1 = $("#create1"),
-    htmlTextarea1 = $("#html1"),
-    cssTextarea1 = $("#css1"),
-    propertiesCleanUpInput = $("#properties-clean-up"),
-    removeDefaultValuesInput = $("#remove-default-values"),
-    removeWebkitPropertiesInput = $("#remove-webkit-properties"),
-    combineSameRulesInput = $("#combine-same-rules"),
-    fixHTMLIndentationInput = $("#fix-html-indentation"),
-    includeAncestors = $("#include-ancestors"),
-    errorBox = $("#error-box"),
-    loader = $("#loader"),
-    secondSnapshot,
-    createButton2 = $("#create2"),
-    htmlTextarea2 = $("#html2"),
-    cssTextarea2 = $("#css2"),
-    compareButton = $("#compare"),
-    detailButton = $("#detail"),
-    report = $("#report"),
-    firstHTML = {value : ""},
-    secondHTML = {value : ""},
-    firstCSS = {value : ""},
-    secondCSS = {value : ""},
-    htmlAndCSS = [],
+  // "use strict";
+  // var firstSnapshot,
+  //   cssStringifier1 = new CSSStringifier(),
+  //   shorthandPropertyFilter1 = new ShorthandPropertyFilter(),
+  //   webkitPropertiesFilter1 = new WebkitPropertiesFilter(),
+  //   defaultValueFilter1 = new DefaultValueFilter(),
+  //   sameRulesCombiner1 = new SameRulesCombiner(),
+  //   borderRadiusWorkaround1 = new BorderRadiusWorkaround(),
+  //   createButton1 = $("#create1"),
+  //   htmlTextarea1 = $("#html1"),
+  //   cssTextarea1 = $("#css1"),
+  //   propertiesCleanUpInput = $("#properties-clean-up"),
+  //   removeDefaultValuesInput = $("#remove-default-values"),
+  //   removeWebkitPropertiesInput = $("#remove-webkit-properties"),
+  //   combineSameRulesInput = $("#combine-same-rules"),
+  //   fixHTMLIndentationInput = $("#fix-html-indentation"),
+  //   includeAncestors = $("#include-ancestors"),
+  //   errorBox = $("#error-box"),
+  //   loader = $("#loader"),
+  //   secondSnapshot,
+  //   cssStringifier2 = new CSSStringifier(),
+  //   shorthandPropertyFilter2 = new ShorthandPropertyFilter(),
+  //   webkitPropertiesFilter2 = new WebkitPropertiesFilter(),
+  //   defaultValueFilter2 = new DefaultValueFilter(),
+  //   sameRulesCombiner2 = new SameRulesCombiner(),
+  //   borderRadiusWorkaround2 = new BorderRadiusWorkaround(),
+  //   createButton2 = $("#create2"),
+  //   htmlTextarea2 = $("#html2"),
+  //   cssTextarea2 = $("#css2"),
+  //   compareButton = $("#compare"),
+  //   detailButton = $("#detail"),
+  //   report = $("#report"),
+  //   firstHTML = {value : ""},
+  //   secondHTML = {value : ""},
+  //   firstCSS = {value : ""},
+  //   secondCSS = {value : ""},
+  //   htmlAndCSS = [];
     // addButton = $("#add_button"),
     // clearButton = $("#clear_button"),
     // saveButton = $("#save_button"),
     // inputProperty = $("#input_button"),
-    templatePageButton = $("#template_page_button"),
+
+  var templatePageButton = $("#template_page_button"),
     TemplateComparisonPageButton = $("#template_comparison_page_button"),
     comparePageButton = $("#compare_page_button"),
     // downloadTemplateButton = $("#download-template"),
@@ -42,7 +56,7 @@
     clearAllbutton=$("#clearAll_button"),
     compareTemplate = $("#compare_template"),
     displayTemplate = $("#display-template-btn"),
-    truncateButton = $('#truncateBtn'),
+    // truncateButton = $('#truncateBtn'),
     // data = {},
     console = chrome.extension.getBackgroundPage().console;
     // template = new Template(),
@@ -55,17 +69,17 @@
   const INITIAL_CODE = "document.body";
   console.log(firstCSS);
 
-  propertiesCleanUpInput.on("change", persistSettingAndProcessSnapshot);
-  removeDefaultValuesInput.on("change", persistSettingAndProcessSnapshot);
-  removeWebkitPropertiesInput.on("change", persistSettingAndProcessSnapshot);
-  fixHTMLIndentationInput.on("change", persistSettingAndProcessSnapshot);
-  combineSameRulesInput.on("change", persistSettingAndProcessSnapshot);
-  includeAncestors.on("change", persistSettingAndProcessSnapshot);
+  // propertiesCleanUpInput.on("change", persistSettingAndProcessSnapshot);
+  // removeDefaultValuesInput.on("change", persistSettingAndProcessSnapshot);
+  // removeWebkitPropertiesInput.on("change", persistSettingAndProcessSnapshot);
+  // fixHTMLIndentationInput.on("change", persistSettingAndProcessSnapshot);
+  // combineSameRulesInput.on("change", persistSettingAndProcessSnapshot);
+  // includeAncestors.on("change", persistSettingAndProcessSnapshot);
 
-  createButton1.on("click", () => {makeSnapshot(firstSnapshot,firstHTML,firstCSS,htmlTextarea1,cssTextarea1);});
-  createButton2.on("click", () => {makeSnapshot(secondSnapshot,secondHTML,secondCSS,htmlTextarea2,cssTextarea2);});
-  compareButton.on("click", compareSnapshots);
-  detailButton.on("click", showDetail);
+  // createButton1.on("click", makeFirstSnapshot);
+  // createButton2.on("click", makeSecondSnapshot);
+  // compareButton.on("click", compareSnapshots);
+  // detailButton.on("click", showDetail);
   // saveButton.on("click", save);
   // addButton.on("click", add);
   // clearButton.on("click", clear);
@@ -78,27 +92,27 @@
   clearAllbutton.on("click",clearAll);
   compareTemplate.on("click", startTemplateComparison);
   displayTemplate.on("click", display_template);
-  truncateButton.on("click", truncate_switch);
+  // truncateButton.on("click", truncate_switch);
 
   // data.index = 0;
   // data.list = ["select", "color", "font", "border"];
 
-  htmlTextarea1.on("click", function () {
-    $(this).select();
-  });
-  cssTextarea1.on("click", function () {
-    $(this).select();
-  });
-  htmlTextarea2.on("click", function () {
-    $(this).select();
-  });
-  cssTextarea2.on("click", function () {
-    $(this).select();
-  });
+  // htmlTextarea1.on("click", function () {
+  //   $(this).select();
+  // });
+  // cssTextarea1.on("click", function () {
+  //   $(this).select();
+  // });
+  // htmlTextarea2.on("click", function () {
+  //   $(this).select();
+  // });
+  // cssTextarea2.on("click", function () {
+  //   $(this).select();
+  // });
 
-  $('input[type="checkbox"]').each(function () {
-    $(this).checkbox();
-  });
+  // $('input[type="checkbox"]').each(function () {
+  //   $(this).checkbox();
+  // });
 
   function readTemplate() {
     document
@@ -176,180 +190,272 @@
   }
   readTemplate();
 
-  function restoreSettings() {
-    // Since we can't access localStorage from here, we need to ask background page to handle the settings.
-    // Communication with background page is based on sendMessage/onMessage.
-    chrome.runtime.sendMessage(
-      {
-        name: "getSettings",
-      },
-      function (settings) {
-        for (var prop in settings) {
-          var el = $("#" + prop);
+  // function restoreSettings() {
+  //   // Since we can't access localStorage from here, we need to ask background page to handle the settings.
+  //   // Communication with background page is based on sendMessage/onMessage.
+  //   chrome.runtime.sendMessage(
+  //     {
+  //       name: "getSettings",
+  //     },
+  //     function (settings) {
+  //       for (var prop in settings) {
+  //         var el = $("#" + prop);
 
-          if (!el.length) {
-            // Make sure we don't leak any settings when changing/removing id's.
-            delete settings[prop];
-            continue;
-          }
+  //         if (!el.length) {
+  //           // Make sure we don't leak any settings when changing/removing id's.
+  //           delete settings[prop];
+  //           continue;
+  //         }
 
-          //updating flat UI checkbox
-          el.data("checkbox").setCheck(
-            settings[prop] === "true" ? "check" : "uncheck"
-          );
-        }
+  //         //updating flat UI checkbox
+  //         el.data("checkbox").setCheck(
+  //           settings[prop] === "true" ? "check" : "uncheck"
+  //         );
+  //       }
 
-        chrome.runtime.sendMessage({
-          name: "setSettings",
-          data: settings,
-        });
-      }
-    );
-  }
+  //       chrome.runtime.sendMessage({
+  //         name: "setSettings",
+  //         data: settings,
+  //       });
+  //     }
+  //   );
+  // }
 
-  function persistSettingAndProcessSnapshot() {
-    console.assert(this.id);
-    chrome.runtime.sendMessage({
-      name: "changeSetting",
-      item: this.id,
-      value: this.checked,
-    });
-    processSnapshot();
-  }
+  // function persistSettingAndProcessSnapshot() {
+  //   console.assert(this.id);
+  //   chrome.runtime.sendMessage({
+  //     name: "changeSetting",
+  //     item: this.id,
+  //     value: this.checked,
+  //   });
+  //   processSnapshot();
+  // }
 
   /*
 	Making & processing snippets
 	 */
 
-  function makeSnapshot(snapshot,html,css,htmlTextArea,cssTextArea){
-    loader.addClass("creating");
-    errorBox.removeClass("active");
+  // function makeFirstSnapshot() {
+  //   loader.addClass("creating");
+  //   errorBox.removeClass("active");
 
-    chrome.devtools.inspectedWindow.eval(
-      "(" + Snapshooter.toString() + ")($0)",
-      function (result) {
-        try {
-          snapshot = JSON.parse(result);
-        } catch (e) {
-          errorBox
-            .find(".error-message")
-            .text(
-              "DOM snapshot could not be created. Make sure that you have inspected some element."
-            );
-          errorBox.addClass("active");
-        }
-        processSnapshot(snapshot,html,css,htmlTextArea,cssTextArea);
-        loader.removeClass("creating");
-      }
-    );
-  }
+  //   chrome.devtools.inspectedWindow.eval(
+  //     "(" + Snapshooter.toString() + ")($0)",
+  //     function (result) {
+  //       try {
+  //         firstSnapshot = JSON.parse(result);
+  //       } catch (e) {
+  //         errorBox
+  //           .find(".error-message")
+  //           .text(
+  //             "DOM snapshot could not be created. Make sure that you have inspected some element."
+  //           );
+  //         errorBox.addClass("active");
+  //       }
 
-  function processSnapshot(snapshot,html,css,htmlTextArea,cssTextArea){
-    if (!snapshot) {
-      console.log("first error");
-      return;
-    }
+  //       processFirstSnapshot();
 
-    var styles = snapshot.css,
-      snapshothtml = snapshot.html;
+  //       loader.removeClass("creating");
+  //     }
+  //   );
+  // }
 
-    if (includeAncestors.is(":checked")) {
-      styles = snapshot.ancestorCss.concat(styles);
-      snapshothtml =
-        snapshot.leadingAncestorHtml +
-        snapshothtml +
-        snapshot.trailingAncestorHtml;
-    }
+  // function makeSecondSnapshot() {
+  //   loader.addClass("creating");
+  //   errorBox.removeClass("active");
 
-    loader.addClass("processing");
+  //   chrome.devtools.inspectedWindow.eval(
+  //     "(" + Snapshooter.toString() + ")($0)",
+  //     function (result) {
+  //       try {
+  //         secondSnapshot = JSON.parse(result);
+  //       } catch (e) {
+  //         errorBox
+  //           .find(".error-message")
+  //           .text(
+  //             "DOM snapshot could not be created. Make sure that you have inspected some element."
+  //           );
+  //         errorBox.addClass("active");
+  //       }
 
-    if (removeDefaultValuesInput.is(":checked")) {
-      styles = defaultValueFilter.process(styles);
-    }
+  //       processSecondSnapshot();
 
-    borderRadiusWorkaround1.process(styles);
+  //       loader.removeClass("creating");
+  //     }
+  //   );
+  // }
 
-    if (propertiesCleanUpInput.is(":checked")) {
-      styles = shorthandPropertyFilter.process(styles);
-    }
-    if (removeWebkitPropertiesInput.is(":checked")) {
-      styles = webkitPropertiesFilter.process(styles);
-    }
-    if (combineSameRulesInput.is(":checked")) {
-      styles = sameRulesCombiner.process(styles);
-    }
+  // function processFirstSnapshot() {
+  //   if (!firstSnapshot) {
+  //     console.log("first error");
+  //     return;
+  //   }
 
-    if (fixHTMLIndentationInput.is(":checked")) {
-      snapshothtml = $.htmlClean(snapshothtml, {
-        removeTags: ["class"],
-        allowedAttributes: [
-          ["id"],
-          ["placeholder", ["input", "textarea"]],
-          ["disabled", ["input", "textarea", "select", "option", "button"]],
-          ["value", ["input", "button"]],
-          ["readonly", ["input", "textarea", "option"]],
-          ["label", ["option"]],
-          ["selected", ["option"]],
-          ["checked", ["input"]],
-        ],
-        format: true,
-        replace: [],
-        replaceStyles: [],
-        allowComments: true,
-      });
-    }
-    htmlTextArea.val(snapshothtml);
-    cssTextArea.val(cssStringifier.process(styles));
-    loader.removeClass("processing");
-    return (html.value = snapshothtml)&&(css.value = cssStringifier.process(styles))
-  }
+  //   var styles = firstSnapshot.css,
+  //     html = firstSnapshot.html;
 
-  function compareSnapshots() {
-    var dmp = new diff_match_patch();
-    console.log(firstCSS.value);
-    var diffHTML = dmp.diff_main(firstHTML.value, secondHTML.value);
-    var diffCSS = dmp.diff_main(firstCSS.value, secondCSS.value);
-    dmp.diff_cleanupSemantic(diffHTML);
-    dmp.diff_cleanupSemantic(diffCSS);
-    var dsHTML = dmp.diff_prettyHtml(diffHTML);
-    document.getElementById("outputHTML").innerHTML = dsHTML;
-    var dsCSS = dmp.diff_prettyHtml(diffCSS);
-    document.getElementById("outputCSS").innerHTML = dsCSS;
-    report.val(dmp.differenceReport(diffCSS));
-  }
+  //   if (includeAncestors.is(":checked")) {
+  //     styles = firstSnapshot.ancestorCss.concat(styles);
+  //     html =
+  //       firstSnapshot.leadingAncestorHtml +
+  //       html +
+  //       firstSnapshot.trailingAncestorHtml;
+  //   }
 
-  function showDetail() {
-    var diff = document.getElementById("diff");
-    var button = document.getElementById("detail");
-    if (diff.hidden == true) {
-      diff.hidden = false;
-      button.childNodes[0].nodeValue = "Hide Detail";
-    } else {
-      diff.hidden = true;
-      button.childNodes[0].nodeValue = "Show Detail";
-    }
-  }
+  //   loader.addClass("processing");
 
-	function truncate(){
-		const regex = /(?<=\{\s*)[\s\S]*?(?=\s*\})/gs;
-		cssTextarea1.val(firstCSS.replaceAll(regex, '\n...'));
-		cssTextarea2.val(secondCSS.replaceAll(regex, '\n...'));
+  //   if (removeDefaultValuesInput.is(":checked")) {
+  //     styles = defaultValueFilter1.process(styles);
+  //   }
 
-	}
+  //   borderRadiusWorkaround1.process(styles);
 
-	function truncate_switch(){
-		if(truncateButton.attr("truncated") == "true"){
-			truncateButton.attr("truncated", "false");
-			truncateButton.html("Truncate classes");
-			processFirstSnapshot();
-			processSecondSnapshot();
-		}
-		else{
-			truncate();
-			truncateButton.html("Restore classes");
-			truncateButton.attr("truncated", "true");
-		}
-	}
+  //   if (propertiesCleanUpInput.is(":checked")) {
+  //     styles = shorthandPropertyFilter1.process(styles);
+  //   }
+  //   if (removeWebkitPropertiesInput.is(":checked")) {
+  //     styles = webkitPropertiesFilter1.process(styles);
+  //   }
+  //   if (combineSameRulesInput.is(":checked")) {
+  //     styles = sameRulesCombiner1.process(styles);
+  //   }
+
+  //   if (fixHTMLIndentationInput.is(":checked")) {
+  //     html = $.htmlClean(html, {
+  //       removeTags: ["class"],
+  //       allowedAttributes: [
+  //         ["id"],
+  //         ["placeholder", ["input", "textarea"]],
+  //         ["disabled", ["input", "textarea", "select", "option", "button"]],
+  //         ["value", ["input", "button"]],
+  //         ["readonly", ["input", "textarea", "option"]],
+  //         ["label", ["option"]],
+  //         ["selected", ["option"]],
+  //         ["checked", ["input"]],
+  //       ],
+  //       format: true,
+  //       replace: [],
+  //       replaceStyles: [],
+  //       allowComments: true,
+  //     });
+  //   }
+
+  //   firstHTML = html;
+  //   firstCSS = cssStringifier1.process(styles);
+  //   htmlTextarea1.val(firstHTML);
+  //   cssTextarea1.val(firstCSS);
+
+  //   loader.removeClass("processing");
+  // }
+
+  // function processSecondSnapshot() {
+  //   if (!secondSnapshot) {
+  //     return;
+  //   }
+
+  //   var styles = secondSnapshot.css,
+  //     html = secondSnapshot.html;
+
+  //   if (includeAncestors.is(":checked")) {
+  //     styles = secondSnapshot.ancestorCss.concat(styles);
+  //     html =
+  //       secondSnapshot.leadingAncestorHtml +
+  //       html +
+  //       secondSnapshot.trailingAncestorHtml;
+  //   }
+
+  //   loader.addClass("processing");
+
+  //   if (removeDefaultValuesInput.is(":checked")) {
+  //     styles = defaultValueFilter2.process(styles);
+  //   }
+
+  //   borderRadiusWorkaround2.process(styles);
+
+  //   if (propertiesCleanUpInput.is(":checked")) {
+  //     styles = shorthandPropertyFilter2.process(styles);
+  //   }
+  //   if (removeWebkitPropertiesInput.is(":checked")) {
+  //     styles = webkitPropertiesFilter2.process(styles);
+  //   }
+  //   if (combineSameRulesInput.is(":checked")) {
+  //     styles = sameRulesCombiner2.process(styles);
+  //   }
+
+  //   if (fixHTMLIndentationInput.is(":checked")) {
+  //     html = $.htmlClean(html, {
+  //       removeTags: ["class"],
+  //       allowedAttributes: [
+  //         ["id"],
+  //         ["placeholder", ["input", "textarea"]],
+  //         ["disabled", ["input", "textarea", "select", "option", "button"]],
+  //         ["value", ["input", "button"]],
+  //         ["readonly", ["input", "textarea", "option"]],
+  //         ["label", ["option"]],
+  //         ["selected", ["option"]],
+  //         ["checked", ["input"]],
+  //       ],
+  //       format: true,
+  //       replace: [],
+  //       replaceStyles: [],
+  //       allowComments: true,
+  //     });
+  //   }
+
+  //   htmlTextarea2.val(secondHTML);
+  //   cssTextarea2.val(secondCSS);
+  //   secondHTML = html;
+  //   secondCSS = cssStringifier2.process(styles);
+
+  //   loader.removeClass("processing");
+  // }
+
+  // function compareSnapshots() {
+  //   var dmp = new diff_match_patch();
+  //   console.log(firstCSS);
+  //   var diffHTML = dmp.diff_main(firstHTML, secondHTML);
+  //   var diffCSS = dmp.diff_main(firstCSS, secondCSS);
+  //   dmp.diff_cleanupSemantic(diffHTML);
+  //   dmp.diff_cleanupSemantic(diffCSS);
+  //   var dsHTML = dmp.diff_prettyHtml(diffHTML);
+  //   document.getElementById("outputHTML").innerHTML = dsHTML;
+  //   var dsCSS = dmp.diff_prettyHtml(diffCSS);
+  //   document.getElementById("outputCSS").innerHTML = dsCSS;
+  //   report.val(dmp.differenceReport(diffCSS));
+  // }
+
+  // function showDetail() {
+  //   var diff = document.getElementById("diff");
+  //   var button = document.getElementById("detail");
+  //   if (diff.hidden == true) {
+  //     diff.hidden = false;
+  //     button.childNodes[0].nodeValue = "Hide Detail";
+  //   } else {
+  //     diff.hidden = true;
+  //     button.childNodes[0].nodeValue = "Show Detail";
+  //   }
+  // }
+
+	// function truncate(){
+	// 	const regex = /(?<=\{\s*)[\s\S]*?(?=\s*\})/gs;
+	// 	cssTextarea1.val(firstCSS.replaceAll(regex, '\n...'));
+	// 	cssTextarea2.val(secondCSS.replaceAll(regex, '\n...'));
+
+	// }
+
+	// function truncate_switch(){
+	// 	if(truncateButton.attr("truncated") == "true"){
+	// 		truncateButton.attr("truncated", "false");
+	// 		truncateButton.html("Truncate classes");
+	// 		processFirstSnapshot();
+	// 		processSecondSnapshot();
+	// 	}
+	// 	else{
+	// 		truncate();
+	// 		truncateButton.html("Restore classes");
+	// 		truncateButton.attr("truncated", "true");
+	// 	}
+	// }
 
   // function switch_to_add() {
   //   add();
