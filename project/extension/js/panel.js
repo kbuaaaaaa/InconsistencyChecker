@@ -78,7 +78,6 @@
   templatePageButton.on("click", switch_to_template);
   TemplateComparisonPageButton.on("click", switch_to_template_comparison);
   downloadTemplateButton.on("click", downloadTemplate);
-  resetbutton.on("click", reset);
   clearAllbutton.on("click",clearAll);
   compareTemplate.on("click", startTemplateComparison);
   displayTemplate.on("click", display_template);
@@ -478,6 +477,9 @@
     while (property_div.firstChild) {
       property_div.removeChild(property_div.lastChild);
     }
+    borders = [];
+    fonts = [];
+    colors = [];
   }
 
   function add() {
@@ -786,11 +788,6 @@
       url: window.URL.createObjectURL(blob),
       filename: name,
     });
-  }
-  function reset() {
-    borders = [];
-    fonts = [];
-    colors = [];
   }
 
   function getChildElementCount(code, _callback) {
