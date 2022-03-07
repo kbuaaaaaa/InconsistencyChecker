@@ -182,22 +182,19 @@ function compareAgainstTemplate(elementStyle) {
       }
     };
 
-    // ! also called outside the if statement (with the same parameters)
     appendPropertyDiv(fontFlag, "Font", elementStyle.font, panelDiv);
+    appendPropertyDiv(borderFlag, "Border", elementStyle.border, panelDiv);
+    appendPropertyDiv(colorFlag, "Color", elementStyle.color, panelDiv);
+
+    var showElementBtn = document.createElement("button");
+    showElementBtn.innerHTML = " Highlight ";
+    showElementBtn.onclick = () => highlightElement(elementStyle.code);
+
+    panelDiv.appendChild(showElementBtn);
+    div.appendChild(togglePanelBtn);
+    div.appendChild(panelDiv);
+    document.getElementById("template_comparison_output").appendChild(div); // TODO remove underscores
   }
-
-  appendPropertyDiv(fontFlag, "Font", elementStyle.font, panelDiv);
-  appendPropertyDiv(borderFlag, "Border", elementStyle.border, panelDiv);
-  appendPropertyDiv(colorFlag, "Color", elementStyle.color, panelDiv);
-
-  var showElementBtn = document.createElement("button");
-  showElementBtn.innerHTML = " Highlight ";
-  showElementBtn.onclick = () => highlightElement(elementStyle.code);
-
-  panelDiv.appendChild(showElementBtn);
-  div.appendChild(togglePanelBtn);
-  div.appendChild(panelDiv);
-  document.getElementById("template_comparison_output").appendChild(div); // TODO remove underscores
 }
 
 function appendPropertyDiv(
