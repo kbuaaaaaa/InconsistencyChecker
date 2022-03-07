@@ -485,7 +485,7 @@
     var div = document.createElement("div");
     div.id = "div_" + data.index;
     var select_label = document.createElement("label");
-    select_label.innerHTML = " Select Property ";
+    select_label.innerHTML = " Select Property Type";
 
     var property_value_div = document.createElement("div");
 
