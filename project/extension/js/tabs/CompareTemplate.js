@@ -253,7 +253,9 @@ function expandAll() {
     expandAllButton.html("Expand All");
 
     for (var i=0; i<toggleButtons.length; i++) {
-      toggleButtons[i].innerHTML = "BOOM - Collapsed";
+      toggleButtons[i].classList.toggle('active');
+      var panel = toggleButtons[i].nextElementSibling;
+      panel.style.display = "none";
     }
 
   } else {
@@ -261,20 +263,11 @@ function expandAll() {
     expandAllButton.html("Collapse All");
 
     for (var i=0; i<toggleButtons.length; i++) {
-      
-      $(this).toggleClass("active");
-      var panel = $(this).siblings()[0];
-      if (panel.style.display === "none") {
-        panel.style.display = "block";
-      } else {
-        panel.style.display = "none";
-      }
-
-      toggleButtons[i].innerHTML = "BOOM - Expanded";
+      toggleButtons[i].classList.toggle('active');
+      var panel = toggleButtons[i].nextElementSibling;
+      panel.style.display = "block";
     }
   }
-
-
 }
 
 function addPropertyCode(propertyName, propertyValues) {
