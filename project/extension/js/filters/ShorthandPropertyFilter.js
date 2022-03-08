@@ -118,3 +118,5 @@ function ShorthandPropertyFilter() {
 		return output;
 	};
 }
+
+module.exports = {ShorthandPropertyFilter};
