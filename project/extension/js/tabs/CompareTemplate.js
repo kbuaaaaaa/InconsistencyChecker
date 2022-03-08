@@ -285,3 +285,20 @@ function addPropertyCode(propertyName, propertyValues) {
 
   return code;
 }
+
+module.exports = {
+  clearAll,
+  startTemplateComparison,
+  traverseAndCompare,
+  getChildElementCount,
+  getTagName,
+  getStyle,
+  createElementStyle,
+  parseStyleString,
+  rgb2hex,
+  compareAgainstTemplate,
+  appendPropertyDiv,
+  highlightElement,
+  displayTemplate,
+  addPropertyCode
+};
