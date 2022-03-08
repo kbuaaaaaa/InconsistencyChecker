@@ -337,3 +337,16 @@ function truncate() {
   cssTextArea1.val(firstCSS.replaceAll(REGEX, "\n..."));
   cssTextArea2.val(secondCSS.replaceAll(REGEX, "\n..."));
 }
+
+module.exports = {
+  restoreSettings,
+  persistSettingAndProcessSnapshot,
+  makeFirstSnapshot,
+  processFirstSnapshot,
+  makeSecondSnapshot,
+  processSecondSnapshot,
+  compareSnapshots,
+  showDetail,
+  truncateSwitch,
+  truncate
+};
