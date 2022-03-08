@@ -51,3 +51,5 @@ function SameRulesCombiner() {
 		return output;
 	};
 }
+
+module.exports = {SameRulesCombiner};

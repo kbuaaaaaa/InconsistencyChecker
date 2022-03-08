@@ -39,3 +39,5 @@ function WebkitPropertiesFilter() {
 		return output;
 	};
 }
+
+module.exports = {WebkitPropertiesFilter};

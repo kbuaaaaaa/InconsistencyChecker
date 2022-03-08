@@ -238,3 +238,5 @@ function Snapshooter(root) {
 
 	return init();
 }
+
+module.exports = {Snapshooter};

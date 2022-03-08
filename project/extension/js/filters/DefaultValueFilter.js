@@ -71,3 +71,5 @@ function DefaultValueFilter() {
 		return output;
 	};
 }
+
+module.exports = {DefaultValueFilter};

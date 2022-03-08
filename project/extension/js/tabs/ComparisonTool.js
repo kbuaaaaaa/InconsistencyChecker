@@ -1,9 +1,14 @@
-// import { CSSStringifier } from "../tools/CSSStringifier";
-// import { ShorthandPropertyFilter } from "../filters/ShorthandPropertyFilter";
-// import { WebkitPropertiesFilter } from "../filters/WebkitPropertiesFilter";
-// import { DefaultValueFilter } from "../filters/DefaultValueFilter";
-// import { SameRulesCombiner } from "../tools/SameRulesCombiner";
-// import { BorderRadiusWorkaround } from "../tools/BorderRadiusWorkaround";
+const { CSSStringifier } = require( "../tools/CSSStringifier");
+const { ShorthandPropertyFilter } = require( "../filters/ShorthandPropertyFilter");
+const { WebkitPropertiesFilter } = require( "../filters/WebkitPropertiesFilter");
+const { DefaultValueFilter } = require( "../filters/DefaultValueFilter");
+const { SameRulesCombiner } = require( "../tools/SameRulesCombiner");
+const { BorderRadiusWorkaround } = require( "../tools/BorderRadiusWorkaround");
+const { Snapshooter } = require("../tools/Snapshooter.js");
+const { diff_match_patch } = require("../diff_match_patch.js");
+require('../../css/js/bootstrap.min.js');
+require('../../css/js/flatui-checkbox.js');
+require('../../js/libs/jquery.htmlClean.js');
 
 const CODE_TO_EVAL = "(" + Snapshooter.toString() + ")($0)",
   INSPECTED_WINDOW_ERROR_MESSAGE =
