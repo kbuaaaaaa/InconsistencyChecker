@@ -1,5 +1,6 @@
 const FONT_STYLE = {
-  Default : "normal",
+  None: "",
+  Default: "normal",
   //The browser displays a normal font style. This is default
   Normal: "normal",
   //The browser displays an italic font style
@@ -12,6 +13,7 @@ const FONT_STYLE = {
   Inherit: "inherit",
 };
 const FONT_VARIANT = {
+  None: "",
   Default : "normal",
   Normal: "normal",
   //The browser displays a normal font. This is default
@@ -24,6 +26,7 @@ const FONT_VARIANT = {
 };
 
 const FONT_WEIGHT = {
+  None: "",
   Default : "normal",
   Normal: "normal",
   //Defines normal characters. This is default
@@ -50,6 +53,7 @@ const FONT_WEIGHT = {
 };
 
 const GENERIC_FAMILY = {
+  None: "",
   Default : "sans-serif",
   //The amazon.com pages use sans-serif as their default
   Serif: "serif",
@@ -60,6 +64,7 @@ const GENERIC_FAMILY = {
 };
 
 const BORDER_STYLE = {
+    None: "",
     Default : "none",
     //Default value. Specifies no border
     Hidden : "hidden",
