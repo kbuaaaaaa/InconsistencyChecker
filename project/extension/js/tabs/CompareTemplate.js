@@ -5,11 +5,13 @@ const INITIAL_CODE = "document.body",
 
 var clearAllButton = $("#clearAll_button"),
   compareTemplate = $("#compare_template"),
-  displayTemplateButton = $("#display-template-btn");
+  displayTemplateButton = $("#display-template-btn"),
+  expandAllButton = $("#expand-all-btn");
 
 clearAllButton.on("click", clearAll);
 compareTemplate.on("click", startTemplateComparison);
 displayTemplateButton.on("click", displayTemplate);
+expandAllButton.on("click", expandAll);
 
 function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
@@ -241,6 +243,38 @@ function displayTemplate() {
 
   div.appendChild(templateProperties);
   document.getElementById("display-template").appendChild(div);
+}
+
+function expandAll() {
+  var toggleButtons = document.getElementsByClassName("accordion");
+  
+  if (expandAllButton.attr("expanded") == "true") {
+    expandAllButton.attr("expanded", "false");
+    expandAllButton.html("Expand All");
+
+    for (var i=0; i<toggleButtons.length; i++) {
+      toggleButtons[i].innerHTML = "BOOM - Collapsed";
+    }
+
+  } else {
+    expandAllButton.attr("expanded", "true");
+    expandAllButton.html("Collapse All");
+
+    for (var i=0; i<toggleButtons.length; i++) {
+      
+      $(this).toggleClass("active");
+      var panel = $(this).siblings()[0];
+      if (panel.style.display === "none") {
+        panel.style.display = "block";
+      } else {
+        panel.style.display = "none";
+      }
+
+      toggleButtons[i].innerHTML = "BOOM - Expanded";
+    }
+  }
+
+
 }
 
 function addPropertyCode(propertyName, propertyValues) {
