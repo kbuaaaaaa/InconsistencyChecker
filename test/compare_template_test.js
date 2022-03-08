@@ -43,7 +43,7 @@ describe('Testing Compare Template Page', function(){
       clearAll();
       test
         .object(template)
-        .hasProperty('name')
+        .hasProperty('name', "Example Template")
         .hasProperty('color')
         .hasProperty('font')
         .hasProperty('border');
