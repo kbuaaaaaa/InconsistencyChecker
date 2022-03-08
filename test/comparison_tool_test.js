@@ -2,9 +2,9 @@ var test = require('unit.js');
 const jsdom = require('jsdom');
 const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
 
-describe('Testing Compare Template Page', function(){
+describe('Testing Comparison Tool Page', function(){
 
-  it('Test name',function(){
+  it('Test Name',function(){
     return jsdom.JSDOM.fromFile('project/extension/panel.html')
     .then(function(dom) {
       var window = dom.window;
@@ -32,6 +32,7 @@ describe('Testing Compare Template Page', function(){
       //before running tests. tests take forever on the pipeline but you can run it locally. make sure you have node on your machine.
       //then do "npm install" for unitjs, mocha, jquery, jsdom.
       //run tests by "mocha test"
+        //To write different tests copy this skeleton
 
     });
   });
