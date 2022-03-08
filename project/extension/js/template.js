@@ -159,3 +159,11 @@ class Border {
     return result;
   }
 }
+
+module.exports = {
+  Template,
+  Element,
+  Font,
+  Color,
+  Border
+};
