@@ -16,9 +16,9 @@ function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
   element.innerHTML = "";
   // the code below is the same as the reset function from the template builder
-  borders = [];
-  fonts = [];
-  colors = [];
+  template.border = [];
+  template.font = [];
+  template.color = [];
 }
 
 function startTemplateComparison() {
@@ -251,6 +251,10 @@ function highlightElement(code) {
 }
 
 function displayTemplate() {
+  let displayTemplateDIV = document.getElementById("display-template");
+  if(displayTemplateDIV.childElementCount > 1){
+    displayTemplateDIV.removeChild(displayTemplateDIV.lastChild);
+  }
   var div = document.createElement("div");
   var templateProperties = document.createElement("p");
   var code = "";
@@ -263,7 +267,7 @@ function displayTemplate() {
   templateProperties.parent = div;
 
   div.appendChild(templateProperties);
-  document.getElementById("display-template").appendChild(div);
+  displayTemplateDIV.appendChild(div);
 }
 
 function addPropertyCode(propertyName, propertyValues) {
