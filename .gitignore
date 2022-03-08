@@ -121,8 +121,8 @@ dmypy.json
 # Ignore Mac system files
 .DS_Store
 
+# vs code
+.vscode/
+
 # node
 node_modules/
-
-#vs code files
-.vscode/
