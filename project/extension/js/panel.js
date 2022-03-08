@@ -971,10 +971,9 @@
       }
       panel_div.appendChild(color_div);
     }
-    var showElementBtn = document.createElement("button");
-    showElementBtn.innerHTML = " Highlight ";
-    showElementBtn.onclick = () => highlightElement(elementStyle.code);
-    panel_div.appendChild(showElementBtn);
+    togglePanelBtn.onmouseover = () => highlightElement(elementStyle.code);
+    togglePanelBtn.onmouseleave = () => unHighlightElement(elementStyle.code);
+    
     div.appendChild(togglePanelBtn);
     div.appendChild(panel_div);
     console.log(div);
@@ -1021,6 +1020,19 @@
       chrome.tabs.executeScript(
         tabId,
         { code: `${code}.style.background = 'red'` },
+        function (result) {
+          console.log(code + "is highlighted");
+        }
+      );
+    });
+  }
+
+  function unHighlightElement(code) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(
+        tabId,
+        { code: `${code}.style.background = ''` },
         function (result) {
           console.log(code + "is highlighted");
         }
