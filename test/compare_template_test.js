@@ -1,19 +1,9 @@
 var test = require('unit.js');
-const jsdom = require('jsdom');
-const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
+const {TestInitializer} = require('./test_initializer.js');
 
 describe('Testing Compare Template Page', function(){
-
-  it('Clear All',function(){
-    return jsdom.JSDOM.fromFile('project/extension/panel.html')
-    .then(function(dom) {
-      var window = dom.window;
-      const jquery = require("jquery")(dom.window);
-      global.document = window.document;
-      global.window = window;
-      var $ = jQuery = require('jquery')(window);
-      global.$ = $;
-    }).then(function() {
+  it('Clear All', () => TestInitializer(function() {
+      const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
       const {
         clearAll,
         startTemplateComparison,
@@ -47,7 +37,5 @@ describe('Testing Compare Template Page', function(){
         .hasProperty('color')
         .hasProperty('font')
         .hasProperty('border');
-    });
-  });
-
+  }));
 });
