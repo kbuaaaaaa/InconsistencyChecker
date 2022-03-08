@@ -164,12 +164,18 @@ const parseStyleString = (styleString, code) => {
   };
 };
 
-const rgb2hex = (rgb) =>
-  `#${rgb
-    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
-    .slice(1)
-    .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
-    .join("")}`;
+const rgb2hex = (rgb) => {
+  if(rgb
+    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)){
+      return `#${rgb
+        .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
+        .slice(1)
+        .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
+        .join("")}`;
+  }
+  console.log(rgb);
+  return null;
+}
 
 function compareAgainstTemplate(elementStyle) {
   var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
