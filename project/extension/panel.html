@@ -13,9 +13,9 @@
 <div class="container">
 
     <div class="tag_a">
-				<a id='template_page_button' class='a1'> Template Builder </a>
-				<a id='compare_page_button' class='a1'> Comparison Tool </button></a>
-				<a id='template_comparison_page_button' class='a1'> Compare template </a>
+        <a id='template_page_button' class='a1'> Template Builder </a>
+        <a id='template_comparison_page_button' class='a1'> Inconsistency Checker </a>
+        <a id='compare_page_button' class='a1'> Comparison Tool </button></a>
     </div>
 
     <div hidden id = "comparison_page">
@@ -174,9 +174,6 @@
                   <button id="download-template" class="btn btn-primary buttonlow">
                     Download template
                   </button>
-                  <input type="file" id="file-selector-template-page" class="custom-input" accept=".json" />
-                  <small id="helperText" class="form-text text-muted">Import a template</small></p>
-
                 </div>
                 <button id="reset_button" class="btn btn-primary">Reset</button>
               </div>
@@ -195,7 +192,7 @@
 
       <div hidden id="template_comparison_page">
         <div id="template_comparison_div">
-            <h1 class="header">COMPARE TEMPLATE</h1>
+            <h1 class="header">INCONSISTENCY CHECKER</h1>
                <div class="row">
             <div class="column">
                 <div class="col-xs-6">
@@ -226,67 +223,13 @@
                 </p>
             </div>
         </div>
-
-    </div>
-
-
-   <!-- <div hidden id="Comparison_page">
-        <div id="comparison_div">
-            <h1 class="header">Compare Template</h1>
-               <div class="row">
-            <div class="column">
-                <div class="col-xs-6">
-                    <span class="label label-warning">Output</span>
-                    <textarea id='output' readonly class="form-control input-sm"></textarea>
-                </div>
-                <div class="row" id="Template-upload">
-                    <div class="column" id="Upload-column">
-                      <div class="col-xs-5">
-                        <button  id="compare" class="btn btn-primary">
-                          COMPARE
-                        </button>
-                        <input type="file" id="file-selector" accept=".json" />
-                      </div>
-                    </div>
-                  </div>
-            </div>
-        </div>
-
-    </div> -->
-
-        
-
-
-
-    <!-- <div class="row" id='export-buttons-row'>
-        <div class="col-xs-4">
-            <form action="http://codepen.io/pen/define" method="POST" target="_blank" id='codepen-form'>
-                <input type="hidden" name="data" value=''/>
-                <button type='submit' class='btn btn-primary'><span class="fui-mail"></span> Send to CodePen</button>
-            </form>
-        </div>
-        <div class="col-xs-4">
-            <form action="http://jsbin.com/?html,css,output" method="POST" target="_blank" id='jsbin-form'>
-                <input type="hidden" name="html" value=''/>
-                <input type="hidden" name="css" value=''/>
-                <button type='submit' class='btn btn-primary'><span class="fui-mail"></span> Send to JS Bin</button>
-            </form>
-        </div>
-        <div class="col-xs-4">
-            <form action="http://jsfiddle.net/api/post/library/pure/" method="POST" target="_blank" id='jsfiddle-form'>
-                <input type="hidden" name="html" value=''/>
-                <input type="hidden" name="css" value=''/>
-                <button type='submit' class='btn btn-primary'><span class="fui-mail"></span> Send to jsFiddle</button>
-            </form>
-        </div>
-    </div> -->
+      </div>
     </div>
 
 <div id='loader'>
     <div class='alert alert-warning'><p><span class="fui-time"></span> <strong>Please wait.</strong> Creating a snapshot...</p></div>
     <div class='alert alert-warning'><p><span class="fui-time"></span> <strong>Please wait.</strong> Processing...</p></div>
 </div>
-
 <script src="css/js/bootstrap.min.js"></script>
 <script src="css/js/flatui-checkbox.js"></script>
 <script src='js/diff_match_patch.js'></script>
@@ -300,8 +243,12 @@
 <script src='js/tools/Snapshooter.js'></script>
 <script src='js/values.js'></script>
 <script src='js/template.js'></script>
+<script src="js/global.js"></script>
+<script src="js/tabs/TemplateBuilder.js"></script>
+<script src="js/tabs/ComparisonTool.js"></script>
+<script src="js/tabs/CompareTemplate.js"></script>
 <script src='js/panel.js'></script>
-<script src="test/example.js"></script>
+<script src="test/compare_template_test.js"></script>
 </body>
 </html>
 
