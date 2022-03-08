@@ -72,4 +72,4 @@ function DefaultValueFilter() {
 	};
 }
 
-module.exports = {DefaultValueFilter};
+if (typeof module !== 'undefined'){module.exports = {DefaultValueFilter};};

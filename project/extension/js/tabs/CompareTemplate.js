@@ -292,7 +292,7 @@ function addPropertyCode(propertyName, propertyValues) {
   return code;
 }
 
-module.exports = {
+if (typeof module !== 'undefined'){module.exports = {
   clearAll,
   startTemplateComparison,
   traverseAndCompare,
@@ -307,4 +307,4 @@ module.exports = {
   highlightElement,
   displayTemplate,
   addPropertyCode
-};
+};};

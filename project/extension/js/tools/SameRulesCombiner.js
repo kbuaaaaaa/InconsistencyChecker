@@ -52,4 +52,4 @@ function SameRulesCombiner() {
 	};
 }
 
-module.exports = {SameRulesCombiner};
+if (typeof module !== 'undefined'){module.exports = {SameRulesCombiner};};
