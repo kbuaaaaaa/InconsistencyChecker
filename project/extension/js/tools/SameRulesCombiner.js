@@ -51,3 +51,5 @@ function SameRulesCombiner() {
 		return output;
 	};
 }
+
+if (typeof module !== 'undefined'){module.exports = {SameRulesCombiner};};

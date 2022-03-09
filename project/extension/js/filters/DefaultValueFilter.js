@@ -71,3 +71,5 @@ function DefaultValueFilter() {
 		return output;
 	};
 }
+
+if (typeof module !== 'undefined'){module.exports = {DefaultValueFilter};};

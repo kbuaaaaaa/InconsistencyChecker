@@ -159,3 +159,11 @@ class Border {
     return result;
   }
 }
+
+if (typeof module !== 'undefined'){module.exports = {
+  Template,
+  Element,
+  Font,
+  Color,
+  Border
+};};
