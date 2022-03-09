@@ -117,6 +117,10 @@ dmypy.json
 
 # Specific IDE settings
 .idea/
+.obsidian/
 
 # Ignore Mac system files
 .DS_Store
+
+# node modules
+node_modules/
