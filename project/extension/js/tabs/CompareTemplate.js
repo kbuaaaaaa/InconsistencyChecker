@@ -209,11 +209,9 @@ function compareAgainstTemplate(elementStyle) {
     appendPropertyDiv(borderFlag, "Border", elementStyle.border, panelDiv);
     appendPropertyDiv(colorFlag, "Color", elementStyle.color, panelDiv);
 
-    var showElementBtn = document.createElement("button");
-    showElementBtn.innerHTML = " Highlight ";
-    showElementBtn.onclick = () => highlightElement(elementStyle.code);
+    togglePanelBtn.onmouseover = () => highlightElement(elementStyle.code);
+    togglePanelBtn.onmouseleave = () => unHighlightElement(elementStyle.code);
 
-    panelDiv.appendChild(showElementBtn);
     div.appendChild(togglePanelBtn);
     div.appendChild(panelDiv);
     document.getElementById("template_comparison_output").appendChild(div); // TODO remove underscores
@@ -246,6 +244,16 @@ function highlightElement(code) {
       tabId,
       { code: scriptCode },
       function (result) {}
+    );
+  });
+}
+
+function unHighlightElement(code) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    const { id: tabId } = tabs[0].url;
+    chrome.tabs.executeScript(
+      tabId,
+      { code: `${code}.style.background = ''` }
     );
   });
 }
