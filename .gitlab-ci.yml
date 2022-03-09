@@ -21,4 +21,5 @@ test-job-example:
     # - npm install -g mocha
     # - npm install jsdom
     # - npm install jquery
+    - npm install
     - npx mocha test
