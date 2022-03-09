@@ -10,16 +10,13 @@ build-job:
   stage: build
   script:
     - echo "Hello world!"
-    - npm install # install all the npm modules
+    - npm install
+    - npx eslint ./project/extension/js
 
 test-job-example:
   tags:
     - docker
   stage: test
   script:
-    # - npm install unit.js
-    # - npm install -g mocha
-    # - npm install jsdom
-    # - npm install jquery
     - npm install
     - npx mocha test
