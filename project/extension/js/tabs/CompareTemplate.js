@@ -5,7 +5,8 @@ const INITIAL_CODE = "document.body",
 
 var clearAllButton = $("#clearAll_button"),
   compareTemplate = $("#compare_template"),
-  displayTemplateButton = $("#display-template-btn");
+  displayTemplateButton = $("#display-template-btn"),
+  elementNumber = 1;
 
 clearAllButton.on("click", clearAll);
 compareTemplate.on("click", startTemplateComparison);
@@ -30,6 +31,7 @@ function traverseAndCompare(code) {
       getTagName(code, (tagName) => {
         if (RELEVANT_TAGNAMES.includes(tagName)) {
           getStyle(code, (styleString) => {
+            elementNumber += 1;
             let elementStyle = createElementStyle(styleString, code);
             compareAgainstTemplate(elementStyle);
           });
@@ -39,6 +41,7 @@ function traverseAndCompare(code) {
       getTagName(code, (tagName) => {
         if (RELEVANT_TAGNAMES.includes(tagName)) {
           getStyle(code, (styleString) => {
+            elementNumber += 1;
             let elementStyle = createElementStyle(styleString, code);
             compareAgainstTemplate(elementStyle);
           });
@@ -83,7 +86,9 @@ function getStyle(code, _callback) {
     + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
     + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
     + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.color`;
+    + ${styleCode}.color + '${PARSING_DELIMITER}'
+    + ${code}.id + '${PARSING_DELIMITER}'
+    + ${code}.className`;
 
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     const { id: tabId } = tabs[0].url;
@@ -95,6 +100,7 @@ function getStyle(code, _callback) {
 
 function createElementStyle(styleString, code) {
   const parsedStyle = parseStyleString(styleString, code);
+
   parsedStyle.color = rgb2hex(parsedStyle.color);
   parsedStyle.borderColor = rgb2hex(parsedStyle.borderColor);
 
@@ -115,6 +121,9 @@ function createElementStyle(styleString, code) {
 
   let elementStyle = new Element(
     code,
+    parsedStyle.id,
+    parsedStyle.className,
+    elementNumber,
     elementColor,
     elementFont,
     elementBorder
@@ -135,6 +144,8 @@ const parseStyleString = (styleString, code) => {
     borderStyle,
     borderColor,
     color,
+    id,
+    className
   ] = styleString.split(PARSING_DELIMITER);
   return {
     code,
@@ -148,6 +159,8 @@ const parseStyleString = (styleString, code) => {
     borderStyle,
     borderColor,
     color,
+    id,
+    className
   };
 };
 
@@ -169,7 +182,17 @@ function compareAgainstTemplate(elementStyle) {
     var div = document.createElement("div");
 
     var togglePanelBtn = document.createElement("button");
-    togglePanelBtn.innerHTML = " Show Details ";
+    let identifier = "";
+    if (elementStyle.id !== ""){
+      identifier = `Element ID : ${elementStyle.id}`;
+    }
+    else if (elementStyle.className !== "" && elementStyle.id === ""){
+      identifier = `Element Class : ${elementStyle.className}`;
+    }
+    else{
+      identifier = `Element Number : ${elementStyle.number}`;
+    }
+    togglePanelBtn.innerHTML = identifier;
     togglePanelBtn.className = "accordion";
     togglePanelBtn.parent = div;
     togglePanelBtn.onclick = function () {
