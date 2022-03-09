@@ -6,11 +6,13 @@ const INITIAL_CODE = "document.body",
 var clearAllButton = $("#clearAll_button"),
   compareTemplate = $("#compare_template"),
   displayTemplateButton = $("#display-template-btn"),
+  expandAllButton = $("#expand-all-btn"),
   elementNumber = 1;
 
 clearAllButton.on("click", clearAll);
 compareTemplate.on("click", startTemplateComparison);
 displayTemplateButton.on("click", displayTemplate);
+expandAllButton.on("click", expandAll);
 
 function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
@@ -145,7 +147,7 @@ const parseStyleString = (styleString, code) => {
     borderColor,
     color,
     id,
-    className
+    className,
   ] = styleString.split(PARSING_DELIMITER);
   return {
     code,
@@ -160,7 +162,7 @@ const parseStyleString = (styleString, code) => {
     borderColor,
     color,
     id,
-    className
+    className,
   };
 };
 
@@ -189,13 +191,11 @@ function compareAgainstTemplate(elementStyle) {
 
     var togglePanelBtn = document.createElement("button");
     let identifier = "";
-    if (elementStyle.id !== ""){
+    if (elementStyle.id !== "") {
       identifier = `Element ID : ${elementStyle.id}`;
-    }
-    else if (elementStyle.className !== "" && elementStyle.id === ""){
+    } else if (elementStyle.className !== "" && elementStyle.id === "") {
       identifier = `Element Class : ${elementStyle.className}`;
-    }
-    else{
+    } else {
       identifier = `Element Number : ${elementStyle.number}`;
     }
     togglePanelBtn.innerHTML = identifier;
@@ -257,10 +257,7 @@ function highlightElement(code) {
 function unHighlightElement(code) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(
-      tabId,
-      { code: `${code}.style.background = ''` }
-    );
+    chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
   });
 }
 
@@ -282,6 +279,30 @@ function displayTemplate() {
 
   div.appendChild(templateProperties);
   displayTemplateDIV.appendChild(div);
+}
+
+function expandAll() {
+  var toggleButtons = document.getElementsByClassName("accordion");
+
+  if (expandAllButton.attr("expanded") == "true") {
+    expandAllButton.attr("expanded", "false");
+    expandAllButton.html("Expand All");
+
+    for (var i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.toggle("active");
+      var panel = toggleButtons[i].nextElementSibling;
+      panel.style.display = "none";
+    }
+  } else {
+    expandAllButton.attr("expanded", "true");
+    expandAllButton.html("Collapse All");
+
+    for (var i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.toggle("active");
+      var panel = toggleButtons[i].nextElementSibling;
+      panel.style.display = "block";
+    }
+  }
 }
 
 function addPropertyCode(propertyName, propertyValues) {
