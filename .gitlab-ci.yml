@@ -11,7 +11,7 @@ build-job:
   script:
     - echo "Hello world!"
     - npm install
-    - npx eslint ./project/extension/js
+    # - npx eslint ./project/extension/js
 
 test-job-example:
   tags:
