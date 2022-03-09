@@ -2,7 +2,7 @@ var test = require('unit.js');
 const {TestInitializer} = require('./test_initializer.js');
 
 describe('Testing Template Builder Page', function(){
-  it('Test Name', () => TestInitializer(function() {
+  it('Test Name', () => TestInitializer("templateBuilder",function() {
     const {
       switchToAdd,
       add,

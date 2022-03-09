@@ -2,7 +2,7 @@ var test = require('unit.js');
 const {TestInitializer} = require('./test_initializer.js');
 
 describe('Testing Compare Template Page', function(){
-  it('Clear All', () => TestInitializer(function() {
+  it('Clear All', () => TestInitializer("compareTemplate",function() {
       const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
       const {  clearAll } = require("../project/extension/js/tabs/CompareTemplate.js");
       template = new Template("Example Template",
@@ -26,7 +26,7 @@ describe('Testing Compare Template Page', function(){
       test.assert(template.font.length == 0,"Font is not empty")
       test.assert(template.border.length == 0,"Border is not empty")
   }));
-  it('RGB To HEX', () => TestInitializer(function() {
+  it('RGB To HEX', () => TestInitializer("compareTemplate",function() {
     const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
     const { rgb2hex } = require("../project/extension/js/tabs/CompareTemplate.js");
     let colors = ["rgb(0,0,0)","rgb(255,255,255)","rgb(255,0,0)","rgb(0,255,0)","rgb(0,0,255)",
