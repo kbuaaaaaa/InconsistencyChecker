@@ -71,24 +71,4 @@ describe('Testing Compare Template Page', function(){
     }
 
   }));
-  it('RGB To HEX', () => TestInitializer(function() {
-    const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
-    const {
-      clearAll,
-      startTemplateComparison,
-      traverseAndCompare,
-      getChildElementCount,
-      getTagName,
-      getStyle,
-      createElementStyle,
-      parseStyleString,
-      rgb2hex,
-      compareAgainstTemplate,
-      appendPropertyDiv,
-      highlightElement,
-      displayTemplate,
-      addPropertyCode
-    } = require("../project/extension/js/tabs/CompareTemplate.js");
-
-  }));
 });
