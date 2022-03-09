@@ -1,8 +1,8 @@
 image: node
 
 stages:
- - build
- - test
+  - build
+  - test
 
 build-job:
   tags:
@@ -10,14 +10,15 @@ build-job:
   stage: build
   script:
     - echo "Hello world!"
+    - npm install # install all the npm modules
 
 test-job-example:
   tags:
     - docker
   stage: test
   script:
-    - npm install unit.js
-    - npm install -g mocha
-    - npm install jsdom
-    - npm install jquery
+    # - npm install unit.js
+    # - npm install -g mocha
+    # - npm install jsdom
+    # - npm install jquery
     - mocha test
