@@ -1,6 +1,6 @@
 const jsdom = require('jsdom');
-function TestInitializer(_callback){
-    return jsdom.JSDOM.fromFile('project/extension/panel.html')
+function TestInitializer(pageName,_callback){
+    return jsdom.JSDOM.fromFile(`project/extension/${pageName}.html`)
       .then(function(dom) {
         var window = dom.window;
         const jquery = require("jquery")(dom.window);
