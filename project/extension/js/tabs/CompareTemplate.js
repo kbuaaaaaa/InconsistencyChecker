@@ -5,19 +5,22 @@ const INITIAL_CODE = "document.body",
 
 var clearAllButton = $("#clearAll_button"),
   compareTemplate = $("#compare_template"),
-  displayTemplateButton = $("#display-template-btn");
+  displayTemplateButton = $("#display-template-btn"),
+  expandAllButton = $("#expand-all-btn"),
+  elementNumber = 1;
 
 clearAllButton.on("click", clearAll);
 compareTemplate.on("click", startTemplateComparison);
 displayTemplateButton.on("click", displayTemplate);
+expandAllButton.on("click", expandAll);
 
 function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
   element.innerHTML = "";
   // the code below is the same as the reset function from the template builder
-  borders = [];
-  fonts = [];
-  colors = [];
+  template.border = [];
+  template.font = [];
+  template.color = [];
 }
 
 function startTemplateComparison() {
@@ -30,6 +33,7 @@ function traverseAndCompare(code) {
       getTagName(code, (tagName) => {
         if (RELEVANT_TAGNAMES.includes(tagName)) {
           getStyle(code, (styleString) => {
+            elementNumber += 1;
             let elementStyle = createElementStyle(styleString, code);
             compareAgainstTemplate(elementStyle);
           });
@@ -39,6 +43,7 @@ function traverseAndCompare(code) {
       getTagName(code, (tagName) => {
         if (RELEVANT_TAGNAMES.includes(tagName)) {
           getStyle(code, (styleString) => {
+            elementNumber += 1;
             let elementStyle = createElementStyle(styleString, code);
             compareAgainstTemplate(elementStyle);
           });
@@ -83,7 +88,9 @@ function getStyle(code, _callback) {
     + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
     + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
     + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.color`;
+    + ${styleCode}.color + '${PARSING_DELIMITER}'
+    + ${code}.id + '${PARSING_DELIMITER}'
+    + ${code}.className`;
 
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     const { id: tabId } = tabs[0].url;
@@ -95,6 +102,7 @@ function getStyle(code, _callback) {
 
 function createElementStyle(styleString, code) {
   const parsedStyle = parseStyleString(styleString, code);
+
   parsedStyle.color = rgb2hex(parsedStyle.color);
   parsedStyle.borderColor = rgb2hex(parsedStyle.borderColor);
 
@@ -115,6 +123,9 @@ function createElementStyle(styleString, code) {
 
   let elementStyle = new Element(
     code,
+    parsedStyle.id,
+    parsedStyle.className,
+    elementNumber,
     elementColor,
     elementFont,
     elementBorder
@@ -135,6 +146,8 @@ const parseStyleString = (styleString, code) => {
     borderStyle,
     borderColor,
     color,
+    id,
+    className,
   ] = styleString.split(PARSING_DELIMITER);
   return {
     code,
@@ -148,15 +161,23 @@ const parseStyleString = (styleString, code) => {
     borderStyle,
     borderColor,
     color,
+    id,
+    className,
   };
 };
 
-const rgb2hex = (rgb) =>
-  `#${rgb
-    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
-    .slice(1)
-    .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
-    .join("")}`;
+const rgb2hex = (rgb) => {
+  if(rgb
+    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)){
+      return `#${rgb
+        .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
+        .slice(1)
+        .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
+        .join("")}`;
+  }
+  console.log(rgb);
+  return null;
+}
 
 function compareAgainstTemplate(elementStyle) {
   var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
@@ -169,7 +190,15 @@ function compareAgainstTemplate(elementStyle) {
     var div = document.createElement("div");
 
     var togglePanelBtn = document.createElement("button");
-    togglePanelBtn.innerHTML = " Show Details ";
+    let identifier = "";
+    if (elementStyle.id !== "") {
+      identifier = `Element ID : ${elementStyle.id}`;
+    } else if (elementStyle.className !== "" && elementStyle.id === "") {
+      identifier = `Element Class : ${elementStyle.className}`;
+    } else {
+      identifier = `Element Number : ${elementStyle.number}`;
+    }
+    togglePanelBtn.innerHTML = identifier;
     togglePanelBtn.className = "accordion";
     togglePanelBtn.parent = div;
     togglePanelBtn.onclick = function () {
@@ -186,11 +215,9 @@ function compareAgainstTemplate(elementStyle) {
     appendPropertyDiv(borderFlag, "Border", elementStyle.border, panelDiv);
     appendPropertyDiv(colorFlag, "Color", elementStyle.color, panelDiv);
 
-    var showElementBtn = document.createElement("button");
-    showElementBtn.innerHTML = " Highlight ";
-    showElementBtn.onclick = () => highlightElement(elementStyle.code);
+    togglePanelBtn.onmouseover = () => highlightElement(elementStyle.code);
+    togglePanelBtn.onmouseleave = () => unHighlightElement(elementStyle.code);
 
-    panelDiv.appendChild(showElementBtn);
     div.appendChild(togglePanelBtn);
     div.appendChild(panelDiv);
     document.getElementById("template_comparison_output").appendChild(div); // TODO remove underscores
@@ -227,7 +254,18 @@ function highlightElement(code) {
   });
 }
 
+function unHighlightElement(code) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    const { id: tabId } = tabs[0].url;
+    chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
+  });
+}
+
 function displayTemplate() {
+  let displayTemplateDIV = document.getElementById("display-template");
+  if(displayTemplateDIV.childElementCount > 1){
+    displayTemplateDIV.removeChild(displayTemplateDIV.lastChild);
+  }
   var div = document.createElement("div");
   var templateProperties = document.createElement("p");
   var code = "";
@@ -240,7 +278,31 @@ function displayTemplate() {
   templateProperties.parent = div;
 
   div.appendChild(templateProperties);
-  document.getElementById("display-template").appendChild(div);
+  displayTemplateDIV.appendChild(div);
+}
+
+function expandAll() {
+  var toggleButtons = document.getElementsByClassName("accordion");
+
+  if (expandAllButton.attr("expanded") == "true") {
+    expandAllButton.attr("expanded", "false");
+    expandAllButton.html("Expand All");
+
+    for (var i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.toggle("active");
+      var panel = toggleButtons[i].nextElementSibling;
+      panel.style.display = "none";
+    }
+  } else {
+    expandAllButton.attr("expanded", "true");
+    expandAllButton.html("Collapse All");
+
+    for (var i = 0; i < toggleButtons.length; i++) {
+      toggleButtons[i].classList.toggle("active");
+      var panel = toggleButtons[i].nextElementSibling;
+      panel.style.display = "block";
+    }
+  }
 }
 
 function addPropertyCode(propertyName, propertyValues) {
@@ -258,3 +320,20 @@ function addPropertyCode(propertyName, propertyValues) {
 
   return code;
 }
+
+if (typeof module !== 'undefined'){module.exports = {
+  clearAll,
+  startTemplateComparison,
+  traverseAndCompare,
+  getChildElementCount,
+  getTagName,
+  getStyle,
+  createElementStyle,
+  parseStyleString,
+  rgb2hex,
+  compareAgainstTemplate,
+  appendPropertyDiv,
+  highlightElement,
+  displayTemplate,
+  addPropertyCode
+};};

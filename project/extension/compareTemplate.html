@@ -24,27 +24,25 @@
         <h1 class="header">INCONSISTENCY CHECKER</h1>
            <div class="row">
         <div class="column">
-            <div class="col-xs-6">
-                <span class="label label-warning">Output</span>
-                <div id='template_comparison_output'></div>
+            <div class="col-xs-5">
+                    <span class="label label-warning">Output</span>
+                    <button class="btn btn-primary" id="expand-all-btn">Expand All</button>
+                    <div id='template_comparison_output'></div>
             </div>
             <div class="row" id="Template-upload">
                 <div class="column" id="Upload-column">
                   <div class="col-xs-5">
-                    <button  id="compare_template" class="btn btn-primary">
+                    <button  id="compare_template" class="btn btn-primary buttonlow">
                       Compare
                     </button>
                     <input type="file" id="file-selector-output-page" class="custom-input" accept=".json" />
                     <small id="helperText" class="form-text text-muted">Import a Template</small></p>
-                    <button  id="highlight_prototype" class="btn btn-primary">
-                        Highlight prototype
-                    </button>
-                    <button id='clearAll_button' class='btn btn-primary' > Clear Compare </button>
+                    <button id='clearAll_button' class='btn btn-primary' > Clear Elements </button>
                     <div id="display-template">
-                        <button id="display-template-btn" class="btn btn-primary">Display template</button>
+                        <button id="display-template-btn" class="btn btn-primary buttontop">Display Template</button>
                     </div>
-                  </div>
-              </div>
+                </div>
+            </div>
         </div>
         <div class="help-tip">
             <p> 
@@ -53,6 +51,8 @@
         </div>
     </div>
   </div>
+</div>
+  
   <div id='loader'>
     <div class='alert alert-warning'><p><span class="fui-time"></span> <strong>Please wait.</strong> Creating a snapshot...</p></div>
     <div class='alert alert-warning'><p><span class="fui-time"></span> <strong>Please wait.</strong> Processing...</p></div>

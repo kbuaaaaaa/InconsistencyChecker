@@ -238,3 +238,5 @@ function Snapshooter(root) {
 
 	return init();
 }
+
+if (typeof module !== 'undefined'){module.exports = {Snapshooter};};

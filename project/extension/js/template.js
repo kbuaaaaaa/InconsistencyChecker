@@ -79,8 +79,11 @@ class Template{
 }
 
 class Element{
-  constructor(code = "", color = new Color(), font = new Font(), border = new Border()){
+  constructor(code = "", id = "", className = "", number = "", color = new Color(), font = new Font(), border = new Border()){
       this.code = code;
+      this.id = id;
+      this.className = className;
+      this.number = number;
       this.color = color;
       this.font = font;
       this.border = border;
@@ -156,3 +159,11 @@ class Border {
     return result;
   }
 }
+
+if (typeof module !== 'undefined'){module.exports = {
+  Template,
+  Element,
+  Font,
+  Color,
+  Border
+};};

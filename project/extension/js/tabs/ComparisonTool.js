@@ -1,10 +1,3 @@
-// import { CSSStringifier } from "../tools/CSSStringifier";
-// import { ShorthandPropertyFilter } from "../filters/ShorthandPropertyFilter";
-// import { WebkitPropertiesFilter } from "../filters/WebkitPropertiesFilter";
-// import { DefaultValueFilter } from "../filters/DefaultValueFilter";
-// import { SameRulesCombiner } from "../tools/SameRulesCombiner";
-// import { BorderRadiusWorkaround } from "../tools/BorderRadiusWorkaround";
-
 const CODE_TO_EVAL = "(" + Snapshooter.toString() + ")($0)",
   INSPECTED_WINDOW_ERROR_MESSAGE =
     "DOM snapshot could not be created. Make sure that you have inspected some element.",
@@ -337,3 +330,16 @@ function truncate() {
   cssTextArea1.val(firstCSS.replaceAll(REGEX, "\n..."));
   cssTextArea2.val(secondCSS.replaceAll(REGEX, "\n..."));
 }
+
+if (typeof module !== 'undefined'){module.exports = {
+  restoreSettings,
+  persistSettingAndProcessSnapshot,
+  makeFirstSnapshot,
+  processFirstSnapshot,
+  makeSecondSnapshot,
+  processSecondSnapshot,
+  compareSnapshots,
+  showDetail,
+  truncateSwitch,
+  truncate
+};};
