@@ -8,10 +8,6 @@ data.index = 0;
 data.list = ["select", "color", "font", "border"];
 
 function readTemplate(selector) {
-  document.querySelector(selector).addEventListener("click", function (event) {
-    const { target = {} } = event || {};
-    target.value = "";
-  });
   document.querySelector(selector).addEventListener("change", function (event) {
     const reader = new FileReader();
     reader.addEventListener("load", () => {
@@ -48,5 +44,7 @@ function readTemplate(selector) {
       template = templateParsed;
     });
     reader.readAsText(this.files[0]);
+    const { target = {} } = event || {};
+    target.value = "";
   });
 }
