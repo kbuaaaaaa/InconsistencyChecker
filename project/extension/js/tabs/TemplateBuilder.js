@@ -260,3 +260,17 @@ function reset() {
   fonts = [];
   colors = [];
 }
+
+if (typeof module !== 'undefined'){module.exports = {
+  switchToAdd,
+  add,
+  addLabel,
+  addTextInput,
+  addSelectInput,
+  del,
+  createSelectInput,
+  save,
+  clear,
+  downloadTemplate,
+  reset
+};};

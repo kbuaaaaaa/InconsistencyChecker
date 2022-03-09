@@ -18,9 +18,9 @@ function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
   element.innerHTML = "";
   // the code below is the same as the reset function from the template builder
-  borders = [];
-  fonts = [];
-  colors = [];
+  template.border = [];
+  template.font = [];
+  template.color = [];
 }
 
 function startTemplateComparison() {
@@ -166,12 +166,18 @@ const parseStyleString = (styleString, code) => {
   };
 };
 
-const rgb2hex = (rgb) =>
-  `#${rgb
-    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
-    .slice(1)
-    .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
-    .join("")}`;
+const rgb2hex = (rgb) => {
+  if(rgb
+    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)){
+      return `#${rgb
+        .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
+        .slice(1)
+        .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
+        .join("")}`;
+  }
+  console.log(rgb);
+  return null;
+}
 
 function compareAgainstTemplate(elementStyle) {
   var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
@@ -256,6 +262,10 @@ function unHighlightElement(code) {
 }
 
 function displayTemplate() {
+  let displayTemplateDIV = document.getElementById("display-template");
+  if(displayTemplateDIV.childElementCount > 1){
+    displayTemplateDIV.removeChild(displayTemplateDIV.lastChild);
+  }
   var div = document.createElement("div");
   var templateProperties = document.createElement("p");
   var code = "";
@@ -268,7 +278,7 @@ function displayTemplate() {
   templateProperties.parent = div;
 
   div.appendChild(templateProperties);
-  document.getElementById("display-template").appendChild(div);
+  displayTemplateDIV.appendChild(div);
 }
 
 function expandAll() {
@@ -310,3 +320,20 @@ function addPropertyCode(propertyName, propertyValues) {
 
   return code;
 }
+
+if (typeof module !== 'undefined'){module.exports = {
+  clearAll,
+  startTemplateComparison,
+  traverseAndCompare,
+  getChildElementCount,
+  getTagName,
+  getStyle,
+  createElementStyle,
+  parseStyleString,
+  rgb2hex,
+  compareAgainstTemplate,
+  appendPropertyDiv,
+  highlightElement,
+  displayTemplate,
+  addPropertyCode
+};};

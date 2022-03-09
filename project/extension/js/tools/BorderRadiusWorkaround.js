@@ -56,3 +56,5 @@ function BorderRadiusWorkaround() {
 		}
 	};
 }
+
+if (typeof module !== 'undefined'){module.exports = {BorderRadiusWorkaround};};
