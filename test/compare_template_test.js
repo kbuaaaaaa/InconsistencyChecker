@@ -1,26 +1,10 @@
 var test = require('unit.js');
-var assert = test.assert;
 const {TestInitializer} = require('./test_initializer.js');
 
 describe('Testing Compare Template Page', function(){
   it('Clear All', () => TestInitializer(function() {
       const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
-      const {
-        clearAll,
-        startTemplateComparison,
-        traverseAndCompare,
-        getChildElementCount,
-        getTagName,
-        getStyle,
-        createElementStyle,
-        parseStyleString,
-        rgb2hex,
-        compareAgainstTemplate,
-        appendPropertyDiv,
-        highlightElement,
-        displayTemplate,
-        addPropertyCode
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
+      const {  clearAll } = require("../project/extension/js/tabs/CompareTemplate.js");
       template = new Template("Example Template",
                     [new Color("#808080"),
                     new Color("#232F3E"),
@@ -44,22 +28,7 @@ describe('Testing Compare Template Page', function(){
   }));
   it('RGB To HEX', () => TestInitializer(function() {
     const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
-    const {
-      clearAll,
-      startTemplateComparison,
-      traverseAndCompare,
-      getChildElementCount,
-      getTagName,
-      getStyle,
-      createElementStyle,
-      parseStyleString,
-      rgb2hex,
-      compareAgainstTemplate,
-      appendPropertyDiv,
-      highlightElement,
-      displayTemplate,
-      addPropertyCode
-    } = require("../project/extension/js/tabs/CompareTemplate.js");
+    const { rgb2hex } = require("../project/extension/js/tabs/CompareTemplate.js");
     let colors = ["rgb(0,0,0)","rgb(255,255,255)","rgb(255,0,0)","rgb(0,255,0)","rgb(0,0,255)",
                       "rgb(255,255,0)","rgb(0,255,255)","rgb(255,0,255)","rgb(192,192,192)","rgb(128,128,128)",
                       "rgb(128,0,0)","rgb(128,128,0)","rgb(0,128,0)","rgb(128,0,128)","rgb(0,128,128)", "rgb(0,0,128)"];
