@@ -148,7 +148,13 @@ h1 {
 }
 .a1.current{
   background-color:  turquoise;
+  transition: all ease-in-out 0.2s;
 }
+.a1.current:hover{
+  border: 1px solid #888;
+  background-color: #ddd;
+}
+
 
 
 .panel-template-comparison {
