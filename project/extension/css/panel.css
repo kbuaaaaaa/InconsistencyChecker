@@ -146,6 +146,10 @@ h1 {
   align-items: center;
   text-align: center;
 }
+.a1.current{
+  background-color:  turquoise;
+}
+
 
 .panel-template-comparison {
   padding: 0 18px;
