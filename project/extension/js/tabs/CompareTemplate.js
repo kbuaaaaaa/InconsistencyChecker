@@ -282,26 +282,24 @@ function displayTemplate() {
 }
 
 function expandAll() {
-  var toggleButtons = document.getElementsByClassName("accordion");
-
   if (expandAllButton.attr("expanded") == "true") {
-    expandAllButton.attr("expanded", "false");
-    expandAllButton.html("Expand All");
+    expandOrCollapse("false", "Expand All", "block", "none");
+  }
+  else {
+    expandOrCollapse("true", "Collapse All", "none", "blocK")
+  }
+}
 
-    for (var i = 0; i < toggleButtons.length; i++) {
+function expandOrCollapse(isExpanded, buttonName, panelDisplay1, panelDisplay2) {
+  var toggleButtons = document.getElementsByClassName("accordion");
+  expandAllButton.attr("expanded", isExpanded);
+  expandAllButton.html(buttonName);
+  for (var i = 0; i < toggleButtons.length; i++) {
+    var panel = toggleButtons[i].nextElementSibling;
+    if (panel.style.display == panelDisplay1) {
       toggleButtons[i].classList.toggle("active");
-      var panel = toggleButtons[i].nextElementSibling;
-      panel.style.display = "none";
     }
-  } else {
-    expandAllButton.attr("expanded", "true");
-    expandAllButton.html("Collapse All");
-
-    for (var i = 0; i < toggleButtons.length; i++) {
-      toggleButtons[i].classList.toggle("active");
-      var panel = toggleButtons[i].nextElementSibling;
-      panel.style.display = "block";
-    }
+    panel.style.display = panelDisplay2;
   }
 }
 
