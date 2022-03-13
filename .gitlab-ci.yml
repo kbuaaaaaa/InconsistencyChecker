@@ -21,8 +21,5 @@ test-job-example:
     - npm install jsdom
     - npm install jquery
     - npm install --save-dev nyc
-    - npx nyc --reporter cobertura mocha test
-  artifacts:
-    reports:
-      cobertura: coverage/cobertura-coverage.xml
+    - npx nyc mocha
 
