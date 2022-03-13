@@ -7,12 +7,21 @@ var clearAllButton = $("#clearAll_button"),
   compareTemplate = $("#compare_template"),
   displayTemplateButton = $("#display-template-btn"),
   expandAllButton = $("#expand-all-btn"),
+  outputfileupload = $("#file-selector-output-page");
   elementNumber = 1;
 
 clearAllButton.on("click", clearAll);
 compareTemplate.on("click", startTemplateComparison);
 displayTemplateButton.on("click", displayTemplate);
 expandAllButton.on("click", expandAll);
+outputfileupload.on("change", function(event)
+{
+  const reader = new FileReader();
+  readTemplate(reader,null);
+  reader.readAsText(this.files[0]);
+  const { target = {} } = event || {};
+  target.value = "";
+});
 
 function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
