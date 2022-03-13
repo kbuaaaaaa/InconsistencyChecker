@@ -18,5 +18,5 @@ describe('Testing Template Builder Page', function(){
     } = require("../project/extension/js/tabs/TemplateBuilder.js");
 
 
-  }));
+  })).timeout(5000);;
 });

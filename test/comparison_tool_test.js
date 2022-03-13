@@ -21,5 +21,5 @@ describe('Testing Comparison Tool Page', function(){
       } = require("../project/extension/js/tabs/ComparisonTool.js");
 
 
-    }));
+    })).timeout(5000);;
 });
