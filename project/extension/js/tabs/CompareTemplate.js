@@ -17,7 +17,7 @@ expandAllButton.on("click", expandAll);
 outputfileupload.on("change", function(event)
 {
   const reader = new FileReader();
-  readTemplate(reader,event,null);
+  readTemplate(reader,null);
   reader.readAsText(this.files[0]);
   const { target = {} } = event || {};
   target.value = "";

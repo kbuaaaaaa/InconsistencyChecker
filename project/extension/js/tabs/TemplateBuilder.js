@@ -20,7 +20,7 @@ resetButton.on("click", reset);
 builderfileupload.on("change", function(event)
 {
   const reader = new FileReader();
-  readTemplate(reader,event,function(){buildTemplateInput();});
+  readTemplate(reader,function(){buildTemplateInput();});
   reader.readAsText(this.files[0]);
   const { target = {} } = event || {};
   target.value = "";
@@ -74,7 +74,7 @@ function createDelete(){
 
 function selectChange(select,propertyValueDiv){
   var value = select.options[select.selectedIndex].value;
-    if (propertyValueDiv.childElementCount > 0) {
+    while (propertyValueDiv.childElementCount > 0) {
       propertyValueDiv.removeChild(propertyValueDiv.lastChild);
     }
 
@@ -290,7 +290,7 @@ function buildTemplateInput(){
     input = addTextInput("color-value", "#FFFFFF", colorDiv);
     input.value = color.color;
     propertyValueDiv.appendChild(colorDiv);
-    select.onchange = (propertyValueDiv) => {selectChange(propertyValueDiv);}
+    select.onchange = function(){selectChange(select,propertyValueDiv);}
     let deleteButton = createDelete();
     deleteButton.onclick = () => del(div.id);
     div.appendChild(selectLabel);
@@ -332,17 +332,22 @@ function buildTemplateInput(){
     input.value = font.line_height;
     const lastIndex = font.font_family.lastIndexOf(',');
     const familyName = font.font_family.slice(0, lastIndex);
-    const genericFamily = font.font_family.slice(lastIndex + 1);
+    const genericFamily = font.font_family.slice(lastIndex + 2);
     addLabel(" Family Name ", fontDiv);
     input = addTextInput("family-name-value", '"Amazon Ember", Arial', fontDiv);
     input.value = familyName;
 
     addLabel(" Generic Family ", fontDiv);
     input = addSelectInput("generic-family-input", GENERIC_FAMILY, fontDiv);
-    input.selectedIndex = Object.values(GENERIC_FAMILY).indexOf(genericFamily);
+    if(genericFamily == "sans-serif"){
+      input.selectedIndex = 3;
+    }
+    else{
+      input.selectedIndex = Object.values(GENERIC_FAMILY).indexOf(genericFamily);
+    }
 
     propertyValueDiv.appendChild(fontDiv);
-    select.onchange = (propertyValueDiv) => {selectChange(propertyValueDiv);}
+    select.onchange = function(){selectChange(select,propertyValueDiv);}
     let deleteButton = createDelete();
     deleteButton.onclick = () => del(div.id);
     div.appendChild(selectLabel);
@@ -375,7 +380,7 @@ function buildTemplateInput(){
     input.value = border.border_color;
 
     propertyValueDiv.appendChild(borderDiv);
-    select.onchange = (propertyValueDiv) => {selectChange(propertyValueDiv);}
+    select.onchange = function(){selectChange(select,propertyValueDiv);}
     let deleteButton = createDelete();
     deleteButton.onclick = () => del(div.id);
     div.appendChild(selectLabel);

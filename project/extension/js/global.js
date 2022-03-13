@@ -8,7 +8,7 @@ var data = {};
 data.index = 0;
 data.list = ["select", "color", "font", "border"];
 
-function readTemplate(reader,event,_callback) {
+function readTemplate(reader,_callback) {
     reader.addEventListener("load", () => {
       localStorage.setItem("json-file", reader.result);
       var styleFromJSON = JSON.parse(reader.result);
