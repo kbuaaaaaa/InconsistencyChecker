@@ -2,14 +2,13 @@ var template = new Template(),
   colors = [],
   fonts = [],
   borders = [];
+  console = chrome.extension.getBackgroundPage().console;
 
 var data = {};
 data.index = 0;
 data.list = ["select", "color", "font", "border"];
 
-function readTemplate(selector) {
-  document.querySelector(selector).addEventListener("change", function (event) {
-    const reader = new FileReader();
+function readTemplate(reader,_callback) {
     reader.addEventListener("load", () => {
       localStorage.setItem("json-file", reader.result);
       var styleFromJSON = JSON.parse(reader.result);
@@ -42,9 +41,8 @@ function readTemplate(selector) {
       }
 
       template = templateParsed;
+      if(_callback){
+        _callback();
+      }
     });
-    reader.readAsText(this.files[0]);
-    const { target = {} } = event || {};
-    target.value = "";
-  });
 }
