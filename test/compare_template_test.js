@@ -46,19 +46,20 @@ describe('Testing Compare Template Page', function(){
   }));
   it('Traverse DOM', () => TestInitializer("compareTemplate",function() {
     const { traverseAndCompare } = require("../project/extension/js/tabs/CompareTemplate.js");
-    traverseAndCompare();
+    traverseAndCompare("");
+    // traverseAndCompare("");
   }));
   it('Get Child Element Number', () => TestInitializer("compareTemplate",function() {
     const { getChildElementCount } = require("../project/extension/js/tabs/CompareTemplate.js");
-    getChildElementCount();
+    getChildElementCount("",()=>{});
   }));
   it('Get HTML Tag Name', () => TestInitializer("compareTemplate",function() {
     const { getTagName } = require("../project/extension/js/tabs/CompareTemplate.js");
-    getTagName();
+    getTagName("",()=>{});
   }));
   it('Get Element Style', () => TestInitializer("compareTemplate",function() {
     const { getStyle } = require("../project/extension/js/tabs/CompareTemplate.js");
-    getStyle();
+    getStyle("",()=>{});
   }));
   it('Parse Style', () => TestInitializer("compareTemplate",function() {
     const { parseStyleString } = require("../project/extension/js/tabs/CompareTemplate.js");
@@ -67,11 +68,14 @@ describe('Testing Compare Template Page', function(){
   }));
   it('Compare Against Template', () => TestInitializer("compareTemplate",function() {
     const { compareAgainstTemplate } = require("../project/extension/js/tabs/CompareTemplate.js");
-    compareAgainstTemplate();
+    compareAgainstTemplate(new Element(code = "document.body", id = "id", className = "name", number = "15", color = new Color("#ffffff"), font = new Font(), border = new Border()));
+    compareAgainstTemplate(new Element(code = "document.body", id = "", className = "name", number = "15", color = new Color("#ffffff"), font = new Font(), border = new Border()));
+    compareAgainstTemplate(new Element(code = "document.body", id = "", className = "", number = "15", color = new Color("#ffffff"), font = new Font(), border = new Border()));
   }));
   it('Append Property', () => TestInitializer("compareTemplate",function() {
     const { appendPropertyDiv } = require("../project/extension/js/tabs/CompareTemplate.js");
     appendPropertyDiv(PROPERTY.Consistent, "Font", new Font(),document.createElement("div") );
+    appendPropertyDiv(PROPERTY.Inconsistent, "Font", new Font(),document.createElement("div") );
 
   }));
   it('Highlight Element', () => TestInitializer("compareTemplate",function() {
@@ -85,17 +89,26 @@ describe('Testing Compare Template Page', function(){
   it('Display Template', () => TestInitializer("compareTemplate",function() {
     const { displayTemplate } = require("../project/extension/js/tabs/CompareTemplate.js");
     displayTemplate();
+    displayTemplate();
   }));
   it('Add Property Code', () => TestInitializer("compareTemplate",function() {
     const { addPropertyCode } = require("../project/extension/js/tabs/CompareTemplate.js");
-    addPropertyCode("Font", []);
+    addPropertyCode("Font", [new Font()]);
   }));
   it('Expand All Panel', () => TestInitializer("compareTemplate",function() {
     const { expandAll } = require("../project/extension/js/tabs/CompareTemplate.js");
     expandAll();
+    expandAll();
   }));
   it('Collapse Panel', () => TestInitializer("compareTemplate",function() {
     const { expandOrCollapse } = require("../project/extension/js/tabs/CompareTemplate.js");
+    let testacc = document.createElement("div");
+    testacc.className = "accordion";
+    var panelDiv = document.createElement("div");
+    panelDiv.className = "panel-template-comparison";
+    panelDiv.style.display = "none";
+    document.getElementById("template_comparison_output").appendChild(testacc);
+    document.getElementById("template_comparison_output").appendChild(panelDiv);
     expandOrCollapse("true", "Collapse All", "none", "blocK");
   }));
   it('Create DOM Element', () => TestInitializer("compareTemplate",function() {

@@ -1,4 +1,5 @@
 const jsdom = require('jsdom');
+const { Template, Color, Font, Border } = require('../project/extension/js/template.js');
 function TestInitializer(pageName,_callback){
     return jsdom.JSDOM.fromFile(`project/extension/${pageName}.html`)
       .then(function(dom) {
@@ -29,6 +30,8 @@ function TestInitializer(pageName,_callback){
         global.BorderRadiusWorkaround = require( "../project/extension/js/tools/BorderRadiusWorkaround").BorderRadiusWorkaround;
         global.Snapshooter = require("../project/extension/js/tools/Snapshooter.js").Snapshooter;
         global.diff_match_patch = require("../project/extension/js/diff_match_patch.js").diff_match_patch;
+        global.template = new Template("test",[new Color("#ffffff")],[new Font("normal","normal","400",14,20,"\"Amazon Ember\", Arial, sans-serif")],[new Border(10,"none","#ffffff")]);
+        global.switch = 1;
         _callback();
       });
 }

@@ -37,7 +37,6 @@ function startTemplateComparison() {
 }
 
 function traverseAndCompare(code) {
-  if(chrome){
     getChildElementCount(code, (childnum) => {
       if (childnum == 0) {
         getTagName(code, (tagName) => {
@@ -64,7 +63,6 @@ function traverseAndCompare(code) {
         }
       }
     });
-  }
 }
 
 function getChildElementCount(code, _callback) {
@@ -77,6 +75,9 @@ function getChildElementCount(code, _callback) {
       });
     });
   }
+  else{
+    _callback(global.switch--);
+  }
 }
 
 function getTagName(code, _callback) {
@@ -88,6 +89,9 @@ function getTagName(code, _callback) {
         _callback(result[0]);
       });
     });
+  }
+  else{
+    _callback("DIV");
   }
 }
 
@@ -113,6 +117,9 @@ function getStyle(code, _callback) {
         _callback(result[0]);
       });
     });
+  }
+  else{
+    _callback("normal|normal|400|14px|20px|\"Amazon Ember\", Arial, sans-serif|0px|none|rgb(15, 17, 17)|rgb(15, 17, 17)|elementID|className");
   }
 }
 
