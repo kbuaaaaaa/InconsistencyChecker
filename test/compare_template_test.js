@@ -25,7 +25,7 @@ describe('Testing Compare Template Page', function(){
       test.assert(template.color.length == 0,"Color is not empty")
       test.assert(template.font.length == 0,"Font is not empty")
       test.assert(template.border.length == 0,"Border is not empty")
-  }));
+  })).timeout(5000);
   it('RGB To HEX', () => TestInitializer("compareTemplate",function() {
     const {Template, Element, Color, Border, Font} = require("../project/extension/js/template.js");
     const { rgb2hex } = require("../project/extension/js/tabs/CompareTemplate.js");
