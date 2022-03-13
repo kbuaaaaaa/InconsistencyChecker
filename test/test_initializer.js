@@ -9,6 +9,12 @@ function TestInitializer(pageName,_callback){
         var $ = jQuery = require('jquery')(window);
         global.$ = $;
       }).then(function() {
+        global.chrome = null;
+        global.Template = require("../project/extension/js/template.js").Template;
+        global.Element = require("../project/extension/js/template.js").Element;
+        global.Color = require("../project/extension/js/template.js").Color;
+        global.Border = require("../project/extension/js/template.js").Border;
+        global.Font = require("../project/extension/js/template.js").Font;
         global.CSSStringifier = require( "../project/extension/js/tools/CSSStringifier").CSSStringifier;
         global.ShorthandPropertyFilter = require( "../project/extension/js/filters/ShorthandPropertyFilter").ShorthandPropertyFilter;
         global.WebkitPropertiesFilter = require( "../project/extension/js/filters/WebkitPropertiesFilter").WebkitPropertiesFilter;

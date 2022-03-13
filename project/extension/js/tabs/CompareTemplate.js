@@ -37,76 +37,83 @@ function startTemplateComparison() {
 }
 
 function traverseAndCompare(code) {
-  getChildElementCount(code, (childnum) => {
-    if (childnum == 0) {
-      getTagName(code, (tagName) => {
-        if (RELEVANT_TAGNAMES.includes(tagName)) {
-          getStyle(code, (styleString) => {
-            elementNumber += 1;
-            let elementStyle = createElementStyle(styleString, code);
-            compareAgainstTemplate(elementStyle);
-          });
+  if(chrome){
+    getChildElementCount(code, (childnum) => {
+      if (childnum == 0) {
+        getTagName(code, (tagName) => {
+          if (RELEVANT_TAGNAMES.includes(tagName)) {
+            getStyle(code, (styleString) => {
+              elementNumber += 1;
+              let elementStyle = createElementStyle(styleString, code);
+              compareAgainstTemplate(elementStyle);
+            });
+          }
+        });
+      } else {
+        getTagName(code, (tagName) => {
+          if (RELEVANT_TAGNAMES.includes(tagName)) {
+            getStyle(code, (styleString) => {
+              elementNumber += 1;
+              let elementStyle = createElementStyle(styleString, code);
+              compareAgainstTemplate(elementStyle);
+            });
+          }
+        });
+        for (let index = 0; index < childnum; index++) {
+          traverseAndCompare(`${code}.children[${index}]`);
         }
-      });
-    } else {
-      getTagName(code, (tagName) => {
-        if (RELEVANT_TAGNAMES.includes(tagName)) {
-          getStyle(code, (styleString) => {
-            elementNumber += 1;
-            let elementStyle = createElementStyle(styleString, code);
-            compareAgainstTemplate(elementStyle);
-          });
-        }
-      });
-      for (let index = 0; index < childnum; index++) {
-        traverseAndCompare(`${code}.children[${index}]`);
       }
-    }
-  });
+    });
+  }
 }
 
 function getChildElementCount(code, _callback) {
-  code += ".childElementCount";
-
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code }, (result) => {
-      _callback(result);
+  if(chrome){
+    code += ".childElementCount";
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code }, (result) => {
+        _callback(result);
+      });
     });
-  });
+  }
 }
 
 function getTagName(code, _callback) {
-  var scriptCode = `${code}.tagName`;
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
-      _callback(result[0]);
+  if(chrome){
+    var scriptCode = `${code}.tagName`;
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
+        _callback(result[0]);
+      });
     });
-  });
+  }
 }
 
 function getStyle(code, _callback) {
-  var styleCode = `window.getComputedStyle(${code})`;
-  var scriptCode = `${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.getPropertyValue("font-variant") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.getPropertyValue("font-weight") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}'
-    + ${styleCode}.getPropertyValue("line-height") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.getPropertyValue("font-family") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
-    + ${styleCode}.color + '${PARSING_DELIMITER}'
-    + ${code}.id + '${PARSING_DELIMITER}'
-    + ${code}.className`;
+  if(chrome){
+    var styleCode = `window.getComputedStyle(${code})`;
+    var scriptCode = `${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
+      + ${styleCode}.getPropertyValue("font-variant") + '${PARSING_DELIMITER}' 
+      + ${styleCode}.getPropertyValue("font-weight") + '${PARSING_DELIMITER}' 
+      + ${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}'
+      + ${styleCode}.getPropertyValue("line-height") + '${PARSING_DELIMITER}' 
+      + ${styleCode}.getPropertyValue("font-family") + '${PARSING_DELIMITER}' 
+      + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
+      + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
+      + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
+      + ${styleCode}.color + '${PARSING_DELIMITER}'
+      + ${code}.id + '${PARSING_DELIMITER}'
+      + ${code}.className`;
 
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
-      _callback(result[0]);
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
+        _callback(result[0]);
+      });
     });
-  });
+  }
 }
 
 function createElementStyle(styleString, code) {
@@ -184,8 +191,7 @@ const rgb2hex = (rgb) => {
         .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
         .join("")}`;
   }
-  console.log(rgb);
-  return null;
+
 }
 
 function compareAgainstTemplate(elementStyle) {
@@ -252,22 +258,26 @@ function appendPropertyDiv(
 }
 
 function highlightElement(code) {
-  var scriptCode = `${code}.style.background = 'red'`;
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(
-      tabId,
-      { code: scriptCode },
-      function (result) {}
-    );
-  });
+  if(chrome){
+    var scriptCode = `${code}.style.background = 'red'`;
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(
+        tabId,
+        { code: scriptCode },
+        function (result) {}
+      );
+    });
+  }
 }
 
 function unHighlightElement(code) {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
-  });
+  if(chrome){
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
+    });
+  }
 }
 
 function displayTemplate() {
@@ -341,6 +351,9 @@ if (typeof module !== 'undefined'){module.exports = {
   compareAgainstTemplate,
   appendPropertyDiv,
   highlightElement,
+  unHighlightElement,
   displayTemplate,
-  addPropertyCode
+  addPropertyCode,
+  expandAll,
+  expandOrCollapse
 };};
