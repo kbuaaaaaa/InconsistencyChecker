@@ -117,6 +117,7 @@ dmypy.json
 
 # Specific IDE settings
 .idea/
+.obsidian/
 
 # Ignore Mac system files
 .DS_Store
@@ -126,3 +127,6 @@ dmypy.json
 
 # node
 node_modules/
+
+#test coverage
+.nyc_output

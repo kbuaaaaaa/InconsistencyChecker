@@ -57,4 +57,4 @@ function BorderRadiusWorkaround() {
 	};
 }
 
-module.exports = {BorderRadiusWorkaround};
+if (typeof module !== 'undefined'){module.exports = {BorderRadiusWorkaround};};

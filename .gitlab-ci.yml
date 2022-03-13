@@ -20,4 +20,6 @@ test-job-example:
     - npm install -g mocha
     - npm install jsdom
     - npm install jquery
-    - mocha test
+    - npm install --save-dev nyc
+    - npx nyc mocha
+

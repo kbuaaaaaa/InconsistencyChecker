@@ -261,7 +261,7 @@ function reset() {
   colors = [];
 }
 
-module.exports = {
+if (typeof module !== 'undefined'){module.exports = {
   switchToAdd,
   add,
   addLabel,
@@ -273,4 +273,4 @@ module.exports = {
   clear,
   downloadTemplate,
   reset
-};
+};};

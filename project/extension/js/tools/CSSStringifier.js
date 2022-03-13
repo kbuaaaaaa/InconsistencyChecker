@@ -68,4 +68,4 @@ function CSSStringifier() {
 		return output;
 	}
 }
-module.exports = {CSSStringifier};
+if (typeof module !== 'undefined'){module.exports = {CSSStringifier};};

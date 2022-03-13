@@ -331,7 +331,7 @@ function truncate() {
   cssTextArea2.val(secondCSS.replaceAll(REGEX, "\n..."));
 }
 
-module.exports = {
+if (typeof module !== 'undefined'){module.exports = {
   restoreSettings,
   persistSettingAndProcessSnapshot,
   makeFirstSnapshot,
@@ -342,4 +342,4 @@ module.exports = {
   showDetail,
   truncateSwitch,
   truncate
-};
+};};
