@@ -1,4 +1,6 @@
 var test = require('unit.js');
+const { Font } = require('../project/extension/js/template.js');
+const { PROPERTY } = require('../project/extension/js/values.js');
 const {TestInitializer} = require('./test_initializer.js');
 
 describe('Testing Compare Template Page', function(){
@@ -60,7 +62,8 @@ describe('Testing Compare Template Page', function(){
   }));
   it('Parse Style', () => TestInitializer("compareTemplate",function() {
     const { parseStyleString } = require("../project/extension/js/tabs/CompareTemplate.js");
-    parseStyleString();
+    styleString = "normal|normal|400|14px|20px|\"Amazon Ember\", Arial, sans-serif|0px|none|rgb(15, 17, 17)|rgb(15, 17, 17)|elementID|className";
+    parseStyleString(styleString,"document.body");
   }));
   it('Compare Against Template', () => TestInitializer("compareTemplate",function() {
     const { compareAgainstTemplate } = require("../project/extension/js/tabs/CompareTemplate.js");
@@ -68,7 +71,7 @@ describe('Testing Compare Template Page', function(){
   }));
   it('Append Property', () => TestInitializer("compareTemplate",function() {
     const { appendPropertyDiv } = require("../project/extension/js/tabs/CompareTemplate.js");
-    appendPropertyDiv();
+    appendPropertyDiv(PROPERTY.Consistent, "Font", new Font(),document.createElement("div") );
 
   }));
   it('Highlight Element', () => TestInitializer("compareTemplate",function() {
@@ -85,7 +88,7 @@ describe('Testing Compare Template Page', function(){
   }));
   it('Add Property Code', () => TestInitializer("compareTemplate",function() {
     const { addPropertyCode } = require("../project/extension/js/tabs/CompareTemplate.js");
-    addPropertyCode();
+    addPropertyCode("Font", []);
   }));
   it('Expand All Panel', () => TestInitializer("compareTemplate",function() {
     const { expandAll } = require("../project/extension/js/tabs/CompareTemplate.js");
@@ -93,7 +96,7 @@ describe('Testing Compare Template Page', function(){
   }));
   it('Collapse Panel', () => TestInitializer("compareTemplate",function() {
     const { expandOrCollapse } = require("../project/extension/js/tabs/CompareTemplate.js");
-    expandOrCollapse();
+    expandOrCollapse("true", "Collapse All", "none", "blocK");
   }));
   it('Create DOM Element', () => TestInitializer("compareTemplate",function() {
     const { createElementStyle } = require("../project/extension/js/tabs/CompareTemplate.js");

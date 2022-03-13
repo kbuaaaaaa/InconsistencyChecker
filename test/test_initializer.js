@@ -9,6 +9,12 @@ function TestInitializer(pageName,_callback){
         var $ = jQuery = require('jquery')(window);
         global.$ = $;
       }).then(function() {
+        global.FONT_STYLE = require("../project/extension/js/values.js").FONT_STYLE;
+        global.FONT_VARIANT = require("../project/extension/js/values.js").FONT_VARIANT;
+        global.FONT_WEIGHT = require("../project/extension/js/values.js").FONT_WEIGHT;
+        global.GENERIC_FAMILY = require("../project/extension/js/values.js").GENERIC_FAMILY;
+        global.BORDER_STYLE = require("../project/extension/js/values.js").BORDER_STYLE;
+        global.PROPERTY = require("../project/extension/js/values.js").PROPERTY;
         global.chrome = null;
         global.Template = require("../project/extension/js/template.js").Template;
         global.Element = require("../project/extension/js/template.js").Element;

@@ -96,3 +96,14 @@ const PROPERTY = {
   Consistent : "consistent",
   Inconsistent : "inconsistent"
 }
+
+if (typeof module !== 'undefined'){
+  module.exports = {
+    FONT_STYLE,
+    FONT_VARIANT,
+    FONT_WEIGHT,
+    GENERIC_FAMILY,
+    BORDER_STYLE,
+    PROPERTY
+  };
+};

@@ -68,8 +68,8 @@ function traverseAndCompare(code) {
 }
 
 function getChildElementCount(code, _callback) {
+  code += ".childElementCount";
   if(chrome){
-    code += ".childElementCount";
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const { id: tabId } = tabs[0].url;
       chrome.tabs.executeScript(tabId, { code }, (result) => {
@@ -80,8 +80,8 @@ function getChildElementCount(code, _callback) {
 }
 
 function getTagName(code, _callback) {
+  var scriptCode = `${code}.tagName`;
   if(chrome){
-    var scriptCode = `${code}.tagName`;
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const { id: tabId } = tabs[0].url;
       chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
@@ -92,21 +92,21 @@ function getTagName(code, _callback) {
 }
 
 function getStyle(code, _callback) {
-  if(chrome){
-    var styleCode = `window.getComputedStyle(${code})`;
-    var scriptCode = `${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
-      + ${styleCode}.getPropertyValue("font-variant") + '${PARSING_DELIMITER}' 
-      + ${styleCode}.getPropertyValue("font-weight") + '${PARSING_DELIMITER}' 
-      + ${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}'
-      + ${styleCode}.getPropertyValue("line-height") + '${PARSING_DELIMITER}' 
-      + ${styleCode}.getPropertyValue("font-family") + '${PARSING_DELIMITER}' 
-      + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
-      + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
-      + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
-      + ${styleCode}.color + '${PARSING_DELIMITER}'
-      + ${code}.id + '${PARSING_DELIMITER}'
-      + ${code}.className`;
+  var styleCode = `window.getComputedStyle(${code})`;
+  var scriptCode = `${styleCode}.getPropertyValue("font-style") + '${PARSING_DELIMITER}' 
+    + ${styleCode}.getPropertyValue("font-variant") + '${PARSING_DELIMITER}' 
+    + ${styleCode}.getPropertyValue("font-weight") + '${PARSING_DELIMITER}' 
+    + ${styleCode}.getPropertyValue("font-size") + '${PARSING_DELIMITER}'
+    + ${styleCode}.getPropertyValue("line-height") + '${PARSING_DELIMITER}' 
+    + ${styleCode}.getPropertyValue("font-family") + '${PARSING_DELIMITER}' 
+    + ${styleCode}.getPropertyValue("border-width") + '${PARSING_DELIMITER}' 
+    + ${styleCode}.getPropertyValue("border-style") + '${PARSING_DELIMITER}' 
+    + ${styleCode}.getPropertyValue("border-color") + '${PARSING_DELIMITER}' 
+    + ${styleCode}.color + '${PARSING_DELIMITER}'
+    + ${code}.id + '${PARSING_DELIMITER}'
+    + ${code}.className`;
 
+  if(chrome){
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const { id: tabId } = tabs[0].url;
       chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
@@ -258,14 +258,13 @@ function appendPropertyDiv(
 }
 
 function highlightElement(code) {
+  var scriptCode = `${code}.style.background = 'red'`;
   if(chrome){
-    var scriptCode = `${code}.style.background = 'red'`;
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const { id: tabId } = tabs[0].url;
       chrome.tabs.executeScript(
         tabId,
-        { code: scriptCode },
-        function (result) {}
+        { code: scriptCode },null
       );
     });
   }
@@ -326,7 +325,6 @@ function addPropertyCode(propertyName, propertyValues) {
   var code = "";
   if (propertyValues.length > 0) {
     code += `<h6>${propertyName}</h6>`;
-
     for (let index = 0; index < propertyValues.length; index++) {
       code +=
         `${propertyName} no.${index + 1}<br>` +
