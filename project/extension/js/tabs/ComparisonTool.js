@@ -88,45 +88,53 @@ compareButton.on("click", compareSnapshots);
 detailButton.on("click", showDetail);
 truncateButton.on("click", truncateSwitch);
 
+if(!chrome){
+  firstSnapshot = global.firstSnapshot;
+  secondSnapshot = global.secondSnapshot;
+}
+
 function restoreSettings() {
   // Since we can't access localStorage from here, we need to ask background page to handle the settings.
   // Communication with background page is based on sendMessage/onMessage.
-  chrome.runtime.sendMessage(
-    {
-      name: "getSettings",
-    },
-    function (settings) {
-      for (var prop in settings) {
-        var el = $("#" + prop);
-
-        if (!el.length) {
-          // Make sure we don't leak any settings when changing/removing id's.
-          delete settings[prop];
-          continue;
+  if(chrome){
+    chrome.runtime.sendMessage(
+      {
+        name: "getSettings",
+      },
+      function (settings) {
+        for (var prop in settings) {
+          var el = $("#" + prop);
+  
+          if (!el.length) {
+            // Make sure we don't leak any settings when changing/removing id's.
+            delete settings[prop];
+            continue;
+          }
+  
+          //updating flat UI checkbox
+          el.data("checkbox").setCheck(
+            settings[prop] === "true" ? "check" : "uncheck"
+          );
         }
-
-        //updating flat UI checkbox
-        el.data("checkbox").setCheck(
-          settings[prop] === "true" ? "check" : "uncheck"
-        );
+  
+        chrome.runtime.sendMessage({
+          name: "setSettings",
+          data: settings,
+        });
       }
-
-      chrome.runtime.sendMessage({
-        name: "setSettings",
-        data: settings,
-      });
-    }
-  );
+    );
+  }
 }
 
 function persistSettingAndProcessSnapshot() {
-  console.assert(this.id);
-  chrome.runtime.sendMessage({
-    name: "changeSetting",
-    item: this.id,
-    value: this.checked,
-  });
-  // processSnapshot(); // ! This function is not defined in the original file
+  if(chrome){
+    console.assert(this.id);
+    chrome.runtime.sendMessage({
+      name: "changeSetting",
+      item: this.id,
+      value: this.checked,
+    });
+  }
 }
 
 /*
@@ -136,30 +144,32 @@ function makeFirstSnapshot() {
   loader.addClass("creating");
   errorBox.removeClass("active");
 
-  chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
-    try {
-      firstSnapshot = JSON.parse(result);
-    } catch (e) {
-      errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);
-      errorBox.addClass("active");
-    }
+  if(chrome){
+    chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
+      try {
+        console.log(result);
+        firstSnapshot = JSON.parse(result);
+      } catch (e) {
+        errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);
+        errorBox.addClass("active");
+      }
+  
+      processFirstSnapshot();
+  
+      loader.removeClass("creating");
+    });
+  }
 
-    processFirstSnapshot();
-
-    loader.removeClass("creating");
-  });
 }
 
 function processFirstSnapshot() {
   if (!firstSnapshot) {
-    // console.log("first error"); // ! log statement
     return;
   }
 
   var styles = firstSnapshot.css,
     html = firstSnapshot.html;
 
-  // ? settings
   if (includeAncestors.is(":checked")) {
     styles = firstSnapshot.ancestorCss.concat(styles);
     html =
@@ -171,7 +181,7 @@ function processFirstSnapshot() {
   loader.addClass("processing");
 
   // ? settings
-  if (removeDefaultValuesInput.is(":checked")) {
+  if (removeDefaultValuesInput.is(":checked") && chrome) {
     styles = defaultValueFilter1.process(styles);
   }
 
@@ -210,18 +220,20 @@ function makeSecondSnapshot() {
   loader.addClass("creating");
   errorBox.removeClass("active");
 
-  chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
-    try {
-      secondSnapshot = JSON.parse(result);
-    } catch (e) {
-      errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);
-      errorBox.addClass("active");
-    }
-
-    processSecondSnapshot();
-
-    loader.removeClass("creating");
-  });
+  if(chrome){
+    chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
+      try {
+        secondSnapshot = JSON.parse(result);
+      } catch (e) {
+        errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);
+        errorBox.addClass("active");
+      }
+  
+      processSecondSnapshot();
+  
+      loader.removeClass("creating");
+    });
+  }
 }
 
 function processSecondSnapshot() {
@@ -242,7 +254,7 @@ function processSecondSnapshot() {
 
   loader.addClass("processing");
 
-  if (removeDefaultValuesInput.is(":checked")) {
+  if (removeDefaultValuesInput.is(":checked") && chrome) {
     styles = defaultValueFilter2.process(styles);
   }
 

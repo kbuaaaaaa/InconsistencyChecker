@@ -37,53 +37,62 @@ function startTemplateComparison() {
 }
 
 function traverseAndCompare(code) {
-  getChildElementCount(code, (childnum) => {
-    if (childnum == 0) {
-      getTagName(code, (tagName) => {
-        if (RELEVANT_TAGNAMES.includes(tagName)) {
-          getStyle(code, (styleString) => {
-            elementNumber += 1;
-            let elementStyle = createElementStyle(styleString, code);
-            compareAgainstTemplate(elementStyle);
-          });
+    getChildElementCount(code, (childnum) => {
+      if (childnum == 0) {
+        getTagName(code, (tagName) => {
+          if (RELEVANT_TAGNAMES.includes(tagName)) {
+            getStyle(code, (styleString) => {
+              elementNumber += 1;
+              let elementStyle = createElementStyle(styleString, code);
+              compareAgainstTemplate(elementStyle);
+            });
+          }
+        });
+      } else {
+        getTagName(code, (tagName) => {
+          if (RELEVANT_TAGNAMES.includes(tagName)) {
+            getStyle(code, (styleString) => {
+              elementNumber += 1;
+              let elementStyle = createElementStyle(styleString, code);
+              compareAgainstTemplate(elementStyle);
+            });
+          }
+        });
+        for (let index = 0; index < childnum; index++) {
+          traverseAndCompare(`${code}.children[${index}]`);
         }
-      });
-    } else {
-      getTagName(code, (tagName) => {
-        if (RELEVANT_TAGNAMES.includes(tagName)) {
-          getStyle(code, (styleString) => {
-            elementNumber += 1;
-            let elementStyle = createElementStyle(styleString, code);
-            compareAgainstTemplate(elementStyle);
-          });
-        }
-      });
-      for (let index = 0; index < childnum; index++) {
-        traverseAndCompare(`${code}.children[${index}]`);
       }
-    }
-  });
+    });
 }
 
 function getChildElementCount(code, _callback) {
   code += ".childElementCount";
-
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code }, (result) => {
-      _callback(result);
+  if(chrome){
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code }, (result) => {
+        _callback(result);
+      });
     });
-  });
+  }
+  else{
+    _callback(global.switch--);
+  }
 }
 
 function getTagName(code, _callback) {
   var scriptCode = `${code}.tagName`;
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
-      _callback(result[0]);
+  if(chrome){
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
+        _callback(result[0]);
+      });
     });
-  });
+  }
+  else{
+    _callback("DIV");
+  }
 }
 
 function getStyle(code, _callback) {
@@ -101,12 +110,17 @@ function getStyle(code, _callback) {
     + ${code}.id + '${PARSING_DELIMITER}'
     + ${code}.className`;
 
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
-      _callback(result[0]);
+  if(chrome){
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
+        _callback(result[0]);
+      });
     });
-  });
+  }
+  else{
+    _callback("normal|normal|400|14px|20px|\"Amazon Ember\", Arial, sans-serif|0px|none|rgb(15, 17, 17)|rgb(15, 17, 17)|elementID|className");
+  }
 }
 
 function createElementStyle(styleString, code) {
@@ -184,8 +198,7 @@ const rgb2hex = (rgb) => {
         .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
         .join("")}`;
   }
-  console.log(rgb);
-  return null;
+
 }
 
 function compareAgainstTemplate(elementStyle) {
@@ -253,21 +266,24 @@ function appendPropertyDiv(
 
 function highlightElement(code) {
   var scriptCode = `${code}.style.background = 'red'`;
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(
-      tabId,
-      { code: scriptCode },
-      function (result) {}
-    );
-  });
+  if(chrome){
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(
+        tabId,
+        { code: scriptCode },null
+      );
+    });
+  }
 }
 
 function unHighlightElement(code) {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
-  });
+  if(chrome){
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const { id: tabId } = tabs[0].url;
+      chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
+    });
+  }
 }
 
 function displayTemplate() {
@@ -316,7 +332,6 @@ function addPropertyCode(propertyName, propertyValues) {
   var code = "";
   if (propertyValues.length > 0) {
     code += `<h6>${propertyName}</h6>`;
-
     for (let index = 0; index < propertyValues.length; index++) {
       code +=
         `${propertyName} no.${index + 1}<br>` +
@@ -341,6 +356,9 @@ if (typeof module !== 'undefined'){module.exports = {
   compareAgainstTemplate,
   appendPropertyDiv,
   highlightElement,
+  unHighlightElement,
   displayTemplate,
-  addPropertyCode
+  addPropertyCode,
+  expandAll,
+  expandOrCollapse
 };};
