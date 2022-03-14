@@ -127,3 +127,6 @@ dmypy.json
 
 # node
 node_modules/
+
+#test coverage
+.nyc_output
