@@ -119,4 +119,4 @@ function ShorthandPropertyFilter() {
 	};
 }
 
-module.exports = {ShorthandPropertyFilter};
+if (typeof module !== 'undefined'){module.exports = {ShorthandPropertyFilter};};

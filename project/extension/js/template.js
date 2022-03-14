@@ -160,10 +160,10 @@ class Border {
   }
 }
 
-module.exports = {
+if (typeof module !== 'undefined'){module.exports = {
   Template,
   Element,
   Font,
   Color,
   Border
-};
+};};

@@ -40,4 +40,4 @@ function WebkitPropertiesFilter() {
 	};
 }
 
-module.exports = {WebkitPropertiesFilter};
+if (typeof module !== 'undefined'){module.exports = {WebkitPropertiesFilter};};

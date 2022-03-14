@@ -26,16 +26,6 @@ const FONT_VARIANT = {
 };
 
 const FONT_WEIGHT = {
-  None: "",
-  Default : "normal",
-  Normal: "normal",
-  //Defines normal characters. This is default
-  Bold: "bold",
-  //Defines thick characters
-  Bolder: "bolder",
-  //Defines thicker characters
-  Lighter: "lighter",
-  //Defines lighter characters
   100: "100",
   200: "200",
   300: "300",
@@ -46,6 +36,16 @@ const FONT_WEIGHT = {
   800: "800",
   900: "900",
   //Defines from thin to thick characters. 400 is the same as normal, and 700 is the same as bold
+  None: "",
+  Default : "normal",
+  Normal: "normal",
+  //Defines normal characters. This is default
+  Bold: "bold",
+  //Defines thick characters
+  Bolder: "bolder",
+  //Defines thicker characters
+  Lighter: "lighter",
+  //Defines lighter characters
   Initial: "initial",
   //Sets this property to its default value. Read about initial
   Inherit: "inherit",

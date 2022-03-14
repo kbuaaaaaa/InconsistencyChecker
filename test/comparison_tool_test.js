@@ -3,7 +3,7 @@ const {TestInitializer} = require('./test_initializer.js');
 
 
 describe('Testing Comparison Tool Page', function(){
-    it('Test Name', () => TestInitializer(function() {
+    it('Test Name', () => TestInitializer("compareElements",function() {
         require('../project/extension/css/js/bootstrap.min.js');
         require('../project/extension/css/js/flatui-checkbox.js');
         require('../project/extension/js/libs/jquery.htmlClean.js');

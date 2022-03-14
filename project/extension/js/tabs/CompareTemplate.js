@@ -6,11 +6,22 @@ const INITIAL_CODE = "document.body",
 var clearAllButton = $("#clearAll_button"),
   compareTemplate = $("#compare_template"),
   displayTemplateButton = $("#display-template-btn"),
+  expandAllButton = $("#expand-all-btn"),
+  outputfileupload = $("#file-selector-output-page");
   elementNumber = 1;
 
 clearAllButton.on("click", clearAll);
 compareTemplate.on("click", startTemplateComparison);
 displayTemplateButton.on("click", displayTemplate);
+expandAllButton.on("click", expandAll);
+outputfileupload.on("change", function(event)
+{
+  const reader = new FileReader();
+  readTemplate(reader,null);
+  reader.readAsText(this.files[0]);
+  const { target = {} } = event || {};
+  target.value = "";
+});
 
 function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
@@ -145,7 +156,7 @@ const parseStyleString = (styleString, code) => {
     borderColor,
     color,
     id,
-    className
+    className,
   ] = styleString.split(PARSING_DELIMITER);
   return {
     code,
@@ -160,16 +171,22 @@ const parseStyleString = (styleString, code) => {
     borderColor,
     color,
     id,
-    className
+    className,
   };
 };
 
-const rgb2hex = (rgb) =>
-  `#${rgb
-    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
-    .slice(1)
-    .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
-    .join("")}`;
+const rgb2hex = (rgb) => {
+  if(rgb
+    .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)){
+      return `#${rgb
+        .match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
+        .slice(1)
+        .map((n) => parseInt(n, 10).toString(16).padStart(2, "0"))
+        .join("")}`;
+  }
+  console.log(rgb);
+  return null;
+}
 
 function compareAgainstTemplate(elementStyle) {
   var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
@@ -183,13 +200,11 @@ function compareAgainstTemplate(elementStyle) {
 
     var togglePanelBtn = document.createElement("button");
     let identifier = "";
-    if (elementStyle.id !== ""){
+    if (elementStyle.id !== "") {
       identifier = `Element ID : ${elementStyle.id}`;
-    }
-    else if (elementStyle.className !== "" && elementStyle.id === ""){
+    } else if (elementStyle.className !== "" && elementStyle.id === "") {
       identifier = `Element Class : ${elementStyle.className}`;
-    }
-    else{
+    } else {
       identifier = `Element Number : ${elementStyle.number}`;
     }
     togglePanelBtn.innerHTML = identifier;
@@ -209,11 +224,9 @@ function compareAgainstTemplate(elementStyle) {
     appendPropertyDiv(borderFlag, "Border", elementStyle.border, panelDiv);
     appendPropertyDiv(colorFlag, "Color", elementStyle.color, panelDiv);
 
-    var showElementBtn = document.createElement("button");
-    showElementBtn.innerHTML = " Highlight ";
-    showElementBtn.onclick = () => highlightElement(elementStyle.code);
+    togglePanelBtn.onmouseover = () => highlightElement(elementStyle.code);
+    togglePanelBtn.onmouseleave = () => unHighlightElement(elementStyle.code);
 
-    panelDiv.appendChild(showElementBtn);
     div.appendChild(togglePanelBtn);
     div.appendChild(panelDiv);
     document.getElementById("template_comparison_output").appendChild(div); // TODO remove underscores
@@ -250,6 +263,13 @@ function highlightElement(code) {
   });
 }
 
+function unHighlightElement(code) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    const { id: tabId } = tabs[0].url;
+    chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
+  });
+}
+
 function displayTemplate() {
   let displayTemplateDIV = document.getElementById("display-template");
   if(displayTemplateDIV.childElementCount > 1){
@@ -270,6 +290,28 @@ function displayTemplate() {
   displayTemplateDIV.appendChild(div);
 }
 
+function expandAll() {
+  if (expandAllButton.attr("expanded") == "true") {
+    expandOrCollapse("false", "Expand All", "block", "none");
+  }
+  else {
+    expandOrCollapse("true", "Collapse All", "none", "blocK")
+  }
+}
+
+function expandOrCollapse(isExpanded, buttonName, panelDisplay1, panelDisplay2) {
+  var toggleButtons = document.getElementsByClassName("accordion");
+  expandAllButton.attr("expanded", isExpanded);
+  expandAllButton.html(buttonName);
+  for (var i = 0; i < toggleButtons.length; i++) {
+    var panel = toggleButtons[i].nextElementSibling;
+    if (panel.style.display == panelDisplay1) {
+      toggleButtons[i].classList.toggle("active");
+    }
+    panel.style.display = panelDisplay2;
+  }
+}
+
 function addPropertyCode(propertyName, propertyValues) {
   var code = "";
   if (propertyValues.length > 0) {
@@ -286,7 +328,7 @@ function addPropertyCode(propertyName, propertyValues) {
   return code;
 }
 
-module.exports = {
+if (typeof module !== 'undefined'){module.exports = {
   clearAll,
   startTemplateComparison,
   traverseAndCompare,
@@ -301,4 +343,4 @@ module.exports = {
   highlightElement,
   displayTemplate,
   addPropertyCode
-};
+};};
