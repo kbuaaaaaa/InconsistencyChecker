@@ -1,12 +1,9 @@
 var test = require('unit.js');
 const {TestInitializer} = require('./test_initializer.js');
 
-
 describe('Testing Comparison Tool Page', function(){
   it('Restore Setting', () => TestInitializer("compareElements",function() {
-    require('../project/extension/css/js/bootstrap.min.js');
     require('../project/extension/css/js/flatui-checkbox.js');
-    require('../project/extension/js/libs/jquery.htmlClean.js');
     const { restoreSettings } = require("../project/extension/js/tabs/ComparisonTool.js");
     restoreSettings();
   })).timeout(5000);
@@ -22,9 +19,7 @@ describe('Testing Comparison Tool Page', function(){
   })).timeout(5000);
 
   it('Process First Snapshot', () => TestInitializer("compareElements",function() {
-        require('../project/extension/css/js/bootstrap.min.js');
-        require('../project/extension/css/js/flatui-checkbox.js');
-        require('../project/extension/js/libs/jquery.htmlClean.js')();
+      require('../project/extension/js/libs/jquery.htmlClean.js')();
       const { processFirstSnapshot } = require("../project/extension/js/tabs/ComparisonTool.js");
       processFirstSnapshot();
   })).timeout(5000);
@@ -35,16 +30,12 @@ describe('Testing Comparison Tool Page', function(){
   })).timeout(5000);
 
   it('Process Second Snapshot', () => TestInitializer("compareElements",function() {
-    require('../project/extension/css/js/bootstrap.min.js');
-    require('../project/extension/css/js/flatui-checkbox.js');
     require('../project/extension/js/libs/jquery.htmlClean.js')();
     const { processSecondSnapshot } = require("../project/extension/js/tabs/ComparisonTool.js");
     processSecondSnapshot();
   })).timeout(5000);
 
   it('Compare Snapshot', () => TestInitializer("compareElements",function() {
-    require('../project/extension/css/js/bootstrap.min.js');
-    require('../project/extension/css/js/flatui-checkbox.js');
     require('../project/extension/js/libs/jquery.htmlClean.js')();
     const { processFirstSnapshot, processSecondSnapshot, compareSnapshots } = require("../project/extension/js/tabs/ComparisonTool.js");
     processFirstSnapshot();
@@ -53,17 +44,12 @@ describe('Testing Comparison Tool Page', function(){
   })).timeout(5000);
 
   it('Show Detail', () => TestInitializer("compareElements",function() {
-    require('../project/extension/css/js/bootstrap.min.js');
-    require('../project/extension/css/js/flatui-checkbox.js');
-    require('../project/extension/js/libs/jquery.htmlClean.js');
     const { showDetail } = require("../project/extension/js/tabs/ComparisonTool.js");
     showDetail();
     showDetail();
   })).timeout(5000);
 
   it('Truncate Button Switch', () => TestInitializer("compareElements",function() {
-    require('../project/extension/css/js/bootstrap.min.js');
-    require('../project/extension/css/js/flatui-checkbox.js');
     require('../project/extension/js/libs/jquery.htmlClean.js')();
     const { truncateSwitch } = require("../project/extension/js/tabs/ComparisonTool.js");
     truncateSwitch();
@@ -71,8 +57,6 @@ describe('Testing Comparison Tool Page', function(){
   })).timeout(5000);
 
   it('Truncate Classes', () => TestInitializer("compareElements",function() {
-    require('../project/extension/css/js/bootstrap.min.js');
-    require('../project/extension/css/js/flatui-checkbox.js');
     require('../project/extension/js/libs/jquery.htmlClean.js')();
     const { truncate } = require("../project/extension/js/tabs/ComparisonTool.js");
     truncate();
