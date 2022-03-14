@@ -32,6 +32,8 @@ function TestInitializer(pageName,_callback){
         global.diff_match_patch = require("../project/extension/js/diff_match_patch.js").diff_match_patch;
         global.template = new Template("test",[new Color("#ffffff")],[new Font("normal","normal","400",14,20,"\"Amazon Ember\", Arial, sans-serif")],[new Border(10,"none","#ffffff")]);
         global.switch = 1;
+        global.firstSnapshot = require("./firstElement.json");
+        global.secondSnapshot = require("./secondElement.json");
         _callback();
       });
 }
