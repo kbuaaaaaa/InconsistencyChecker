@@ -1,7 +1,6 @@
 var test = require('unit.js');
 const {TestInitializer} = require('./test_initializer.js');
 
-
 describe('Testing Comparison Tool Page', function(){
     it('Test Name', () => TestInitializer("compareElements",function() {
         require('../project/extension/css/js/bootstrap.min.js');
