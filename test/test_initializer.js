@@ -5,7 +5,6 @@ global.Element = require("../project/extension/js/template.js").Element;
 global.Color = require("../project/extension/js/template.js").Color;
 global.Border = require("../project/extension/js/template.js").Border;
 global.Font = require("../project/extension/js/template.js").Font;
-global.template = new Template("test",[new Color("#ffffff")],[new Font("normal","normal","400",14,20,"\"Amazon Ember\", Arial, sans-serif")],[new Border(10,"none","#ffffff")]);
 global.FONT_STYLE = require("../project/extension/js/values.js").FONT_STYLE;
 global.FONT_VARIANT = require("../project/extension/js/values.js").FONT_VARIANT;
 global.FONT_WEIGHT = require("../project/extension/js/values.js").FONT_WEIGHT;
@@ -31,6 +30,7 @@ function TestInitializer(pageName,_callback){
         global.$ = $;
       }).then(function() {
         global.chrome = null;
+        global.template = new Template("test",[new Color("#ffffff")],[new Font("normal","normal","400",14,20,"\"Amazon Ember\", Arial, sans-serif")],[new Border(10,"none","#ffffff")]);
         _callback();
       });
 }
