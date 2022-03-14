@@ -21,6 +21,9 @@ global.Snapshooter = require("../project/extension/js/tools/Snapshooter.js").Sna
 global.diff_match_patch = require("../project/extension/js/diff_match_patch.js").diff_match_patch;
 global.firstSnapshot = require("./firstElement.json");
 global.secondSnapshot = require("./secondElement.json");
+global.data = {};
+global.data.index = 0;
+global.data.list = ["select", "color", "font", "border"];
 
 function TestInitializer(pageName,_callback){
     return jsdom.JSDOM.fromFile(`project/extension/${pageName}.html`)

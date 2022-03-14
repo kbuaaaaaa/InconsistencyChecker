@@ -46,3 +46,5 @@ function readTemplate(reader,_callback) {
       }
     });
 }
+
+if (typeof module !== 'undefined'){module.exports = {readTemplate};};
