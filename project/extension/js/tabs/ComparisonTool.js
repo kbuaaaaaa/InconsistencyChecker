@@ -127,8 +127,8 @@ function restoreSettings() {
 }
 
 function persistSettingAndProcessSnapshot() {
-  console.assert(this.id);
   if(chrome){
+    console.assert(this.id);
     chrome.runtime.sendMessage({
       name: "changeSetting",
       item: this.id,
