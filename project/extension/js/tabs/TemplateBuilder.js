@@ -404,5 +404,6 @@ if (typeof module !== 'undefined'){module.exports = {
   save,
   clear,
   downloadTemplate,
-  reset
+  reset,
+  buildTemplateInput
 };};
