@@ -146,6 +146,16 @@ h1 {
   align-items: center;
   text-align: center;
 }
+.a1.current{
+  background-color:  turquoise;
+  transition: all ease-in-out 0.2s;
+}
+.a1.current:hover{
+  border: 1px solid #888;
+  background-color: #ddd;
+}
+
+
 
 .panel-template-comparison {
   padding: 0 18px;
