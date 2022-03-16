@@ -11,7 +11,7 @@ build-job:
   script:
     - echo "Hello world!"
 
-test-job-example:
+test-job:
   tags:
     - docker
   stage: test
