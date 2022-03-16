@@ -27,11 +27,8 @@ function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
   element.innerHTML = "";
   // the code below is the same as the reset function from the template builder
-  let template = getTemplate();
-  template.border = [];
-  template.font = [];
-  template.color = [];
-  localStorage.setItem("template",template);
+  let template = new Template();
+  storeTemplate(template);
 }
 
 function startTemplateComparison() {

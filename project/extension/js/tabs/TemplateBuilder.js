@@ -1,7 +1,10 @@
 const MARGIN_LEFT = "margin-left: 20px;";
 const BORDER_RADIUS = "border-radius: 4px;";
 
-var inputPropertyButton = $("#input_button"),
+var colors = [],
+  borders = [],
+  fonts = [],
+  inputPropertyButton = $("#input_button"),
   addButton = $("#add_button"),
   saveButton = $("#save_button"),
   clearButton = $("#clear_button"),
@@ -179,10 +182,16 @@ function createSelectInput(className, object) {
   return selectInput;
 }
 
+function reset(){
+  colors = [];
+  borders = [];
+  fonts = [];
+}
+
 function save() {
   let template = new Template();
+  reset();
   template.name = document.getElementById("template_name").value;
-
   // Handling colors
   let colorInputs = document.getElementsByClassName("color-div");
   for (const inputs of colorInputs) {
@@ -252,6 +261,8 @@ function clear() {
 }
 
 function downloadTemplate() {
+  let template = getTemplate();
+  console.log(template);
   var blob = new Blob([JSON.stringify(template, null, 2)], {
     type: "application/json",
   });

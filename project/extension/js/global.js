@@ -15,8 +15,8 @@ function readTemplate(reader,_callback) {
 
 function getTemplate(){
   let template = JSON.parse(localStorage.getItem("template"));
-  var templateParsed = new Template([], [], []);
-  console.log(template);
+  var templateParsed = new Template();
+  templateParsed.name = template.name;
   for (const font of template.font) {
     var temp = new Font(
       font.font_style,
@@ -48,7 +48,8 @@ function getTemplate(){
 }
 
 function storeTemplate(template){
+  console.log(template);
   localStorage.setItem("template",JSON.stringify(template, null, 2));
 }
 
-if (typeof module !== 'undefined'){module.exports = {readTemplate};};
+if (typeof module !== 'undefined'){module.exports = {readTemplate,getTemplate,storeTemplate};};
