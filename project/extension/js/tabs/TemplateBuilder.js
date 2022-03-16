@@ -38,7 +38,6 @@ function add() {
   var propertyValueDiv = document.createElement("div");
   div.id = "div-" + data.index;
   let [selectLabel, select] = createSelect();
-  console.log(this);
   select.onchange = function(){selectChange(select,propertyValueDiv);}
   deleteButton = createDelete();
   deleteButton.onclick = () => del(div.id);
@@ -164,7 +163,6 @@ function addSelectInput(className, object, parentDiv) {
 
 function del(id) {
   const div = document.getElementById(id);
-
   propertyDiv.removeChild(div);
 }
 
@@ -400,6 +398,9 @@ if (typeof module !== 'undefined'){module.exports = {
   addTextInput,
   addSelectInput,
   del,
+  createSelect,
+  createDelete,
+  selectChange,
   createSelectInput,
   save,
   clear,
