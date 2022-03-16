@@ -34,8 +34,8 @@ function switchToAdd() {
 
 function add() {
   data.index++;
-  var div = document.createElement("div");
-  var propertyValueDiv = document.createElement("div");
+  let div = document.createElement("div");
+  let propertyValueDiv = document.createElement("div");
   div.id = "div-" + data.index;
   let [selectLabel, select] = createSelect();
   console.log(this);
@@ -278,13 +278,13 @@ function buildTemplateInput(){
   document.getElementById("input_button").style.display = "none";
   for (const color of template.color) {
     data.index++;
-    var div = document.createElement("div");
-    var propertyValueDiv = document.createElement("div");
+    let div = document.createElement("div");
+    let propertyValueDiv = document.createElement("div");
     div.id = "div-" + data.index;
     let [selectLabel, select] = createSelect();
     select.selectedIndex = 1;
     let input;
-    var colorDiv = document.createElement("div");
+    let colorDiv = document.createElement("div");
     colorDiv.className = "color-div";
     addLabel(" Color ", colorDiv);
     input = addTextInput("color-value", "#FFFFFF", colorDiv);
@@ -302,13 +302,13 @@ function buildTemplateInput(){
 
   for (const font of template.font) {
     data.index++;
-    var div = document.createElement("div");
-    var propertyValueDiv = document.createElement("div");
+    let div = document.createElement("div");
+    let propertyValueDiv = document.createElement("div");
     div.id = "div-" + data.index;
     let [selectLabel, select] = createSelect();
     select.selectedIndex = 2;
     let input;
-    var fontDiv = document.createElement("div");
+    let fontDiv = document.createElement("div");
     fontDiv.className = "font-div";
 
     addLabel(" Font Style ", fontDiv);
@@ -359,12 +359,12 @@ function buildTemplateInput(){
 
   for (const border of template.border) {
     data.index++;
-    var div = document.createElement("div");
-    var propertyValueDiv = document.createElement("div");
+    let div = document.createElement("div");
+    let propertyValueDiv = document.createElement("div");
     div.id = "div-" + data.index;
     let [selectLabel, select] = createSelect();
     select.selectedIndex = 3;
-    var borderDiv = document.createElement("div");
+    let borderDiv = document.createElement("div");
     borderDiv.className = "border-div";
 
     addLabel(" Border Width (px) ", borderDiv);
@@ -404,6 +404,5 @@ if (typeof module !== 'undefined'){module.exports = {
   save,
   clear,
   downloadTemplate,
-  reset,
-  buildTemplateInput
+  reset
 };};
