@@ -1,30 +1,96 @@
-var test = require('unit.js');
-const {TestInitializer} = require('./test_initializer.js');
+var test = require("unit.js");
+const { TestInitializer } = require("./test_initializer.js");
 
-
-describe('Testing Comparison Tool Page', function(){
-    it('Test Name', () => TestInitializer("compareElements",function() {
-        require('../project/extension/css/js/bootstrap.min.js');
-        require('../project/extension/css/js/flatui-checkbox.js');
-        require('../project/extension/js/libs/jquery.htmlClean.js');
+describe("Testing Comparison Tool Page", function () {
+  it("Restore Setting", () =>
+    TestInitializer("compareElements", function () {
+      require("../project/extension/css/js/flatui-checkbox.js");
       const {
         restoreSettings,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      restoreSettings();
+    })).timeout(5000);
+
+  it("Persist Setting and Process Snapshot", () =>
+    TestInitializer("compareElements", function () {
+      const {
         persistSettingAndProcessSnapshot,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      persistSettingAndProcessSnapshot();
+    })).timeout(5000);
+
+  it("Make First Snapshot", () =>
+    TestInitializer("compareElements", function () {
+      const {
         makeFirstSnapshot,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      makeFirstSnapshot();
+    })).timeout(5000);
+
+  it("Process First Snapshot", () =>
+    TestInitializer("compareElements", function () {
+      require("../project/extension/js/libs/jquery.htmlClean.js")();
+      const {
         processFirstSnapshot,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      processFirstSnapshot();
+    })).timeout(5000);
+
+  it("Make Second Snapshot", () =>
+    TestInitializer("compareElements", function () {
+      const {
         makeSecondSnapshot,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      makeSecondSnapshot();
+    })).timeout(5000);
+
+  it("Process Second Snapshot", () =>
+    TestInitializer("compareElements", function () {
+      require("../project/extension/js/libs/jquery.htmlClean.js")();
+      const {
+        processSecondSnapshot,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      processSecondSnapshot();
+    })).timeout(5000);
+
+  it("Compare Snapshot", () =>
+    TestInitializer("compareElements", function () {
+      require("../project/extension/js/libs/jquery.htmlClean.js")();
+      const {
+        processFirstSnapshot,
         processSecondSnapshot,
         compareSnapshots,
-        showDetail,
-        truncateSwitch,
-        truncate
       } = require("../project/extension/js/tabs/ComparisonTool.js");
+      processFirstSnapshot();
+      processSecondSnapshot();
+      compareSnapshots();
+    })).timeout(5000);
 
+  it("Show Detail", () =>
+    TestInitializer("compareElements", function () {
+      const {
+        showDetail,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      showDetail();
+      showDetail();
+    })).timeout(5000);
 
-      //your tests goes here. If there is an undefined error or some weird shit you have no idea of, message Bua.
-      //before running tests. tests take forever on the pipeline but you can run it locally. make sure you have node on your machine.
-      //then do "npm install" for unitjs, mocha, jquery, jsdom.
-      //run tests by "mocha test"
-    //To write different tests copy this skeleton
-    }));
+  it("Truncate Button Switch", () =>
+    TestInitializer("compareElements", function () {
+      require("../project/extension/js/libs/jquery.htmlClean.js")();
+      const {
+        truncateSwitch,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      truncateSwitch();
+      truncateSwitch();
+    })).timeout(5000);
+
+  it("Truncate Classes", () =>
+    TestInitializer("compareElements", function () {
+      require("../project/extension/js/libs/jquery.htmlClean.js")();
+      const {
+        truncate,
+      } = require("../project/extension/js/tabs/ComparisonTool.js");
+      truncate();
+    })).timeout(5000);
 });
