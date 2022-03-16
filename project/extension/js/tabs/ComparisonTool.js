@@ -1,103 +1,103 @@
-const CODE_TO_EVAL = "(" + Snapshooter.toString() + ")($0)",
-  INSPECTED_WINDOW_ERROR_MESSAGE =
-    "DOM snapshot could not be created. Make sure that you have inspected some element.",
-  TAGS_TO_REMOVE = ["class"],
-  ALLOWED_ATTRIBUTES = [
-    ["id"],
-    ["placeholder", ["input", "textarea"]],
-    ["disabled", ["input", "textarea", "select", "option", "button"]],
-    ["value", ["input", "button"]],
-    ["readonly", ["input", "textarea", "option"]],
-    ["label", ["option"]],
-    ["selected", ["option"]],
-    ["checked", ["input"]],
-  ];
+const CODE_TO_EVAL = `(${Snapshooter.toString()})($0)`;
+const INSPECTED_WINDOW_ERROR_MESSAGE = 'DOM snapshot could not be created. Make sure that you have inspected some element.';
+const TAGS_TO_REMOVE = ['class'];
+const ALLOWED_ATTRIBUTES = [
+  ['id'],
+  ['placeholder', ['input', 'textarea']],
+  ['disabled', ['input', 'textarea', 'select', 'option', 'button']],
+  ['value', ['input', 'button']],
+  ['readonly', ['input', 'textarea', 'option']],
+  ['label', ['option']],
+  ['selected', ['option']],
+  ['checked', ['input']],
+];
 
 // Settings and other page elements
-var propertiesCleanUpInput = $("#properties-clean-up"),
-  removeDefaultValuesInput = $("#remove-default-values"),
-  removeWebkitPropertiesInput = $("#remove-webkit-properties"),
-  combineSameRulesInput = $("#combine-same-rules"),
-  fixHTMLIndentationInput = $("#fix-html-indentation"),
-  includeAncestors = $("#include-ancestors"),
-  errorBox = $("#error-box"),
-  loader = $("#loader");
+const propertiesCleanUpInput = $('#properties-clean-up');
+const removeDefaultValuesInput = $('#remove-default-values');
+const removeWebkitPropertiesInput = $('#remove-webkit-properties');
+const combineSameRulesInput = $('#combine-same-rules');
+const fixHTMLIndentationInput = $('#fix-html-indentation');
+const includeAncestors = $('#include-ancestors');
+const errorBox = $('#error-box');
+const loader = $('#loader');
 
-propertiesCleanUpInput.on("change", persistSettingAndProcessSnapshot);
-removeDefaultValuesInput.on("change", persistSettingAndProcessSnapshot);
-removeWebkitPropertiesInput.on("change", persistSettingAndProcessSnapshot);
-fixHTMLIndentationInput.on("change", persistSettingAndProcessSnapshot);
-combineSameRulesInput.on("change", persistSettingAndProcessSnapshot);
-includeAncestors.on("change", persistSettingAndProcessSnapshot);
+propertiesCleanUpInput.on('change', persistSettingAndProcessSnapshot);
+removeDefaultValuesInput.on('change', persistSettingAndProcessSnapshot);
+removeWebkitPropertiesInput.on('change', persistSettingAndProcessSnapshot);
+fixHTMLIndentationInput.on('change', persistSettingAndProcessSnapshot);
+combineSameRulesInput.on('change', persistSettingAndProcessSnapshot);
+includeAncestors.on('change', persistSettingAndProcessSnapshot);
 
 $('input[type="checkbox"]').each(function () {
   $(this).checkbox();
 });
 
 // Element 1
-var cssStringifier1 = new CSSStringifier(),
-  shorthandPropertyFilter1 = new ShorthandPropertyFilter(),
-  webkitPropertiesFilter1 = new WebkitPropertiesFilter(),
-  defaultValueFilter1 = new DefaultValueFilter(),
-  sameRulesCombiner1 = new SameRulesCombiner(),
-  borderRadiusWorkaround1 = new BorderRadiusWorkaround(),
-  firstSnapshot,
-  createButton1 = $("#create1"),
-  htmlTextArea1 = $("#html1"),
-  firstHTML,
-  cssTextArea1 = $("#css1"),
-  firstCSS;
+const cssStringifier1 = new CSSStringifier();
+const shorthandPropertyFilter1 = new ShorthandPropertyFilter();
+const webkitPropertiesFilter1 = new WebkitPropertiesFilter();
+const defaultValueFilter1 = new DefaultValueFilter();
+const sameRulesCombiner1 = new SameRulesCombiner();
+const borderRadiusWorkaround1 = new BorderRadiusWorkaround();
+let firstSnapshot;
+const createButton1 = $('#create1');
+const htmlTextArea1 = $('#html1');
+let firstHTML;
+const cssTextArea1 = $('#css1');
+let firstCSS;
 
-createButton1.on("click", makeFirstSnapshot);
-htmlTextArea1.on("click", function () {
+createButton1.on('click', makeFirstSnapshot);
+htmlTextArea1.on('click', function () {
   $(this).select();
 });
-cssTextArea1.on("click", function () {
+cssTextArea1.on('click', function () {
   $(this).select();
 });
 
 // Element 2
-var cssStringifier2 = new CSSStringifier(),
-  shorthandPropertyFilter2 = new ShorthandPropertyFilter(),
-  webkitPropertiesFilter2 = new WebkitPropertiesFilter(),
-  defaultValueFilter2 = new DefaultValueFilter(),
-  sameRulesCombiner2 = new SameRulesCombiner(),
-  borderRadiusWorkaround2 = new BorderRadiusWorkaround(),
-  secondSnapshot,
-  createButton2 = $("#create2"),
-  htmlTextArea2 = $("#html2"),
-  secondHTML,
-  cssTextArea2 = $("#css2"),
-  secondCSS;
+const cssStringifier2 = new CSSStringifier();
+const shorthandPropertyFilter2 = new ShorthandPropertyFilter();
+const webkitPropertiesFilter2 = new WebkitPropertiesFilter();
+const defaultValueFilter2 = new DefaultValueFilter();
+const sameRulesCombiner2 = new SameRulesCombiner();
+const borderRadiusWorkaround2 = new BorderRadiusWorkaround();
+let secondSnapshot;
+const createButton2 = $('#create2');
+const htmlTextArea2 = $('#html2');
+let secondHTML;
+const cssTextArea2 = $('#css2');
+let secondCSS;
 
-createButton2.on("click", makeSecondSnapshot);
-htmlTextArea2.on("click", function () {
+createButton2.on('click', makeSecondSnapshot);
+htmlTextArea2.on('click', function () {
   $(this).select();
 });
-cssTextArea2.on("click", function () {
+cssTextArea2.on('click', function () {
   $(this).select();
 });
 
 // Compare elements
-var compareButton = $("#compare"),
-  detailButton = $("#detail"),
-  truncateButton = $("#truncateBtn"), // TODO rename id, remove camel case
-  report = $("#report");
+const compareButton = $('#compare');
+const detailButton = $('#detail');
+const truncateButton = $('#truncateBtn'); // TODO rename id, remove camel case
+const report = $('#report');
 
-compareButton.on("click", compareSnapshots);
-detailButton.on("click", showDetail);
-truncateButton.on("click", truncateSwitch);
+compareButton.on('click', compareSnapshots);
+detailButton.on('click', showDetail);
+truncateButton.on('click', truncateSwitch);
 
 function restoreSettings() {
-  // Since we can't access localStorage from here, we need to ask background page to handle the settings.
+  // Since we can't access localStorage from here,
+  // we need to ask background page to handle the settings.
   // Communication with background page is based on sendMessage/onMessage.
   chrome.runtime.sendMessage(
     {
-      name: "getSettings",
+      name: 'getSettings',
     },
-    function (settings) {
-      for (var prop in settings) {
-        var el = $("#" + prop);
+    (settings) => {
+      for (const prop in settings) {
+        const el = $(`#${prop}`);
 
         if (!el.length) {
           // Make sure we don't leak any settings when changing/removing id's.
@@ -105,24 +105,24 @@ function restoreSettings() {
           continue;
         }
 
-        //updating flat UI checkbox
-        el.data("checkbox").setCheck(
-          settings[prop] === "true" ? "check" : "uncheck"
+        // updating flat UI checkbox
+        el.data('checkbox').setCheck(
+          settings[prop] === 'true' ? 'check' : 'uncheck',
         );
       }
 
       chrome.runtime.sendMessage({
-        name: "setSettings",
+        name: 'setSettings',
         data: settings,
       });
-    }
+    },
   );
 }
 
 function persistSettingAndProcessSnapshot() {
   console.assert(this.id);
   chrome.runtime.sendMessage({
-    name: "changeSetting",
+    name: 'changeSetting',
     item: this.id,
     value: this.checked,
   });
@@ -133,20 +133,20 @@ function persistSettingAndProcessSnapshot() {
  * Making and processing snapshots
  */
 function makeFirstSnapshot() {
-  loader.addClass("creating");
-  errorBox.removeClass("active");
+  loader.addClass('creating');
+  errorBox.removeClass('active');
 
-  chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
+  chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, (result) => {
     try {
       firstSnapshot = JSON.parse(result);
     } catch (e) {
-      errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);
-      errorBox.addClass("active");
+      errorBox.find('.error-message').text(INSPECTED_WINDOW_ERROR_MESSAGE);
+      errorBox.addClass('active');
     }
 
     processFirstSnapshot();
 
-    loader.removeClass("creating");
+    loader.removeClass('creating');
   });
 }
 
@@ -156,38 +156,37 @@ function processFirstSnapshot() {
     return;
   }
 
-  var styles = firstSnapshot.css,
-    html = firstSnapshot.html;
+  let styles = firstSnapshot.css;
+  let { html } = firstSnapshot;
 
   // ? settings
-  if (includeAncestors.is(":checked")) {
+  if (includeAncestors.is(':checked')) {
     styles = firstSnapshot.ancestorCss.concat(styles);
-    html =
-      firstSnapshot.leadingAncestorHtml +
-      html +
-      firstSnapshot.trailingAncestorHtml;
+    html = firstSnapshot.leadingAncestorHtml
+      + html
+      + firstSnapshot.trailingAncestorHtml;
   }
 
-  loader.addClass("processing");
+  loader.addClass('processing');
 
   // ? settings
-  if (removeDefaultValuesInput.is(":checked")) {
+  if (removeDefaultValuesInput.is(':checked')) {
     styles = defaultValueFilter1.process(styles);
   }
 
   borderRadiusWorkaround1.process(styles);
 
   // ? settings
-  if (propertiesCleanUpInput.is(":checked")) {
+  if (propertiesCleanUpInput.is(':checked')) {
     styles = shorthandPropertyFilter1.process(styles);
   }
-  if (removeWebkitPropertiesInput.is(":checked")) {
+  if (removeWebkitPropertiesInput.is(':checked')) {
     styles = webkitPropertiesFilter1.process(styles);
   }
-  if (combineSameRulesInput.is(":checked")) {
+  if (combineSameRulesInput.is(':checked')) {
     styles = sameRulesCombiner1.process(styles);
   }
-  if (fixHTMLIndentationInput.is(":checked")) {
+  if (fixHTMLIndentationInput.is(':checked')) {
     html = $.htmlClean(html, {
       removeTags: TAGS_TO_REMOVE,
       allowedAttributes: ALLOWED_ATTRIBUTES,
@@ -203,24 +202,24 @@ function processFirstSnapshot() {
   htmlTextArea1.val(firstHTML);
   cssTextArea1.val(firstCSS);
 
-  loader.removeClass("processing");
+  loader.removeClass('processing');
 }
 
 function makeSecondSnapshot() {
-  loader.addClass("creating");
-  errorBox.removeClass("active");
+  loader.addClass('creating');
+  errorBox.removeClass('active');
 
-  chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
+  chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, (result) => {
     try {
       secondSnapshot = JSON.parse(result);
     } catch (e) {
-      errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);
-      errorBox.addClass("active");
+      errorBox.find('.error-message').text(INSPECTED_WINDOW_ERROR_MESSAGE);
+      errorBox.addClass('active');
     }
 
     processSecondSnapshot();
 
-    loader.removeClass("creating");
+    loader.removeClass('creating');
   });
 }
 
@@ -229,36 +228,35 @@ function processSecondSnapshot() {
     return;
   }
 
-  var styles = secondSnapshot.css,
-    html = secondSnapshot.html;
+  let styles = secondSnapshot.css;
+  let { html } = secondSnapshot;
 
-  if (includeAncestors.is(":checked")) {
+  if (includeAncestors.is(':checked')) {
     styles = secondSnapshot.ancestorCss.concat(styles);
-    html =
-      secondSnapshot.leadingAncestorHtml +
-      html +
-      secondSnapshot.trailingAncestorHtml;
+    html = secondSnapshot.leadingAncestorHtml
+      + html
+      + secondSnapshot.trailingAncestorHtml;
   }
 
-  loader.addClass("processing");
+  loader.addClass('processing');
 
-  if (removeDefaultValuesInput.is(":checked")) {
+  if (removeDefaultValuesInput.is(':checked')) {
     styles = defaultValueFilter2.process(styles);
   }
 
   borderRadiusWorkaround2.process(styles);
 
-  if (propertiesCleanUpInput.is(":checked")) {
+  if (propertiesCleanUpInput.is(':checked')) {
     styles = shorthandPropertyFilter2.process(styles);
   }
-  if (removeWebkitPropertiesInput.is(":checked")) {
+  if (removeWebkitPropertiesInput.is(':checked')) {
     styles = webkitPropertiesFilter2.process(styles);
   }
-  if (combineSameRulesInput.is(":checked")) {
+  if (combineSameRulesInput.is(':checked')) {
     styles = sameRulesCombiner2.process(styles);
   }
 
-  if (fixHTMLIndentationInput.is(":checked")) {
+  if (fixHTMLIndentationInput.is(':checked')) {
     html = $.htmlClean(html, {
       removeTags: TAGS_TO_REMOVE,
       allowedAttributes: ALLOWED_ATTRIBUTES,
@@ -274,72 +272,74 @@ function processSecondSnapshot() {
   secondHTML = html;
   secondCSS = cssStringifier2.process(styles);
 
-  loader.removeClass("processing");
+  loader.removeClass('processing');
 }
 
 /*
  * Comparing snapshots
  */
 function compareSnapshots() {
-  var dmp = new diff_match_patch();
+  const dmp = new diff_match_patch();
 
-  var diffHTML = dmp.diff_main(firstHTML, secondHTML);
-  var diffCSS = dmp.diff_main(firstCSS, secondCSS);
+  const diffHTML = dmp.diff_main(firstHTML, secondHTML);
+  const diffCSS = dmp.diff_main(firstCSS, secondCSS);
 
   dmp.diff_cleanupSemantic(diffHTML);
   dmp.diff_cleanupSemantic(diffCSS);
 
-  var dsHTML = dmp.diff_prettyHtml(diffHTML);
-  document.getElementById("outputHTML").innerHTML = dsHTML;
+  const dsHTML = dmp.diff_prettyHtml(diffHTML);
+  document.getElementById('outputHTML').innerHTML = dsHTML;
 
-  var dsCSS = dmp.diff_prettyHtml(diffCSS);
-  document.getElementById("outputCSS").innerHTML = dsCSS;
+  const dsCSS = dmp.diff_prettyHtml(diffCSS);
+  document.getElementById('outputCSS').innerHTML = dsCSS;
 
   report.val(dmp.differenceReport(diffCSS));
 }
 
 function showDetail() {
-  var diff = document.getElementById("diff"); // TODO more descriptive id
-  var button = document.getElementById("detail");
+  const diff = document.getElementById('diff'); // TODO more descriptive id
+  const button = document.getElementById('detail');
 
   if (diff.hidden == true) {
     diff.hidden = false;
-    button.childNodes[0].nodeValue = "Hide Detail";
+    button.childNodes[0].nodeValue = 'Hide Detail';
   } else {
     diff.hidden = true;
-    button.childNodes[0].nodeValue = "Show Detail";
+    button.childNodes[0].nodeValue = 'Show Detail';
   }
 }
 
 function truncateSwitch() {
-  if (truncateButton.attr("truncated") == "true") {
-    truncateButton.attr("truncated", "false");
-    truncateButton.html("Truncate classes");
+  if (truncateButton.attr('truncated') == 'true') {
+    truncateButton.attr('truncated', 'false');
+    truncateButton.html('Truncate classes');
     processFirstSnapshot();
     processSecondSnapshot();
   } else {
     truncate();
-    truncateButton.html("Restore classes");
-    truncateButton.attr("truncated", "true");
+    truncateButton.html('Restore classes');
+    truncateButton.attr('truncated', 'true');
   }
 }
 
 function truncate() {
   const REGEX = /(?<=\{\s*)[\s\S]*?(?=\s*\})/gs;
 
-  cssTextArea1.val(firstCSS.replaceAll(REGEX, "\n..."));
-  cssTextArea2.val(secondCSS.replaceAll(REGEX, "\n..."));
+  cssTextArea1.val(firstCSS.replaceAll(REGEX, '\n...'));
+  cssTextArea2.val(secondCSS.replaceAll(REGEX, '\n...'));
 }
 
-if (typeof module !== 'undefined'){module.exports = {
-  restoreSettings,
-  persistSettingAndProcessSnapshot,
-  makeFirstSnapshot,
-  processFirstSnapshot,
-  makeSecondSnapshot,
-  processSecondSnapshot,
-  compareSnapshots,
-  showDetail,
-  truncateSwitch,
-  truncate
-};};
+if (typeof module !== 'undefined') {
+  module.exports = {
+    restoreSettings,
+    persistSettingAndProcessSnapshot,
+    makeFirstSnapshot,
+    processFirstSnapshot,
+    makeSecondSnapshot,
+    processSecondSnapshot,
+    compareSnapshots,
+    showDetail,
+    truncateSwitch,
+    truncate,
+  };
+}
