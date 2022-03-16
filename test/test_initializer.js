@@ -1,5 +1,5 @@
 const jsdom = require('jsdom');
-global.switch = 1;
+global.test = true;
 global.Template = require("../project/extension/js/template.js").Template;
 global.Element = require("../project/extension/js/template.js").Element;
 global.Color = require("../project/extension/js/template.js").Color;
@@ -39,6 +39,26 @@ function TestInitializer(pageName,_callback){
         global.template = new Template("test",[new Color("#ffffff")],[new Font("normal","normal","400",14,20,"\"Amazon Ember\", Arial, sans-serif")],[new Border(10,"none","#ffffff")]);
         global.getTemplate = function(){return global.template;}
         global.storeTemplate = function(template){};
+        global.switch = 1;
+        global.chrome = {tabs : {query : function(query, _callback){ _callback([{url : {id : ""}}])},
+                                executeScript : function(tabid,code,_callback){
+                                  if(code.code.includes(".childElementCount")){
+                                    _callback(global.switch--);
+                                  }
+                                  else if(code.code.includes(".tagName")){
+                                    _callback(["DIV"]);
+                                  }
+                                  else if(code.code.includes("window.getComputedStyle")){
+                                    _callback(["normal|normal|400|14px|20px|\"Amazon Ember\", Arial, sans-serif|0px|none|rgb(15, 17, 17)|rgb(15, 17, 17)|elementID|className"]);
+                                  }
+                                }},
+                        runtime : {sendMessage : function(message,_callback = null){
+                                    if(_callback){
+                                      _callback();
+                                    }
+                                  }},
+                        devtools : {inspectedWindow : {eval : function(code,_callback){}}}
+                      };
         _callback();
       });
 }
