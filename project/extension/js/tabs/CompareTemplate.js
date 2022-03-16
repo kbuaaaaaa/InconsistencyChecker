@@ -7,7 +7,7 @@ var clearAllButton = $("#clearAll_button"),
   compareTemplate = $("#compare_template"),
   displayTemplateButton = $("#display-template-btn"),
   expandAllButton = $("#expand-all-btn"),
-  outputfileupload = $("#file-selector-output-page");
+  outputfileupload = $("#file-selector-output-page"),
   elementNumber = 1;
 
 clearAllButton.on("click", clearAll);
@@ -27,9 +27,11 @@ function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
   element.innerHTML = "";
   // the code below is the same as the reset function from the template builder
+  let template = getTemplate();
   template.border = [];
   template.font = [];
   template.color = [];
+  localStorage.setItem("template",template);
 }
 
 function startTemplateComparison() {
@@ -202,6 +204,7 @@ const rgb2hex = (rgb) => {
 }
 
 function compareAgainstTemplate(elementStyle) {
+  let template = getTemplate();
   var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
 
   var panelDiv = document.createElement("div");
@@ -287,6 +290,7 @@ function unHighlightElement(code) {
 }
 
 function displayTemplate() {
+  let template = getTemplate();
   let displayTemplateDIV = document.getElementById("display-template");
   if(displayTemplateDIV.childElementCount > 1){
     displayTemplateDIV.removeChild(displayTemplateDIV.lastChild);

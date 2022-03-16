@@ -7,7 +7,6 @@ describe("Testing Template Builder Page", function () {
     TestInitializer("templateBuilder", function () {
       const {
         switchToAdd,
-        createSelect,
       } = require("../project/extension/js/tabs/TemplateBuilder.js");
       switchToAdd();
     })).timeout(5000);
@@ -103,14 +102,6 @@ describe("Testing Template Builder Page", function () {
       const {
         downloadTemplate,
       } = require("../project/extension/js/tabs/TemplateBuilder.js");
-    })).timeout(5000);
-
-  it("Reset Template", () =>
-    TestInitializer("templateBuilder", function () {
-      const {
-        reset,
-      } = require("../project/extension/js/tabs/TemplateBuilder.js");
-      reset();
     })).timeout(5000);
 
   it("Generate Template Input From a Template", () =>

@@ -7,16 +7,13 @@ var inputPropertyButton = $("#input_button"),
   clearButton = $("#clear_button"),
   downloadTemplateButton = $("#download-template"),
   builderfileupload = $("#file-selector-builder-page"),
-  resetButton = $("#reset_button");
-
-var propertyDiv = document.getElementById("property_div");
+  propertyDiv = document.getElementById("property_div");
 
 inputPropertyButton.on("click", switchToAdd);
 addButton.on("click", add);
 saveButton.on("click", save);
 clearButton.on("click", clear);
 downloadTemplateButton.on("click", downloadTemplate);
-resetButton.on("click", reset);
 builderfileupload.on("change", function(event)
 {
   const reader = new FileReader();
@@ -183,8 +180,8 @@ function createSelectInput(className, object) {
 }
 
 function save() {
+  let template = new Template();
   template.name = document.getElementById("template_name").value;
-  reset();
 
   // Handling colors
   let colorInputs = document.getElementsByClassName("color-div");
@@ -244,6 +241,7 @@ function save() {
     borders.push(border);
   }
   template.border = borders;
+  storeTemplate(template);
 }
 
 function clear() {
@@ -265,13 +263,8 @@ function downloadTemplate() {
   });
 }
 
-function reset() {
-  borders = [];
-  fonts = [];
-  colors = [];
-}
-
 function buildTemplateInput(){
+  let template = getTemplate();
   document.getElementById("add_and_save_and_clear").hidden = false;
   document.getElementById("input_button").style.display = "none";
   for (const color of template.color) {
@@ -404,6 +397,5 @@ if (typeof module !== 'undefined'){module.exports = {
   createSelectInput,
   save,
   clear,
-  downloadTemplate,
-  reset
+  downloadTemplate
 };};
