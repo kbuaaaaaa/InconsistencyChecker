@@ -27,30 +27,12 @@ describe("Testing Comparison Tool Page", function () {
       makeFirstSnapshot();
     })).timeout(5000);
 
-  it("Process First Snapshot", () =>
-    TestInitializer("compareElements", function () {
-      require("../project/extension/js/libs/jquery.htmlClean.js")();
-      const {
-        processFirstSnapshot,
-      } = require("../project/extension/js/tabs/ComparisonTool.js");
-      processFirstSnapshot();
-    })).timeout(5000);
-
   it("Make Second Snapshot", () =>
     TestInitializer("compareElements", function () {
       const {
         makeSecondSnapshot,
       } = require("../project/extension/js/tabs/ComparisonTool.js");
       makeSecondSnapshot();
-    })).timeout(5000);
-
-  it("Process Second Snapshot", () =>
-    TestInitializer("compareElements", function () {
-      require("../project/extension/js/libs/jquery.htmlClean.js")();
-      const {
-        processSecondSnapshot,
-      } = require("../project/extension/js/tabs/ComparisonTool.js");
-      processSecondSnapshot();
     })).timeout(5000);
 
   it("Compare Snapshot", () =>
@@ -75,7 +57,7 @@ describe("Testing Comparison Tool Page", function () {
       showDetail();
     })).timeout(5000);
 
-  it("Truncate Button Switch", () =>
+  it("Truncate", () =>
     TestInitializer("compareElements", function () {
       require("../project/extension/js/libs/jquery.htmlClean.js")();
       const {
@@ -85,12 +67,4 @@ describe("Testing Comparison Tool Page", function () {
       truncateSwitch();
     })).timeout(5000);
 
-  it("Truncate Classes", () =>
-    TestInitializer("compareElements", function () {
-      require("../project/extension/js/libs/jquery.htmlClean.js")();
-      const {
-        truncate,
-      } = require("../project/extension/js/tabs/ComparisonTool.js");
-      truncate();
-    })).timeout(5000);
 });

@@ -3,20 +3,12 @@ const { FONT_STYLE } = require("../project/extension/js/values.js");
 const { TestInitializer } = require("./test_initializer.js");
 
 describe("Testing Template Builder Page", function () {
-  it("Switch To Add", () =>
+  it("Add", () =>
     TestInitializer("templateBuilder", function () {
       const {
         switchToAdd,
       } = require("../project/extension/js/tabs/TemplateBuilder.js");
       switchToAdd();
-    })).timeout(5000);
-
-  it("Add", () =>
-    TestInitializer("templateBuilder", function () {
-      const {
-        add,
-      } = require("../project/extension/js/tabs/TemplateBuilder.js");
-      add();
     })).timeout(5000);
 
   it("Add Label", () =>
@@ -74,13 +66,6 @@ describe("Testing Template Builder Page", function () {
       createDelete();
     })).timeout(5000);
 
-  it("Delete", () =>
-    TestInitializer("templateBuilder", function () {
-      const {
-        del,
-      } = require("../project/extension/js/tabs/TemplateBuilder.js");
-    })).timeout(5000);
-
   it("Save Template", () =>
     TestInitializer("templateBuilder", function () {
       const {
@@ -102,6 +87,7 @@ describe("Testing Template Builder Page", function () {
       const {
         downloadTemplate,
       } = require("../project/extension/js/tabs/TemplateBuilder.js");
+      downloadTemplate();
     })).timeout(5000);
 
   it("Generate Template Input From a Template", () =>

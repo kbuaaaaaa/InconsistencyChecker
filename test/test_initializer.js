@@ -40,6 +40,7 @@ function TestInitializer(pageName,_callback){
         global.getTemplate = function(){return global.template;}
         global.storeTemplate = function(template){};
         global.switch = 1;
+        global.Blob = class Blob{constructor(file,type){}};
         global.chrome = {tabs : {query : function(query, _callback){ _callback([{url : {id : ""}}])},
                                 executeScript : function(tabid,code,_callback){
                                   if(code.code.includes(".childElementCount")){

@@ -35,17 +35,6 @@ describe("Testing Compare Template Page", function () {
       compareAgainstTemplate(
         new Element(
           (code = "document.body"),
-          (id = "id"),
-          (className = "name"),
-          (number = "15"),
-          (color = new Color("#ffffff")),
-          (font = new Font()),
-          (border = new Border())
-        )
-      );
-      compareAgainstTemplate(
-        new Element(
-          (code = "document.body"),
           (id = ""),
           (className = "name"),
           (number = "15"),
@@ -92,14 +81,6 @@ describe("Testing Compare Template Page", function () {
       displayTemplate();
     })).timeout(5000);
 
-  it("Add Property Code", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        addPropertyCode,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      addPropertyCode("Font", [new Font()]);
-    })).timeout(5000);
-
   it("Expand All Panel", () =>
     TestInitializer("compareTemplate", function () {
       const {
@@ -126,15 +107,5 @@ describe("Testing Compare Template Page", function () {
         .getElementById("template_comparison_output")
         .appendChild(panelDiv);
       expandOrCollapse("true", "Collapse All", "none", "blocK");
-    })).timeout(5000);
-
-  it("Create DOM Element", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        createElementStyle,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      styleString =
-        'normal|normal|400|14px|20px|"Amazon Ember", Arial, sans-serif|0px|none|rgb(15, 17, 17)|rgb(15, 17, 17)|elementID|className';
-      createElementStyle(styleString, "document.body");
     })).timeout(5000);
 });

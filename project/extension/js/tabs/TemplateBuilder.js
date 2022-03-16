@@ -267,10 +267,12 @@ function downloadTemplate() {
   });
   var name = String(template.name) + ".json";
 
-  chrome.downloads.download({
-    url: window.URL.createObjectURL(blob),
-    filename: name,
-  });
+  if(typeof test == 'undefined'){
+    chrome.downloads.download({
+      url: window.URL.createObjectURL(blob),
+      filename: name,
+    });
+  }
 }
 
 function buildTemplateInput(){
