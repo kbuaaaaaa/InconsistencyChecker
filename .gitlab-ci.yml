@@ -19,4 +19,4 @@ test-job-example:
   stage: test
   script:
     - npm install
-    - npx mocha test
+    - mocha test

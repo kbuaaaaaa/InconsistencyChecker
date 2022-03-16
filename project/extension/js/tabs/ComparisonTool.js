@@ -87,6 +87,11 @@ compareButton.on('click', compareSnapshots);
 detailButton.on('click', showDetail);
 truncateButton.on('click', truncateSwitch);
 
+if(typeof test !== 'undefined'){
+  firstSnapshot = global.firstSnapshot;
+  secondSnapshot = global.secondSnapshot;
+}
+
 function restoreSettings() {
   // Since we can't access localStorage from here,
   // we need to ask background page to handle the settings.
@@ -120,13 +125,12 @@ function restoreSettings() {
 }
 
 function persistSettingAndProcessSnapshot() {
-  console.assert(this.id);
+  if (typeof test == 'undefined') {console.assert(this.id);}
   chrome.runtime.sendMessage({
     name: 'changeSetting',
     item: this.id,
     value: this.checked,
   });
-  // processSnapshot(); // ! This function is not defined in the original file
 }
 
 /*
@@ -143,7 +147,7 @@ function makeFirstSnapshot() {
       errorBox.find('.error-message').text(INSPECTED_WINDOW_ERROR_MESSAGE);
       errorBox.addClass('active');
     }
-
+  
     processFirstSnapshot();
 
     loader.removeClass('creating');
@@ -152,7 +156,6 @@ function makeFirstSnapshot() {
 
 function processFirstSnapshot() {
   if (!firstSnapshot) {
-    // console.log("first error"); // ! log statement
     return;
   }
 
@@ -170,7 +173,7 @@ function processFirstSnapshot() {
   loader.addClass('processing');
 
   // ? settings
-  if (removeDefaultValuesInput.is(':checked')) {
+  if (removeDefaultValuesInput.is(":checked") && typeof test == 'undefined') {
     styles = defaultValueFilter1.process(styles);
   }
 
@@ -240,7 +243,7 @@ function processSecondSnapshot() {
 
   loader.addClass('processing');
 
-  if (removeDefaultValuesInput.is(':checked')) {
+  if (removeDefaultValuesInput.is(":checked") && typeof test == 'undefined') {
     styles = defaultValueFilter2.process(styles);
   }
 

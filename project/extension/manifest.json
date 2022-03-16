@@ -10,8 +10,8 @@
 	},
 	"devtools_page": "devtools.html",
 	"background": {
-		"scripts": ["js/background.js"],
-		"persistent": false
+		"scripts": ["js/values.js","js/template.js","js/background.js"],
+		"persistent": true
 	},
 	"permissions": [
 		"storage",

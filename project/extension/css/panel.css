@@ -2,6 +2,10 @@
   margin-top: 10px;
 }
 
+body {
+  margin:15px;
+}
+
 .row {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -137,8 +141,21 @@ h1 {
   background-color: #16a085;
 }
 .tag_a {
-  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
+.a1.current{
+  background-color:  turquoise;
+  transition: all ease-in-out 0.2s;
+}
+.a1.current:hover{
+  border: 1px solid #888;
+  background-color: #ddd;
+}
+
+
 
 .panel-template-comparison {
   padding: 0 18px;
@@ -204,7 +221,7 @@ h1 {
 }
 .help-tip {
   position: absolute;
-  top: 10%;
+  top: 15%;
   left: 80%;
   transform: translate(-50%, -50%);
   margin: auto;
