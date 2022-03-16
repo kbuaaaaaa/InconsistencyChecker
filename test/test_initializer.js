@@ -37,6 +37,8 @@ function TestInitializer(pageName,_callback){
       }).then(function() {
         global.chrome = null;
         global.template = new Template("test",[new Color("#ffffff")],[new Font("normal","normal","400",14,20,"\"Amazon Ember\", Arial, sans-serif")],[new Border(10,"none","#ffffff")]);
+        global.getTemplate = function(){return global.template;}
+        global.storeTemplate = function(template){};
         _callback();
       });
 }

@@ -407,5 +407,7 @@ if (typeof module !== 'undefined'){module.exports = {
   createSelectInput,
   save,
   clear,
-  downloadTemplate
+  downloadTemplate,
+  buildTemplateInput,
+  reset
 };};
