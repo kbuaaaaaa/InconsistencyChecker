@@ -262,7 +262,6 @@ function clear() {
 
 function downloadTemplate() {
   let template = getTemplate();
-  console.log(template);
   var blob = new Blob([JSON.stringify(template, null, 2)], {
     type: "application/json",
   });

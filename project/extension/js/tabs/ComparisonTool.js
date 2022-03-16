@@ -147,7 +147,6 @@ function makeFirstSnapshot() {
   if(chrome){
     chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
       try {
-        console.log(result);
         firstSnapshot = JSON.parse(result);
       } catch (e) {
         errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);

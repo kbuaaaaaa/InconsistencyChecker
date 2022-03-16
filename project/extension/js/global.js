@@ -1,5 +1,3 @@
-var console = chrome.extension.getBackgroundPage().console;
-
 var data = {};
 data.index = 0;
 data.list = ["select", "color", "font", "border"];
@@ -48,7 +46,6 @@ function getTemplate(){
 }
 
 function storeTemplate(template){
-  console.log(template);
   localStorage.setItem("template",JSON.stringify(template, null, 2));
 }
 
