@@ -101,8 +101,8 @@ function restoreSettings() {
 
         if (!el.length) {
           // Make sure we don't leak any settings when changing/removing id's.
-          delete settings[prop];
-          continue;
+          delete settings[prop]; // eslint-disable-line no-param-reassign
+          continue; // eslint-disable-line no-continue
         }
 
         // updating flat UI checkbox
@@ -120,7 +120,6 @@ function restoreSettings() {
 }
 
 function persistSettingAndProcessSnapshot() {
-  console.assert(this.id);
   chrome.runtime.sendMessage({
     name: 'changeSetting',
     item: this.id,
@@ -279,7 +278,7 @@ function processSecondSnapshot() {
  * Comparing snapshots
  */
 function compareSnapshots() {
-  const dmp = new diff_match_patch();
+  const dmp = new diff_match_patch(); // eslint-disable-line new-cap
 
   const diffHTML = dmp.diff_main(firstHTML, secondHTML);
   const diffCSS = dmp.diff_main(firstCSS, secondCSS);
@@ -300,7 +299,7 @@ function showDetail() {
   const diff = document.getElementById('diff'); // TODO more descriptive id
   const button = document.getElementById('detail');
 
-  if (diff.hidden == true) {
+  if (diff.hidden === true) {
     diff.hidden = false;
     button.childNodes[0].nodeValue = 'Hide Detail';
   } else {
@@ -310,7 +309,7 @@ function showDetail() {
 }
 
 function truncateSwitch() {
-  if (truncateButton.attr('truncated') == 'true') {
+  if (truncateButton.attr('truncated') === 'true') {
     truncateButton.attr('truncated', 'false');
     truncateButton.html('Truncate classes');
     processFirstSnapshot();
