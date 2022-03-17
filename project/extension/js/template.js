@@ -1,169 +1,189 @@
-class Template{
-    constructor(name = "untitled" , color = [], font = [], border = []){
-        this.name =  name; 
-        this.color = color;
-        this.font = font;
-        this.border = border;
+/* eslint-disable max-classes-per-file */
+
+class Template {
+  constructor(name = 'untitled', color = [], font = [], border = []) {
+    this.name = name;
+    this.color = color;
+    this.font = font;
+    this.border = border;
+  }
+
+  compare(element) {
+    let fontResult = PROPERTY.None;
+    let borderResult = PROPERTY.None;
+    let colorResult = PROPERTY.None;
+    let result = false;
+
+    for (const f of this.font) {
+      let fontMatch = true;
+      if (f.fontStyle !== element.font.fontStyle) {
+        fontMatch = false;
+      }
+      if (f.fontVariant !== element.font.fontVariant) {
+        fontMatch = false;
+      }
+      if (f.fontWeight !== element.font.fontWeight) {
+        fontMatch = false;
+      }
+
+      if (f.fontSize !== '' && f.fontSize !== element.font.fontSize) {
+        fontMatch = false;
+      }
+      if (f.lineHeight !== '' && f.lineHeight !== element.font.lineHeight) {
+        fontMatch = false;
+      }
+
+      if (f.fontFamily !== '' && f.fontFamily !== element.font.fontFamily) {
+        fontMatch = false;
+      }
+      if (fontMatch === true) {
+        fontResult = PROPERTY.Consistent;
+        break;
+      } else {
+        fontResult = PROPERTY.Inconsistent;
+      }
     }
 
-    compare(element){
-      let fontResult = PROPERTY.None,
-          borderResult = PROPERTY.None,
-          colorResult = PROPERTY.None,
-          result = false;
-      
-      for (const f of this.font) {
-        let font_match = true;
-        if (f.font_style !== element.font.font_style) {
-          font_match = false;
-        }
-        if (f.font_variant !== element.font.font_variant) {
-          font_match = false;
-        }
-        if (f.font_weight !== element.font.font_weight) {
-          font_match = false;
-        }
-        
-        if (f.font_size !== "" && f.font_size !== element.font.font_size) {
-          font_match = false;
-            
-        }
-        if (f.line_height !== "" && f.line_height !== element.font.line_height) {
-          font_match = false;
-        }
-
-        if (f.font_family !== "" && f.font_family !== element.font.font_family) {
-          font_match = false;
-        }
-        if(font_match == true){
-          fontResult = PROPERTY.Consistent;
-          break;
-        }else{
-          fontResult = PROPERTY.Inconsistent;
-        }
+    for (const b of this.border) {
+      let match = true;
+      if (b.borderStyle !== element.border.borderStyle) {
+        match = false;
       }
-
-      for (const b of this.border) {
-        let match = true;
-        if (b.border_style !== element.border.border_style) {
-          match = false;
-        }
-        if (b.border_width !== "" && b.border_width !== element.border.border_width) {
-            match = false;
-        }
-        if (b.border_color !== "" && b.border_color !== element.border.border_color) {
-            match = false;
-        }
-        if(match == true){
-          borderResult = PROPERTY.Consistent;
-          break;
-        }else{
-          borderResult = PROPERTY.Inconsistent;
-        }
+      if (
+        b.borderWidth !== ''
+        && b.borderWidth !== element.border.borderWidth
+      ) {
+        match = false;
       }
-
-      for (const c of this.color) {
-        if (c.color !== element.color.color) {
-          colorResult = PROPERTY.Inconsistent
-        }else{
-          colorResult = PROPERTY.Consistent
-          break;
-        }
+      if (
+        b.borderColor !== ''
+        && b.borderColor !== element.border.borderColor
+      ) {
+        match = false;
       }
-      if (fontResult == PROPERTY.Inconsistent || colorResult == PROPERTY.Inconsistent || borderResult == PROPERTY.Inconsistent) {
-        result = true;
+      if (match === true) {
+        borderResult = PROPERTY.Consistent;
+        break;
+      } else {
+        borderResult = PROPERTY.Inconsistent;
       }
-      return [result, fontResult, colorResult, borderResult];
     }
 
+    for (const c of this.color) {
+      if (c.color !== element.color.color) {
+        colorResult = PROPERTY.Inconsistent;
+      } else {
+        colorResult = PROPERTY.Consistent;
+        break;
+      }
+    }
+    if (
+      fontResult === PROPERTY.Inconsistent
+      || colorResult === PROPERTY.Inconsistent
+      || borderResult === PROPERTY.Inconsistent
+    ) {
+      result = true;
+    }
+    return [result, fontResult, colorResult, borderResult];
+  }
 }
 
-class Element{
-  constructor(code = "", id = "", className = "", number = "", color = new Color(), font = new Font(), border = new Border()){
-      this.code = code;
-      this.id = id;
-      this.className = className;
-      this.number = number;
-      this.color = color;
-      this.font = font;
-      this.border = border;
+class Element {
+  constructor(
+    code = '',
+    id = '',
+    className = '',
+    number = '',
+    color = new Color(),
+    font = new Font(),
+    border = new Border(),
+  ) {
+    this.code = code;
+    this.id = id;
+    this.className = className;
+    this.number = number;
+    this.color = color;
+    this.font = font;
+    this.border = border;
   }
 }
 
 class Font {
   constructor(
-    font_style = FONT_STYLE.Normal,
-    font_variant = FONT_VARIANT.Normal,
-    font_weight = FONT_WEIGHT.Normal,
-    font_size = 0,
-    line_height = 0,
-    font_family = ""
+    fontStyle = FONT_STYLE.Normal,
+    fontVariant = FONT_VARIANT.Normal,
+    fontWeight = FONT_WEIGHT.Normal,
+    fontSize = 0,
+    lineHeight = 0,
+    fontFamily = '',
   ) {
-    //https://www.w3schools.com/cssref/pr_font_font-style.asp for value ref.
-    this.font_style = font_style;
-    this.font_variant = font_variant;
-    this.font_weight = font_weight;
-    this.font_size = font_size;
-    this.line_height = line_height;
-    this.font_family = font_family;
+    // https://www.w3schools.com/cssref/pr_font_font-style.asp for value ref.
+    this.fontStyle = fontStyle;
+    this.fontVariant = fontVariant;
+    this.fontWeight = fontWeight;
+    this.fontSize = fontSize;
+    this.lineHeight = lineHeight;
+    this.fontFamily = fontFamily;
   }
 
-  toString(){
-    let result = `&emsp;Font Style : ${this.font_style}<br>&emsp;Font Variant : ${this.font_variant}<br>&emsp;Font Weight : ${this.font_weight}<br>`;
-    if (this.font_size !== "") {
-      result += `&emsp;Font Size : ${this.font_size}<br>`;
+  toString() {
+    let result = `&emsp;Font Style : ${this.fontStyle}<br>&emsp;Font Variant : ${this.fontVariant}<br>&emsp;Font Weight : ${this.fontWeight}<br>`;
+    if (this.fontSize !== '') {
+      result += `&emsp;Font Size : ${this.fontSize}<br>`;
     }
-    if (this.line_height !== "") {
-      result += `&emsp;Line Height : ${this.line_height}<br>`;
+    if (this.lineHeight !== '') {
+      result += `&emsp;Line Height : ${this.lineHeight}<br>`;
     }
 
-    if (this.font_family !== "") {
-      result += `&emsp;Font Family : ${this.font_family}<br>`
+    if (this.fontFamily !== '') {
+      result += `&emsp;Font Family : ${this.fontFamily}<br>`;
     }
     return result;
   }
 }
 
 class Color {
-  constructor(color="#FFFFFF") {
+  constructor(color = '#FFFFFF') {
     this.color = color;
   }
 
-  toString(){
-    let result = `&emsp;Color: ${this.color}<br>`;
+  toString() {
+    const result = `&emsp;Color: ${this.color}<br>`;
     return result;
   }
 }
 
 class Border {
   constructor(
-    border_width = 0,
-    border_style = BORDER_STYLE.None,
-    border_color = ""
+    borderWidth = 0,
+    borderStyle = BORDER_STYLE.None,
+    borderColor = '',
   ) {
-    this.border_width = border_width;
-    this.border_style = border_style;
-    this.border_color = border_color;
+    this.borderWidth = borderWidth;
+    this.borderStyle = borderStyle;
+    this.borderColor = borderColor;
   }
 
-  toString(){
-    let result = "";
-    if (this.border_width !== "") {
-      result += `&emsp;Border Width : ${this.border_width}<br>`;
+  toString() {
+    let result = '';
+    if (this.borderWidth !== '') {
+      result += `&emsp;Border Width : ${this.borderWidth}<br>`;
     }
-    var bs = this.border_style
+    const bs = this.borderStyle;
     result += `&emsp;Border Style : ${bs}<br>`;
-    if (this.border_color !== "") {
-      result += `&emsp;Border Color : ${this.border_color}<br>`
+    if (this.borderColor !== '') {
+      result += `&emsp;Border Color : ${this.borderColor}<br>`;
     }
     return result;
   }
 }
 
-if (typeof module !== 'undefined'){module.exports = {
-  Template,
-  Element,
-  Font,
-  Color,
-  Border
-};};
+if (typeof module !== 'undefined') {
+  module.exports = {
+    Template,
+    Element,
+    Font,
+    Color,
+    Border,
+  };
+}

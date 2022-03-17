@@ -1,10 +1,10 @@
 const data = {};
 data.index = 0;
-data.list = ['select', 'color', 'font', 'border'];
+data.list = ["select", "color", "font", "border"];
 
 function readTemplate(reader, _callback) {
-  reader.addEventListener('load', () => {
-    localStorage.setItem('template', reader.result);
+  reader.addEventListener("load", () => {
+    localStorage.setItem("template", reader.result);
     if (_callback) {
       _callback();
     }
@@ -12,26 +12,26 @@ function readTemplate(reader, _callback) {
 }
 
 function getTemplate() {
-  let template = JSON.parse(localStorage.getItem('template'));
+  let template = JSON.parse(localStorage.getItem("template"));
   const templateParsed = new Template();
   templateParsed.name = template.name;
   for (const font of template.font) {
     const temp = new Font(
-      font.font_style,
-      font.font_variant,
-      font.font_weight,
-      font.font_size,
-      font.line_height,
-      font.font_family,
+      font.fontStyle,
+      font.fontVariant,
+      font.fontWeight,
+      font.fontSize,
+      font.lineHeight,
+      font.fontFamily
     );
     templateParsed.font.push(temp);
   }
 
   for (const border of template.border) {
     const temp = new Border(
-      border.border_width,
-      border.border_style,
-      border.border_color,
+      border.borderWidth,
+      border.borderStyle,
+      border.borderColor
     );
     templateParsed.border.push(temp);
   }
@@ -46,9 +46,9 @@ function getTemplate() {
 }
 
 function storeTemplate(template) {
-  localStorage.setItem('template', JSON.stringify(template, null, 2));
+  localStorage.setItem("template", JSON.stringify(template, null, 2));
 }
 
-if (typeof module !== 'undefined') {
+if (typeof module !== "undefined") {
   module.exports = { readTemplate, getTemplate, storeTemplate };
 }
