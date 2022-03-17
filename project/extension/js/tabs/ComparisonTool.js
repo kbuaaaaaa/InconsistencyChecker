@@ -88,7 +88,7 @@ compareButton.on("click", compareSnapshots);
 detailButton.on("click", showDetail);
 truncateButton.on("click", truncateSwitch);
 
-if(!chrome){
+if(typeof test !== 'undefined'){
   firstSnapshot = global.firstSnapshot;
   secondSnapshot = global.secondSnapshot;
 }
@@ -96,12 +96,11 @@ if(!chrome){
 function restoreSettings() {
   // Since we can't access localStorage from here, we need to ask background page to handle the settings.
   // Communication with background page is based on sendMessage/onMessage.
-  if(chrome){
-    chrome.runtime.sendMessage(
-      {
+  chrome.runtime.sendMessage(
+    {
         name: "getSettings",
-      },
-      function (settings) {
+    },
+    function (settings) {
         for (var prop in settings) {
           var el = $("#" + prop);
   
@@ -121,20 +120,17 @@ function restoreSettings() {
           name: "setSettings",
           data: settings,
         });
-      }
-    );
-  }
+    }
+  );
 }
 
 function persistSettingAndProcessSnapshot() {
-  if(chrome){
-    console.assert(this.id);
-    chrome.runtime.sendMessage({
-      name: "changeSetting",
-      item: this.id,
-      value: this.checked,
-    });
-  }
+  if (typeof test == 'undefined') {console.assert(this.id);}
+  chrome.runtime.sendMessage({
+    name: "changeSetting",
+    item: this.id,
+    value: this.checked,
+  });
 }
 
 /*
@@ -143,23 +139,18 @@ function persistSettingAndProcessSnapshot() {
 function makeFirstSnapshot() {
   loader.addClass("creating");
   errorBox.removeClass("active");
-
-  if(chrome){
-    chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
-      try {
-        console.log(result);
-        firstSnapshot = JSON.parse(result);
-      } catch (e) {
-        errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);
-        errorBox.addClass("active");
-      }
+  chrome.devtools.inspectedWindow.eval(CODE_TO_EVAL, function (result) {
+    try {
+      firstSnapshot = JSON.parse(result);
+    } catch (e) {
+      errorBox.find(".error-message").text(INSPECTED_WINDOW_ERROR_MESSAGE);
+      errorBox.addClass("active");
+    }
   
-      processFirstSnapshot();
+    processFirstSnapshot();
   
-      loader.removeClass("creating");
-    });
-  }
-
+    loader.removeClass("creating");
+  });
 }
 
 function processFirstSnapshot() {
@@ -181,7 +172,7 @@ function processFirstSnapshot() {
   loader.addClass("processing");
 
   // ? settings
-  if (removeDefaultValuesInput.is(":checked") && chrome) {
+  if (removeDefaultValuesInput.is(":checked") && typeof test == 'undefined') {
     styles = defaultValueFilter1.process(styles);
   }
 
@@ -254,7 +245,7 @@ function processSecondSnapshot() {
 
   loader.addClass("processing");
 
-  if (removeDefaultValuesInput.is(":checked") && chrome) {
+  if (removeDefaultValuesInput.is(":checked") && typeof test == 'undefined') {
     styles = defaultValueFilter2.process(styles);
   }
 

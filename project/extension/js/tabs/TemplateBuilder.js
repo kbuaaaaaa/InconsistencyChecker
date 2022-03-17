@@ -1,22 +1,22 @@
 const MARGIN_LEFT = "margin-left: 20px;";
 const BORDER_RADIUS = "border-radius: 4px;";
 
-var inputPropertyButton = $("#input_button"),
+var colors = [],
+  borders = [],
+  fonts = [],
+  inputPropertyButton = $("#input_button"),
   addButton = $("#add_button"),
   saveButton = $("#save_button"),
   clearButton = $("#clear_button"),
   downloadTemplateButton = $("#download-template"),
   builderfileupload = $("#file-selector-builder-page"),
-  resetButton = $("#reset_button");
-
-var propertyDiv = document.getElementById("property_div");
+  propertyDiv = document.getElementById("property_div");
 
 inputPropertyButton.on("click", switchToAdd);
 addButton.on("click", add);
 saveButton.on("click", save);
 clearButton.on("click", clear);
 downloadTemplateButton.on("click", downloadTemplate);
-resetButton.on("click", reset);
 builderfileupload.on("change", function(event)
 {
   const reader = new FileReader();
@@ -182,10 +182,16 @@ function createSelectInput(className, object) {
   return selectInput;
 }
 
-function save() {
-  template.name = document.getElementById("template_name").value;
-  reset();
+function reset(){
+  colors = [];
+  borders = [];
+  fonts = [];
+}
 
+function save() {
+  let template = new Template();
+  reset();
+  template.name = document.getElementById("template_name").value;
   // Handling colors
   let colorInputs = document.getElementsByClassName("color-div");
   for (const inputs of colorInputs) {
@@ -244,6 +250,7 @@ function save() {
     borders.push(border);
   }
   template.border = borders;
+  storeTemplate(template);
 }
 
 function clear() {
@@ -254,24 +261,22 @@ function clear() {
 }
 
 function downloadTemplate() {
+  let template = getTemplate();
   var blob = new Blob([JSON.stringify(template, null, 2)], {
     type: "application/json",
   });
   var name = String(template.name) + ".json";
 
-  chrome.downloads.download({
-    url: window.URL.createObjectURL(blob),
-    filename: name,
-  });
-}
-
-function reset() {
-  borders = [];
-  fonts = [];
-  colors = [];
+  if(typeof test == 'undefined'){
+    chrome.downloads.download({
+      url: window.URL.createObjectURL(blob),
+      filename: name,
+    });
+  }
 }
 
 function buildTemplateInput(){
+  let template = getTemplate();
   document.getElementById("add_and_save_and_clear").hidden = false;
   document.getElementById("input_button").style.display = "none";
   for (const color of template.color) {
@@ -405,5 +410,6 @@ if (typeof module !== 'undefined'){module.exports = {
   save,
   clear,
   downloadTemplate,
+  buildTemplateInput,
   reset
 };};

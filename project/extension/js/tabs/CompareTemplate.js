@@ -7,7 +7,7 @@ var clearAllButton = $("#clearAll_button"),
   compareTemplate = $("#compare_template"),
   displayTemplateButton = $("#display-template-btn"),
   expandAllButton = $("#expand-all-btn"),
-  outputfileupload = $("#file-selector-output-page");
+  outputfileupload = $("#file-selector-output-page"),
   elementNumber = 1;
 
 clearAllButton.on("click", clearAll);
@@ -27,9 +27,8 @@ function clearAll() {
   var element = document.getElementById("template_comparison_output"); // TODO remove underscores from id
   element.innerHTML = "";
   // the code below is the same as the reset function from the template builder
-  template.border = [];
-  template.font = [];
-  template.color = [];
+  let template = new Template();
+  storeTemplate(template);
 }
 
 function startTemplateComparison() {
@@ -37,62 +36,52 @@ function startTemplateComparison() {
 }
 
 function traverseAndCompare(code) {
-    getChildElementCount(code, (childnum) => {
-      if (childnum == 0) {
-        getTagName(code, (tagName) => {
-          if (RELEVANT_TAGNAMES.includes(tagName)) {
-            getStyle(code, (styleString) => {
-              elementNumber += 1;
-              let elementStyle = createElementStyle(styleString, code);
-              compareAgainstTemplate(elementStyle);
-            });
-          }
-        });
-      } else {
-        getTagName(code, (tagName) => {
-          if (RELEVANT_TAGNAMES.includes(tagName)) {
-            getStyle(code, (styleString) => {
-              elementNumber += 1;
-              let elementStyle = createElementStyle(styleString, code);
-              compareAgainstTemplate(elementStyle);
-            });
-          }
-        });
-        for (let index = 0; index < childnum; index++) {
-          traverseAndCompare(`${code}.children[${index}]`);
+  getChildElementCount(code, (childnum) => {
+    if (childnum == 0) {
+      getTagName(code, (tagName) => {
+        if (RELEVANT_TAGNAMES.includes(tagName)) {
+          getStyle(code, (styleString) => {
+            elementNumber += 1;
+            let elementStyle = createElementStyle(styleString, code);
+            compareAgainstTemplate(elementStyle);
+          });
         }
+      });
+    } else {
+      getTagName(code, (tagName) => {
+        if (RELEVANT_TAGNAMES.includes(tagName)) {
+          getStyle(code, (styleString) => {
+            elementNumber += 1;
+            let elementStyle = createElementStyle(styleString, code);
+            compareAgainstTemplate(elementStyle);
+          });
+        }
+      });
+      for (let index = 0; index < childnum; index++) {
+        traverseAndCompare(`${code}.children[${index}]`);
       }
-    });
+    }
+  });
 }
 
 function getChildElementCount(code, _callback) {
   code += ".childElementCount";
-  if(chrome){
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const { id: tabId } = tabs[0].url;
       chrome.tabs.executeScript(tabId, { code }, (result) => {
         _callback(result);
-      });
     });
-  }
-  else{
-    _callback(global.switch--);
-  }
+  });
 }
 
 function getTagName(code, _callback) {
   var scriptCode = `${code}.tagName`;
-  if(chrome){
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
-        _callback(result[0]);
-      });
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    const { id: tabId } = tabs[0].url;
+    chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
+      _callback(result[0]);
     });
-  }
-  else{
-    _callback("DIV");
-  }
+  });
 }
 
 function getStyle(code, _callback) {
@@ -110,17 +99,12 @@ function getStyle(code, _callback) {
     + ${code}.id + '${PARSING_DELIMITER}'
     + ${code}.className`;
 
-  if(chrome){
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
-        _callback(result[0]);
-      });
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    const { id: tabId } = tabs[0].url;
+    chrome.tabs.executeScript(tabId, { code: scriptCode }, function (result) {
+      _callback(result[0]);
     });
-  }
-  else{
-    _callback("normal|normal|400|14px|20px|\"Amazon Ember\", Arial, sans-serif|0px|none|rgb(15, 17, 17)|rgb(15, 17, 17)|elementID|className");
-  }
+  });
 }
 
 function createElementStyle(styleString, code) {
@@ -202,6 +186,7 @@ const rgb2hex = (rgb) => {
 }
 
 function compareAgainstTemplate(elementStyle) {
+  let template = getTemplate();
   var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
 
   var panelDiv = document.createElement("div");
@@ -266,27 +251,24 @@ function appendPropertyDiv(
 
 function highlightElement(code) {
   var scriptCode = `${code}.style.background = 'red'`;
-  if(chrome){
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(
-        tabId,
-        { code: scriptCode },null
-      );
-    });
-  }
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    const { id: tabId } = tabs[0].url;
+    chrome.tabs.executeScript(
+      tabId,
+      { code: scriptCode },null
+    );
+  });
 }
 
 function unHighlightElement(code) {
-  if(chrome){
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const { id: tabId } = tabs[0].url;
-      chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
-    });
-  }
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    const { id: tabId } = tabs[0].url;
+    chrome.tabs.executeScript(tabId, { code: `${code}.style.background = ''` });
+  });
 }
 
 function displayTemplate() {
+  let template = getTemplate();
   let displayTemplateDIV = document.getElementById("display-template");
   if(displayTemplateDIV.childElementCount > 1){
     displayTemplateDIV.removeChild(displayTemplateDIV.lastChild);

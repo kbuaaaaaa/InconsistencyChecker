@@ -18,7 +18,7 @@ describe("Testing Compare Template Page", function () {
       rgb2hex("rgb(0,0,0)");
     })).timeout(5000);
 
-  it("Start Comparison", () =>
+  it("Traverse the DOM, Compare and Output", () =>
     TestInitializer("compareTemplate", function () {
       const {
         startTemplateComparison,
@@ -26,64 +26,12 @@ describe("Testing Compare Template Page", function () {
       startTemplateComparison();
     })).timeout(5000);
 
-  it("Traverse DOM", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        traverseAndCompare,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      traverseAndCompare("");
-    })).timeout(5000);
 
-  it("Get Child Element Number", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        getChildElementCount,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      getChildElementCount("", () => {});
-    })).timeout(5000);
-
-  it("Get HTML Tag Name", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        getTagName,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      getTagName("", () => {});
-    })).timeout(5000);
-
-  it("Get Element Style", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        getStyle,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      getStyle("", () => {});
-    })).timeout(5000);
-
-  it("Parse Style", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        parseStyleString,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      styleString =
-        'normal|normal|400|14px|20px|"Amazon Ember", Arial, sans-serif|0px|none|rgb(15, 17, 17)|rgb(15, 17, 17)|elementID|className';
-      parseStyleString(styleString, "document.body");
-    })).timeout(5000);
-
-  it("Compare Against Template", () =>
+  it("Compare Against Template for Extra cases", () =>
     TestInitializer("compareTemplate", function () {
       const {
         compareAgainstTemplate,
       } = require("../project/extension/js/tabs/CompareTemplate.js");
-      compareAgainstTemplate(
-        new Element(
-          (code = "document.body"),
-          (id = "id"),
-          (className = "name"),
-          (number = "15"),
-          (color = new Color("#ffffff")),
-          (font = new Font()),
-          (border = new Border())
-        )
-      );
       compareAgainstTemplate(
         new Element(
           (code = "document.body"),
@@ -105,25 +53,6 @@ describe("Testing Compare Template Page", function () {
           (font = new Font()),
           (border = new Border())
         )
-      );
-    })).timeout(5000);
-
-  it("Append Property", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        appendPropertyDiv,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      appendPropertyDiv(
-        PROPERTY.Consistent,
-        "Font",
-        new Font(),
-        document.createElement("div")
-      );
-      appendPropertyDiv(
-        PROPERTY.Inconsistent,
-        "Font",
-        new Font(),
-        document.createElement("div")
       );
     })).timeout(5000);
 
@@ -152,14 +81,6 @@ describe("Testing Compare Template Page", function () {
       displayTemplate();
     })).timeout(5000);
 
-  it("Add Property Code", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        addPropertyCode,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      addPropertyCode("Font", [new Font()]);
-    })).timeout(5000);
-
   it("Expand All Panel", () =>
     TestInitializer("compareTemplate", function () {
       const {
@@ -186,15 +107,5 @@ describe("Testing Compare Template Page", function () {
         .getElementById("template_comparison_output")
         .appendChild(panelDiv);
       expandOrCollapse("true", "Collapse All", "none", "blocK");
-    })).timeout(5000);
-
-  it("Create DOM Element", () =>
-    TestInitializer("compareTemplate", function () {
-      const {
-        createElementStyle,
-      } = require("../project/extension/js/tabs/CompareTemplate.js");
-      styleString =
-        'normal|normal|400|14px|20px|"Amazon Ember", Arial, sans-serif|0px|none|rgb(15, 17, 17)|rgb(15, 17, 17)|elementID|className';
-      createElementStyle(styleString, "document.body");
     })).timeout(5000);
 });

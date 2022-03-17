@@ -11,14 +11,11 @@ build-job:
   script:
     - echo "Hello world!"
 
-test-job-example:
+test-job:
   tags:
     - docker
   stage: test
   script:
-    - npm install unit.js
-    - npm install -g mocha
-    - npm install jsdom
-    - npm install jquery
-    - mocha test
+    - npm install
+    - npx mocha test
 
