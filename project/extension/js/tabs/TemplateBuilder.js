@@ -1,24 +1,30 @@
 const MARGIN_LEFT = 'margin-left: 20px;';
 const BORDER_RADIUS = 'border-radius: 4px;';
 
-// buttons from the HTML
-// TODO: change ids, remove underscores
-const inputPropertyButton = $('#input_button');
-const addButton = $('#add_button');
-const saveButton = $('#save_button');
-const clearButton = $('#clear_button');
-const downloadTemplateButton = $('#download-template');
-const resetButton = $('#reset_button');
+var colors = [],
+  borders = [],
+  fonts = [],
+  inputPropertyButton = $("#input_button"),
+  addButton = $("#add_button"),
+  saveButton = $("#save_button"),
+  clearButton = $("#clear_button"),
+  downloadTemplateButton = $("#download-template"),
+  builderfileupload = $("#file-selector-builder-page"),
+  propertyDiv = document.getElementById("property_div");
 
-const propertyDiv = document.getElementById('property_div');
-
-inputPropertyButton.on('click', switchToAdd);
-addButton.on('click', add);
-saveButton.on('click', save);
-clearButton.on('click', clear);
-
-downloadTemplateButton.on('click', downloadTemplate);
-resetButton.on('click', reset);
+inputPropertyButton.on("click", switchToAdd);
+addButton.on("click", add);
+saveButton.on("click", save);
+clearButton.on("click", clear);
+downloadTemplateButton.on("click", downloadTemplate);
+builderfileupload.on("change", function(event)
+{
+  const reader = new FileReader();
+  readTemplate(reader,function(){buildTemplateInput();});
+  reader.readAsText(this.files[0]);
+  const { target = {} } = event || {};
+  target.value = "";
+});
 
 function switchToAdd() {
   add();
@@ -28,16 +34,26 @@ function switchToAdd() {
 
 function add() {
   data.index++;
+  let div = document.createElement("div");
+  let propertyValueDiv = document.createElement("div");
+  div.id = "div-" + data.index;
+  let [selectLabel, select] = createSelect();
+  select.onchange = function(){selectChange(select,propertyValueDiv);}
+  deleteButton = createDelete();
+  deleteButton.onclick = () => del(div.id);
+  div.appendChild(selectLabel);
+  div.appendChild(select);
+  div.appendChild(propertyValueDiv);
+  div.appendChild(deleteButton);
+  propertyDiv.appendChild(div);
+}
 
-  const div = document.createElement('div');
-  div.id = `div-${data.index}`;
-  const selectLabel = document.createElement('label');
-  selectLabel.innerHTML = ' Select Property ';
+function createSelect(){
+  var selectLabel = document.createElement("label");
+  selectLabel.innerHTML = " Select Property ";
 
-  const propertyValueDiv = document.createElement('div');
-
-  const select = document.createElement('select');
-  select.className = 'select-property';
+  var select = document.createElement("select");
+  select.className = "select-property";
   for (const val of data.list) {
     const option = document.createElement('option');
     option.value = val;
@@ -45,10 +61,19 @@ function add() {
     select.appendChild(option);
   }
   select.style = MARGIN_LEFT + BORDER_RADIUS;
+  return [selectLabel, select];
+}
 
-  select.onchange = function () {
-    const { value } = select.options[select.selectedIndex];
-    if (propertyValueDiv.childElementCount > 0) {
+function createDelete(){
+  var deleteButton = document.createElement("div");
+  deleteButton.className = "glyphicon glyphicon-trash";
+  deleteButton.innerHTML = " Delete ";
+  return deleteButton;
+}
+
+function selectChange(select,propertyValueDiv){
+  var value = select.options[select.selectedIndex].value;
+    while (propertyValueDiv.childElementCount > 0) {
       propertyValueDiv.removeChild(propertyValueDiv.lastChild);
     }
 
@@ -73,13 +98,8 @@ function add() {
         addLabel(' Font Variant ', fontDiv);
         addSelectInput('font-variant-input', FONT_VARIANT, fontDiv);
 
-        addLabel(' Font Weight ', fontDiv);
-        var fontWeightInput = createSelectInput(
-          'font-weight-input',
-          FONT_WEIGHT,
-        );
-        fontWeightInput.selectedIndex = 9;
-        fontDiv.appendChild(fontWeightInput);
+        addLabel(" Font Weight ", fontDiv);
+        addSelectInput("font-weight-input", FONT_WEIGHT, fontDiv);
 
         addLabel(' Font Size  (px) ', fontDiv);
         addTextInput('font-size-value', '12', fontDiv);
@@ -114,19 +134,6 @@ function add() {
       default:
         break;
     }
-  };
-
-  const deleteButton = document.createElement('div');
-  deleteButton.className = 'glyphicon glyphicon-trash';
-  deleteButton.innerHTML = ' Delete ';
-  deleteButton.onclick = () => del(div.id);
-
-  div.appendChild(selectLabel);
-  div.appendChild(select);
-  div.appendChild(propertyValueDiv);
-  div.appendChild(deleteButton);
-
-  propertyDiv.appendChild(div);
 }
 
 function addLabel(innerHTML, parentDiv) {
@@ -144,17 +151,18 @@ function addTextInput(className, placeholder, parentDiv) {
   textInput.style = MARGIN_LEFT + BORDER_RADIUS;
 
   parentDiv.appendChild(textInput);
+  return textInput;
 }
 
 function addSelectInput(className, object, parentDiv) {
-  const selectInput = createSelectInput(className, object);
-
+  var selectInput = createSelectInput(className, object);
+  selectInput.selectedIndex = Object.values(object).indexOf("");
   parentDiv.appendChild(selectInput);
+  return selectInput;
 }
 
 function del(id) {
   const div = document.getElementById(id);
-
   propertyDiv.removeChild(div);
 }
 
@@ -174,9 +182,16 @@ function createSelectInput(className, object) {
   return selectInput;
 }
 
-function save() {
-  template.name = document.getElementById('template_name').value;
+function reset(){
+  colors = [];
+  borders = [];
+  fonts = [];
+}
 
+function save() {
+  let template = new Template();
+  reset();
+  template.name = document.getElementById("template_name").value;
   // Handling colors
   const colorInputs = document.getElementsByClassName('color-div');
   for (const inputs of colorInputs) {
@@ -235,44 +250,166 @@ function save() {
     borders.push(border);
   }
   template.border = borders;
+  storeTemplate(template);
 }
 
 function clear() {
+  data.index = 0;
   while (propertyDiv.firstChild) {
     propertyDiv.removeChild(propertyDiv.lastChild);
   }
 }
 
 function downloadTemplate() {
-  const blob = new Blob([JSON.stringify(template, null, 2)], {
-    type: 'application/json',
+  let template = getTemplate();
+  var blob = new Blob([JSON.stringify(template, null, 2)], {
+    type: "application/json",
   });
   const name = `${String(template.name)}.json`;
 
-  chrome.downloads.download({
-    url: window.URL.createObjectURL(blob),
-    filename: name,
-  });
+  if(typeof test == 'undefined'){
+    chrome.downloads.download({
+      url: window.URL.createObjectURL(blob),
+      filename: name,
+    });
+  }
 }
 
-function reset() {
-  borders = [];
-  fonts = [];
-  colors = [];
+function buildTemplateInput(){
+  let template = getTemplate();
+  document.getElementById("add_and_save_and_clear").hidden = false;
+  document.getElementById("input_button").style.display = "none";
+  for (const color of template.color) {
+    data.index++;
+    let div = document.createElement("div");
+    let propertyValueDiv = document.createElement("div");
+    div.id = "div-" + data.index;
+    let [selectLabel, select] = createSelect();
+    select.selectedIndex = 1;
+    let input;
+    let colorDiv = document.createElement("div");
+    colorDiv.className = "color-div";
+    addLabel(" Color ", colorDiv);
+    input = addTextInput("color-value", "#FFFFFF", colorDiv);
+    input.value = color.color;
+    propertyValueDiv.appendChild(colorDiv);
+    select.onchange = function(){selectChange(select,propertyValueDiv);}
+    let deleteButton = createDelete();
+    deleteButton.onclick = () => del(div.id);
+    div.appendChild(selectLabel);
+    div.appendChild(select);
+    div.appendChild(propertyValueDiv);
+    div.appendChild(deleteButton);
+    propertyDiv.appendChild(div);
+  }
+
+  for (const font of template.font) {
+    data.index++;
+    let div = document.createElement("div");
+    let propertyValueDiv = document.createElement("div");
+    div.id = "div-" + data.index;
+    let [selectLabel, select] = createSelect();
+    select.selectedIndex = 2;
+    let input;
+    let fontDiv = document.createElement("div");
+    fontDiv.className = "font-div";
+
+    addLabel(" Font Style ", fontDiv);
+    input = addSelectInput("font-style-input", FONT_STYLE, fontDiv);
+    input.selectedIndex = Object.values(FONT_STYLE).indexOf(font.font_style);
+
+    addLabel(" Font Variant ", fontDiv);
+    input = addSelectInput("font-variant-input", FONT_VARIANT, fontDiv);
+    input.selectedIndex = Object.values(FONT_VARIANT).indexOf(font.font_variant);
+
+    addLabel(" Font Weight ", fontDiv);
+    input = addSelectInput("font-weight-input", FONT_WEIGHT, fontDiv);
+    input.selectedIndex = Object.values(FONT_WEIGHT).indexOf(font.font_weight);
+
+    addLabel(" Font Size  (px) ", fontDiv);
+    input = addTextInput("font-size-value", "12", fontDiv);
+    input.value = font.font_size;
+
+    addLabel(" Line Height (px) ", fontDiv);
+    input = addTextInput("line-height-value", "20", fontDiv);
+    input.value = font.line_height;
+    const lastIndex = font.font_family.lastIndexOf(',');
+    const familyName = font.font_family.slice(0, lastIndex);
+    const genericFamily = font.font_family.slice(lastIndex + 2);
+    addLabel(" Family Name ", fontDiv);
+    input = addTextInput("family-name-value", '"Amazon Ember", Arial', fontDiv);
+    input.value = familyName;
+
+    addLabel(" Generic Family ", fontDiv);
+    input = addSelectInput("generic-family-input", GENERIC_FAMILY, fontDiv);
+    if(genericFamily == "sans-serif"){
+      input.selectedIndex = 3;
+    }
+    else{
+      input.selectedIndex = Object.values(GENERIC_FAMILY).indexOf(genericFamily);
+    }
+
+    propertyValueDiv.appendChild(fontDiv);
+    select.onchange = function(){selectChange(select,propertyValueDiv);}
+    let deleteButton = createDelete();
+    deleteButton.onclick = () => del(div.id);
+    div.appendChild(selectLabel);
+    div.appendChild(select);
+    div.appendChild(propertyValueDiv);
+    div.appendChild(deleteButton);
+    propertyDiv.appendChild(div);
+  }
+
+  for (const border of template.border) {
+    data.index++;
+    let div = document.createElement("div");
+    let propertyValueDiv = document.createElement("div");
+    div.id = "div-" + data.index;
+    let [selectLabel, select] = createSelect();
+    select.selectedIndex = 3;
+    let borderDiv = document.createElement("div");
+    borderDiv.className = "border-div";
+
+    addLabel(" Border Width (px) ", borderDiv);
+    input = addTextInput("border-width-value", "2", borderDiv);
+    input.value = border.border_width;
+
+    addLabel(" Border Style ", borderDiv);
+    input = addSelectInput("border-style-input", BORDER_STYLE, borderDiv);
+    input.selectedIndex = Object.values(BORDER_STYLE).indexOf(border.border_style);
+
+    addLabel(" Border Color ", borderDiv);
+    input = addTextInput("border-color-value", "#FFFFFF", borderDiv);
+    input.value = border.border_color;
+
+    propertyValueDiv.appendChild(borderDiv);
+    select.onchange = function(){selectChange(select,propertyValueDiv);}
+    let deleteButton = createDelete();
+    deleteButton.onclick = () => del(div.id);
+    div.appendChild(selectLabel);
+    div.appendChild(select);
+    div.appendChild(propertyValueDiv);
+    div.appendChild(deleteButton);
+    propertyDiv.appendChild(div);
+  }
+
 }
 
-if (typeof module !== 'undefined') {
-  module.exports = {
-    switchToAdd,
-    add,
-    addLabel,
-    addTextInput,
-    addSelectInput,
-    del,
-    createSelectInput,
-    save,
-    clear,
-    downloadTemplate,
-    reset,
-  };
-}
+
+if (typeof module !== 'undefined'){module.exports = {
+  switchToAdd,
+  add,
+  addLabel,
+  addTextInput,
+  addSelectInput,
+  del,
+  createSelect,
+  createDelete,
+  selectChange,
+  createSelectInput,
+  save,
+  clear,
+  downloadTemplate,
+  buildTemplateInput,
+  reset
+};};

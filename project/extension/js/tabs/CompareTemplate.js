@@ -1,26 +1,34 @@
-const INITIAL_CODE = 'document.body';
-const PARSING_DELIMITER = '|';
-const RELEVANT_TAGNAMES = ['DIV', 'SPAN'];
-const INCONSISTENCY_BACKGROUND_COLOR = 'rgb(240, 100, 110)';
+const INITIAL_CODE = "document.body",
+  PARSING_DELIMITER = "|",
+  RELEVANT_TAGNAMES = ["DIV", "SPAN"],
+  INCONSISTENCY_BACKGROUND_COLOR = "rgb(240, 100, 110)";
 
-const clearAllButton = $('#clearAll_button');
-const compareTemplate = $('#compare_template');
-const displayTemplateButton = $('#display-template-btn');
-const expandAllButton = $('#expand-all-btn');
-let elementNumber = 1;
+var clearAllButton = $("#clearAll_button"),
+  compareTemplate = $("#compare_template"),
+  displayTemplateButton = $("#display-template-btn"),
+  expandAllButton = $("#expand-all-btn"),
+  outputfileupload = $("#file-selector-output-page"),
+  elementNumber = 1;
 
-clearAllButton.on('click', clearAll);
-compareTemplate.on('click', startTemplateComparison);
-displayTemplateButton.on('click', displayTemplate);
-expandAllButton.on('click', expandAll);
+clearAllButton.on("click", clearAll);
+compareTemplate.on("click", startTemplateComparison);
+displayTemplateButton.on("click", displayTemplate);
+expandAllButton.on("click", expandAll);
+outputfileupload.on("change", function(event)
+{
+  const reader = new FileReader();
+  readTemplate(reader,null);
+  reader.readAsText(this.files[0]);
+  const { target = {} } = event || {};
+  target.value = "";
+});
 
 function clearAll() {
   const element = document.getElementById('template_comparison_output'); // TODO remove underscores from id
   element.innerHTML = '';
   // the code below is the same as the reset function from the template builder
-  template.border = [];
-  template.font = [];
-  template.color = [];
+  let template = new Template();
+  storeTemplate(template);
 }
 
 function startTemplateComparison() {
@@ -57,11 +65,10 @@ function traverseAndCompare(code) {
 }
 
 function getChildElementCount(code, _callback) {
-  scriptCode = `${code}.childElementCount`;
-
+  const scriptCode = `${code}.childElementCount`;
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { scriptCode }, (result) => {
+    chrome.tabs.executeScript(tabId, { code : scriptCode }, (result) => {
       _callback(result);
     });
   });
@@ -71,7 +78,7 @@ function getTagName(code, _callback) {
   const scriptCode = `${code}.tagName`;
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code: scriptCode }, (result) => {
+    chrome.tabs.executeScript(tabId, { code : scriptCode }, (result) => {
       _callback(result[0]);
     });
   });
@@ -174,11 +181,11 @@ const rgb2hex = (rgb) => {
       .map((n) => parseInt(n, 10).toString(16).padStart(2, '0'))
       .join('')}`;
   }
-  return null;
-};
+}
 
 function compareAgainstTemplate(elementStyle) {
-  const [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
+  let template = getTemplate();
+  var [flag, fontFlag, colorFlag, borderFlag] = template.compare(elementStyle);
 
   const panelDiv = document.createElement('div');
   panelDiv.className = 'panel-template-comparison';
@@ -186,7 +193,6 @@ function compareAgainstTemplate(elementStyle) {
 
   if (flag) {
     const div = document.createElement('div');
-
     const togglePanelBtn = document.createElement('button');
     let identifier = '';
     if (elementStyle.id !== '') {
@@ -244,7 +250,10 @@ function highlightElement(code) {
   const scriptCode = `${code}.style.background = 'red'`;
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const { id: tabId } = tabs[0].url;
-    chrome.tabs.executeScript(tabId, { code: scriptCode }, () => {});
+    chrome.tabs.executeScript(
+      tabId,
+      { code: scriptCode },null
+    );
   });
 }
 
@@ -256,8 +265,9 @@ function unHighlightElement(code) {
 }
 
 function displayTemplate() {
-  const displayTemplateDIV = document.getElementById('display-template');
-  if (displayTemplateDIV.childElementCount > 1) {
+  let template = getTemplate();
+  let displayTemplateDIV = document.getElementById("display-template");
+  if(displayTemplateDIV.childElementCount > 1){
     displayTemplateDIV.removeChild(displayTemplateDIV.lastChild);
   }
   const div = document.createElement('div');
@@ -305,11 +315,10 @@ function addPropertyCode(propertyName, propertyValues) {
   let code = '';
   if (propertyValues.length > 0) {
     code += `<h6>${propertyName}</h6>`;
-
-    for (let index = 0; index < propertyValues.length; index += 1) {
-      code += `${propertyName} no.${index + 1}<br>${propertyValues[
-        index
-      ].toString()}`;
+    for (let index = 0; index < propertyValues.length; index++) {
+      code +=
+        `${propertyName} no.${index + 1}<br>` +
+        propertyValues[index].toString();
     }
     code += '<br>';
   }
@@ -317,21 +326,22 @@ function addPropertyCode(propertyName, propertyValues) {
   return code;
 }
 
-if (typeof module !== 'undefined') {
-  module.exports = {
-    clearAll,
-    startTemplateComparison,
-    traverseAndCompare,
-    getChildElementCount,
-    getTagName,
-    getStyle,
-    createElementStyle,
-    parseStyleString,
-    rgb2hex,
-    compareAgainstTemplate,
-    appendPropertyDiv,
-    highlightElement,
-    displayTemplate,
-    addPropertyCode,
-  };
-}
+if (typeof module !== 'undefined'){module.exports = {
+  clearAll,
+  startTemplateComparison,
+  traverseAndCompare,
+  getChildElementCount,
+  getTagName,
+  getStyle,
+  createElementStyle,
+  parseStyleString,
+  rgb2hex,
+  compareAgainstTemplate,
+  appendPropertyDiv,
+  highlightElement,
+  unHighlightElement,
+  displayTemplate,
+  addPropertyCode,
+  expandAll,
+  expandOrCollapse
+};};

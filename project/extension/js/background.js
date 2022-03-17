@@ -13,3 +13,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, callback){
 		localStorage[message.item] = message.value;
 	}
 });
+
+let template = new Template();
+localStorage.setItem("template",template);
