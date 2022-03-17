@@ -1,29 +1,32 @@
+/* eslint-disable no-case-declarations */
+
 const MARGIN_LEFT = 'margin-left: 20px;';
 const BORDER_RADIUS = 'border-radius: 4px;';
 
-var colors = [],
-  borders = [],
-  fonts = [],
-  inputPropertyButton = $("#input_button"),
-  addButton = $("#add_button"),
-  saveButton = $("#save_button"),
-  clearButton = $("#clear_button"),
-  downloadTemplateButton = $("#download-template"),
-  builderfileupload = $("#file-selector-builder-page"),
-  propertyDiv = document.getElementById("property_div");
+let colors = [];
+let borders = [];
+let fonts = [];
+const inputPropertyButton = $('#input_button');
+const addButton = $('#add_button');
+const saveButton = $('#save_button');
+const clearButton = $('#clear_button');
+const downloadTemplateButton = $('#download-template');
+const builderfileupload = $('#file-selector-builder-page');
+const propertyDiv = document.getElementById('property_div');
 
-inputPropertyButton.on("click", switchToAdd);
-addButton.on("click", add);
-saveButton.on("click", save);
-clearButton.on("click", clear);
-downloadTemplateButton.on("click", downloadTemplate);
-builderfileupload.on("change", function(event)
-{
+inputPropertyButton.on('click', switchToAdd);
+addButton.on('click', add);
+saveButton.on('click', save);
+clearButton.on('click', clear);
+downloadTemplateButton.on('click', downloadTemplate);
+builderfileupload.on('change', function (event) {
   const reader = new FileReader();
-  readTemplate(reader,function(){buildTemplateInput();});
+  readTemplate(reader, () => {
+    buildTemplateInput();
+  });
   reader.readAsText(this.files[0]);
   const { target = {} } = event || {};
-  target.value = "";
+  target.value = '';
 });
 
 function switchToAdd() {
@@ -33,12 +36,14 @@ function switchToAdd() {
 }
 
 function add() {
-  data.index++;
-  let div = document.createElement("div");
-  let propertyValueDiv = document.createElement("div");
-  div.id = "div-" + data.index;
-  let [selectLabel, select] = createSelect();
-  select.onchange = function(){selectChange(select,propertyValueDiv);}
+  data.index += 1;
+  const div = document.createElement('div');
+  const propertyValueDiv = document.createElement('div');
+  div.id = `div-${data.index}`;
+  const [selectLabel, select] = createSelect();
+  select.onchange = function () {
+    selectChange(select, propertyValueDiv);
+  };
   deleteButton = createDelete();
   deleteButton.onclick = () => del(div.id);
   div.appendChild(selectLabel);
@@ -48,12 +53,12 @@ function add() {
   propertyDiv.appendChild(div);
 }
 
-function createSelect(){
-  var selectLabel = document.createElement("label");
-  selectLabel.innerHTML = " Select Property ";
+function createSelect() {
+  const selectLabel = document.createElement('label');
+  selectLabel.innerHTML = ' Select Property ';
 
-  var select = document.createElement("select");
-  select.className = "select-property";
+  const select = document.createElement('select');
+  select.className = 'select-property';
   for (const val of data.list) {
     const option = document.createElement('option');
     option.value = val;
@@ -64,76 +69,76 @@ function createSelect(){
   return [selectLabel, select];
 }
 
-function createDelete(){
-  var deleteButton = document.createElement("div");
-  deleteButton.className = "glyphicon glyphicon-trash";
-  deleteButton.innerHTML = " Delete ";
+function createDelete() {
+  const deleteButton = document.createElement('div');
+  deleteButton.className = 'glyphicon glyphicon-trash';
+  deleteButton.innerHTML = ' Delete ';
   return deleteButton;
 }
 
-function selectChange(select,propertyValueDiv){
-  var value = select.options[select.selectedIndex].value;
-    while (propertyValueDiv.childElementCount > 0) {
-      propertyValueDiv.removeChild(propertyValueDiv.lastChild);
-    }
+function selectChange(select, propertyValueDiv) {
+  const { value } = select.options[select.selectedIndex];
+  while (propertyValueDiv.childElementCount > 0) {
+    propertyValueDiv.removeChild(propertyValueDiv.lastChild);
+  }
 
-    switch (value) {
-      case 'color':
-        var colorDiv = document.createElement('div');
-        colorDiv.className = 'color-div';
+  switch (value) {
+    case 'color':
+      const colorDiv = document.createElement('div');
+      colorDiv.className = 'color-div';
 
-        addLabel(' Color ', colorDiv);
-        addTextInput('color-value', '#FFFFFF', colorDiv);
+      addLabel(' Color ', colorDiv);
+      addTextInput('color-value', '#FFFFFF', colorDiv);
 
-        propertyValueDiv.appendChild(colorDiv);
-        break;
+      propertyValueDiv.appendChild(colorDiv);
+      break;
 
-      case 'font':
-        var fontDiv = document.createElement('div');
-        fontDiv.className = 'font-div';
+    case 'font':
+      const fontDiv = document.createElement('div');
+      fontDiv.className = 'font-div';
 
-        addLabel(' Font Style ', fontDiv);
-        addSelectInput('font-style-input', FONT_STYLE, fontDiv);
+      addLabel(' Font Style ', fontDiv);
+      addSelectInput('font-style-input', FONT_STYLE, fontDiv);
 
-        addLabel(' Font Variant ', fontDiv);
-        addSelectInput('font-variant-input', FONT_VARIANT, fontDiv);
+      addLabel(' Font Variant ', fontDiv);
+      addSelectInput('font-variant-input', FONT_VARIANT, fontDiv);
 
-        addLabel(" Font Weight ", fontDiv);
-        addSelectInput("font-weight-input", FONT_WEIGHT, fontDiv);
+      addLabel(' Font Weight ', fontDiv);
+      addSelectInput('font-weight-input', FONT_WEIGHT, fontDiv);
 
-        addLabel(' Font Size  (px) ', fontDiv);
-        addTextInput('font-size-value', '12', fontDiv);
+      addLabel(' Font Size  (px) ', fontDiv);
+      addTextInput('font-size-value', '12', fontDiv);
 
-        addLabel(' Line Height (px) ', fontDiv);
-        addTextInput('line-height-value', '20', fontDiv);
+      addLabel(' Line Height (px) ', fontDiv);
+      addTextInput('line-height-value', '20', fontDiv);
 
-        addLabel(' Family Name ', fontDiv);
-        addTextInput('family-name-value', '"Amazon Ember", Arial', fontDiv);
+      addLabel(' Family Name ', fontDiv);
+      addTextInput('family-name-value', '"Amazon Ember", Arial', fontDiv);
 
-        addLabel(' Generic Family ', fontDiv);
-        addSelectInput('generic-family-input', GENERIC_FAMILY, fontDiv);
+      addLabel(' Generic Family ', fontDiv);
+      addSelectInput('generic-family-input', GENERIC_FAMILY, fontDiv);
 
-        propertyValueDiv.appendChild(fontDiv);
-        break;
+      propertyValueDiv.appendChild(fontDiv);
+      break;
 
-      case 'border':
-        var borderDiv = document.createElement('div');
-        borderDiv.className = 'border-div';
+    case 'border':
+      const borderDiv = document.createElement('div');
+      borderDiv.className = 'border-div';
 
-        addLabel(' Border Width (px) ', borderDiv);
-        addTextInput('border-width-value', '2', borderDiv);
+      addLabel(' Border Width (px) ', borderDiv);
+      addTextInput('border-width-value', '2', borderDiv);
 
-        addLabel(' Border Style ', borderDiv);
-        addSelectInput('border-style-input', BORDER_STYLE, borderDiv);
+      addLabel(' Border Style ', borderDiv);
+      addSelectInput('border-style-input', BORDER_STYLE, borderDiv);
 
-        addLabel(' Border Color ', borderDiv);
-        addTextInput('border-color-value', '#FFFFFF', borderDiv);
+      addLabel(' Border Color ', borderDiv);
+      addTextInput('border-color-value', '#FFFFFF', borderDiv);
 
-        propertyValueDiv.appendChild(borderDiv);
-        break;
-      default:
-        break;
-    }
+      propertyValueDiv.appendChild(borderDiv);
+      break;
+    default:
+      break;
+  }
 }
 
 function addLabel(innerHTML, parentDiv) {
@@ -155,8 +160,8 @@ function addTextInput(className, placeholder, parentDiv) {
 }
 
 function addSelectInput(className, object, parentDiv) {
-  var selectInput = createSelectInput(className, object);
-  selectInput.selectedIndex = Object.values(object).indexOf("");
+  const selectInput = createSelectInput(className, object);
+  selectInput.selectedIndex = Object.values(object).indexOf('');
   parentDiv.appendChild(selectInput);
   return selectInput;
 }
@@ -182,16 +187,16 @@ function createSelectInput(className, object) {
   return selectInput;
 }
 
-function reset(){
+function reset() {
   colors = [];
   borders = [];
   fonts = [];
 }
 
 function save() {
-  let template = new Template();
+  const template = new Template();
   reset();
-  template.name = document.getElementById("template_name").value;
+  template.name = document.getElementById('template_name').value;
   // Handling colors
   const colorInputs = document.getElementsByClassName('color-div');
   for (const inputs of colorInputs) {
@@ -261,13 +266,13 @@ function clear() {
 }
 
 function downloadTemplate() {
-  let template = getTemplate();
-  var blob = new Blob([JSON.stringify(template, null, 2)], {
-    type: "application/json",
+  const template = getTemplate();
+  const blob = new Blob([JSON.stringify(template, null, 2)], {
+    type: 'application/json',
   });
   const name = `${String(template.name)}.json`;
 
-  if(typeof test == 'undefined'){
+  if (typeof test === 'undefined') {
     chrome.downloads.download({
       url: window.URL.createObjectURL(blob),
       filename: name,
@@ -275,26 +280,29 @@ function downloadTemplate() {
   }
 }
 
-function buildTemplateInput(){
-  let template = getTemplate();
-  document.getElementById("add_and_save_and_clear").hidden = false;
-  document.getElementById("input_button").style.display = "none";
+function buildTemplateInput() {
+  const template = getTemplate();
+  document.getElementById('add_and_save_and_clear').hidden = false;
+  document.getElementById('input_button').style.display = 'none';
   for (const color of template.color) {
-    data.index++;
-    let div = document.createElement("div");
-    let propertyValueDiv = document.createElement("div");
-    div.id = "div-" + data.index;
-    let [selectLabel, select] = createSelect();
+    data.index += 1;
+    const div = document.createElement('div');
+    const propertyValueDiv = document.createElement('div');
+    div.id = `div-${data.index}`;
+    const [selectLabel, select] = createSelect();
     select.selectedIndex = 1;
     let input;
-    let colorDiv = document.createElement("div");
-    colorDiv.className = "color-div";
-    addLabel(" Color ", colorDiv);
-    input = addTextInput("color-value", "#FFFFFF", colorDiv);
+    const colorDiv = document.createElement('div');
+    colorDiv.className = 'color-div';
+    addLabel(' Color ', colorDiv);
+    // eslint-disable-next-line prefer-const
+    input = addTextInput('color-value', '#FFFFFF', colorDiv);
     input.value = color.color;
     propertyValueDiv.appendChild(colorDiv);
-    select.onchange = function(){selectChange(select,propertyValueDiv);}
-    let deleteButton = createDelete();
+    select.onchange = function () {
+      selectChange(select, propertyValueDiv);
+    };
+    const deleteButton = createDelete();
     deleteButton.onclick = () => del(div.id);
     div.appendChild(selectLabel);
     div.appendChild(select);
@@ -304,54 +312,57 @@ function buildTemplateInput(){
   }
 
   for (const font of template.font) {
-    data.index++;
-    let div = document.createElement("div");
-    let propertyValueDiv = document.createElement("div");
-    div.id = "div-" + data.index;
-    let [selectLabel, select] = createSelect();
+    data.index += 1;
+    const div = document.createElement('div');
+    const propertyValueDiv = document.createElement('div');
+    div.id = `div-${data.index}`;
+    const [selectLabel, select] = createSelect();
     select.selectedIndex = 2;
     let input;
-    let fontDiv = document.createElement("div");
-    fontDiv.className = "font-div";
+    const fontDiv = document.createElement('div');
+    fontDiv.className = 'font-div';
 
-    addLabel(" Font Style ", fontDiv);
-    input = addSelectInput("font-style-input", FONT_STYLE, fontDiv);
+    addLabel(' Font Style ', fontDiv);
+    input = addSelectInput('font-style-input', FONT_STYLE, fontDiv);
     input.selectedIndex = Object.values(FONT_STYLE).indexOf(font.font_style);
 
-    addLabel(" Font Variant ", fontDiv);
-    input = addSelectInput("font-variant-input", FONT_VARIANT, fontDiv);
-    input.selectedIndex = Object.values(FONT_VARIANT).indexOf(font.font_variant);
+    addLabel(' Font Variant ', fontDiv);
+    input = addSelectInput('font-variant-input', FONT_VARIANT, fontDiv);
+    input.selectedIndex = Object.values(FONT_VARIANT).indexOf(
+      font.font_variant,
+    );
 
-    addLabel(" Font Weight ", fontDiv);
-    input = addSelectInput("font-weight-input", FONT_WEIGHT, fontDiv);
+    addLabel(' Font Weight ', fontDiv);
+    input = addSelectInput('font-weight-input', FONT_WEIGHT, fontDiv);
     input.selectedIndex = Object.values(FONT_WEIGHT).indexOf(font.font_weight);
 
-    addLabel(" Font Size  (px) ", fontDiv);
-    input = addTextInput("font-size-value", "12", fontDiv);
+    addLabel(' Font Size  (px) ', fontDiv);
+    input = addTextInput('font-size-value', '12', fontDiv);
     input.value = font.font_size;
 
-    addLabel(" Line Height (px) ", fontDiv);
-    input = addTextInput("line-height-value", "20", fontDiv);
+    addLabel(' Line Height (px) ', fontDiv);
+    input = addTextInput('line-height-value', '20', fontDiv);
     input.value = font.line_height;
     const lastIndex = font.font_family.lastIndexOf(',');
     const familyName = font.font_family.slice(0, lastIndex);
     const genericFamily = font.font_family.slice(lastIndex + 2);
-    addLabel(" Family Name ", fontDiv);
-    input = addTextInput("family-name-value", '"Amazon Ember", Arial', fontDiv);
+    addLabel(' Family Name ', fontDiv);
+    input = addTextInput('family-name-value', '"Amazon Ember", Arial', fontDiv);
     input.value = familyName;
 
-    addLabel(" Generic Family ", fontDiv);
-    input = addSelectInput("generic-family-input", GENERIC_FAMILY, fontDiv);
-    if(genericFamily == "sans-serif"){
+    addLabel(' Generic Family ', fontDiv);
+    input = addSelectInput('generic-family-input', GENERIC_FAMILY, fontDiv);
+    if (genericFamily === 'sans-serif') {
       input.selectedIndex = 3;
-    }
-    else{
+    } else {
       input.selectedIndex = Object.values(GENERIC_FAMILY).indexOf(genericFamily);
     }
 
     propertyValueDiv.appendChild(fontDiv);
-    select.onchange = function(){selectChange(select,propertyValueDiv);}
-    let deleteButton = createDelete();
+    select.onchange = function () {
+      selectChange(select, propertyValueDiv);
+    };
+    const deleteButton = createDelete();
     deleteButton.onclick = () => del(div.id);
     div.appendChild(selectLabel);
     div.appendChild(select);
@@ -361,30 +372,34 @@ function buildTemplateInput(){
   }
 
   for (const border of template.border) {
-    data.index++;
-    let div = document.createElement("div");
-    let propertyValueDiv = document.createElement("div");
-    div.id = "div-" + data.index;
-    let [selectLabel, select] = createSelect();
+    data.index += 1;
+    const div = document.createElement('div');
+    const propertyValueDiv = document.createElement('div');
+    div.id = `div-${data.index}`;
+    const [selectLabel, select] = createSelect();
     select.selectedIndex = 3;
-    let borderDiv = document.createElement("div");
-    borderDiv.className = "border-div";
+    const borderDiv = document.createElement('div');
+    borderDiv.className = 'border-div';
 
-    addLabel(" Border Width (px) ", borderDiv);
-    input = addTextInput("border-width-value", "2", borderDiv);
+    addLabel(' Border Width (px) ', borderDiv);
+    input = addTextInput('border-width-value', '2', borderDiv);
     input.value = border.border_width;
 
-    addLabel(" Border Style ", borderDiv);
-    input = addSelectInput("border-style-input", BORDER_STYLE, borderDiv);
-    input.selectedIndex = Object.values(BORDER_STYLE).indexOf(border.border_style);
+    addLabel(' Border Style ', borderDiv);
+    input = addSelectInput('border-style-input', BORDER_STYLE, borderDiv);
+    input.selectedIndex = Object.values(BORDER_STYLE).indexOf(
+      border.border_style,
+    );
 
-    addLabel(" Border Color ", borderDiv);
-    input = addTextInput("border-color-value", "#FFFFFF", borderDiv);
+    addLabel(' Border Color ', borderDiv);
+    input = addTextInput('border-color-value', '#FFFFFF', borderDiv);
     input.value = border.border_color;
 
     propertyValueDiv.appendChild(borderDiv);
-    select.onchange = function(){selectChange(select,propertyValueDiv);}
-    let deleteButton = createDelete();
+    select.onchange = function () {
+      selectChange(select, propertyValueDiv);
+    };
+    const deleteButton = createDelete();
     deleteButton.onclick = () => del(div.id);
     div.appendChild(selectLabel);
     div.appendChild(select);
@@ -392,24 +407,24 @@ function buildTemplateInput(){
     div.appendChild(deleteButton);
     propertyDiv.appendChild(div);
   }
-
 }
 
-
-if (typeof module !== 'undefined'){module.exports = {
-  switchToAdd,
-  add,
-  addLabel,
-  addTextInput,
-  addSelectInput,
-  del,
-  createSelect,
-  createDelete,
-  selectChange,
-  createSelectInput,
-  save,
-  clear,
-  downloadTemplate,
-  buildTemplateInput,
-  reset
-};};
+if (typeof module !== 'undefined') {
+  module.exports = {
+    switchToAdd,
+    add,
+    addLabel,
+    addTextInput,
+    addSelectInput,
+    del,
+    createSelect,
+    createDelete,
+    selectChange,
+    createSelectInput,
+    save,
+    clear,
+    downloadTemplate,
+    buildTemplateInput,
+    reset,
+  };
+}

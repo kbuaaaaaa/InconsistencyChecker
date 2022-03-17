@@ -8,10 +8,14 @@ build-job:
   tags:
     - docker
   stage: build
+  variables:
+    JS_PATH: "./project/extension/js"
   script:
     - echo "Hello world!"
     - npm install
-    # - npx eslint ./project/extension/js
+    - npx eslint --fix "$JS_PATH"/tabs/
+    - npx eslint --fix "$JS_PATH"/global.js
+    - npx eslint --fix "$JS_PATH"/panel.js
 
 test-job-example:
   tags:
