@@ -336,11 +336,12 @@ function buildTemplateInput() {
 
     addLabel(" Font Size  (px) ", fontDiv);
     input = addTextInput("font-size-value", "12", fontDiv);
-    input.value = font.fontSize;
+    input.value = font.fontSize.replace('px', '');
 
     addLabel(" Line Height (px) ", fontDiv);
     input = addTextInput("line-height-value", "20", fontDiv);
-    input.value = font.lineHeight;
+    input.value = font.lineHeight.replace('px', '');
+
     const lastIndex = font.fontFamily.lastIndexOf(",");
     const familyName = font.fontFamily.slice(0, lastIndex);
     const genericFamily = font.fontFamily.slice(lastIndex + 2);
@@ -382,7 +383,7 @@ function buildTemplateInput() {
 
     addLabel(" Border Width (px) ", borderDiv);
     input = addTextInput("border-width-value", "2", borderDiv);
-    input.value = border.borderWidth;
+    input.value = border.borderWidth.replace('px', '');
 
     addLabel(" Border Style ", borderDiv);
     input = addSelectInput("border-style-input", BORDER_STYLE, borderDiv);
