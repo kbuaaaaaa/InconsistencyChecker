@@ -18,7 +18,7 @@ build-job:
     - npx eslint --fix "$JS_PATH"/panel.js
     - npx eslint --fix "$JS_PATH"/template.js
     - npx eslint --fix "$JS_PATH"/values.js
-test-job-example:
+test-job:
   tags:
     - docker
   stage: test

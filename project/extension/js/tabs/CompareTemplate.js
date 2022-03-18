@@ -282,6 +282,18 @@ function displayTemplate() {
   displayTemplateDIV.appendChild(div);
 }
 
+function display_switch(){
+	if(displayTemplateButton.attr("display_templated") == "true"){
+		displayTemplateButton.attr("display_templated","false");
+		displayTemplateButton.html("Display Template");
+	document.getElementById("display-template").innerHTML = "";
+	}else{
+		displayTemplate();
+		displayTemplateButton.attr("display_templated","true");
+		displayTemplateButton.html("Hide Template");
+	}
+}
+
 function expandAll() {
   if (expandAllButton.attr('expanded') === 'true') {
     expandOrCollapse('false', 'Expand All', 'block', 'none');
