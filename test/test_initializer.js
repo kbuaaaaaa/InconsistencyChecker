@@ -53,12 +53,12 @@ function TestInitializer(pageName, _callback) {
             "normal",
             "normal",
             "400",
-            14,
-            20,
+            "14px",
+            "20px",
             '"Amazon Ember", Arial, sans-serif'
           ),
         ],
-        [new Border(10, "none", "#ffffff")]
+        [new Border("10px", "none", "#ffffff")]
       );
       global.getTemplate = function () {
         return global.template;
