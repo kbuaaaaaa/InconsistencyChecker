@@ -12,7 +12,7 @@ let elementNumber = 1;
 
 clearAllButton.on('click', clearAll);
 compareTemplate.on('click', startTemplateComparison);
-displayTemplateButton.on('click', displayTemplate);
+displayTemplateButton.on('click', display_switch);
 expandAllButton.on('click', expandAll);
 outputfileupload.on('change', function (event) {
   const reader = new FileReader();
