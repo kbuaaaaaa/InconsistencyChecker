@@ -12,7 +12,7 @@ let elementNumber = 1;
 
 clearAllButton.on('click', clearAll);
 compareTemplate.on('click', startTemplateComparison);
-displayTemplateButton.on('click', display_switch);
+displayTemplateButton.on('click', displaySwitch);
 expandAllButton.on('click', expandAll);
 outputfileupload.on('change', function (event) {
   const reader = new FileReader();
@@ -282,8 +282,8 @@ function displayTemplate() {
   displayTemplateDIV.appendChild(div);
 }
 
-function display_switch(){
-	if(displayTemplateButton.attr("display_templated") == "true"){
+function displaySwitch(){
+	if(displayTemplateButton.attr("display_templated") === "true"){
 		displayTemplateButton.attr("display_templated","false");
 		displayTemplateButton.html("Display Template");
 	document.getElementById("display-template").innerHTML = "";
