@@ -17,3 +17,6 @@ For more detailed installation instructions click [here](https://stgit.dcs.gla.a
 ## License
 
 [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html).
+
+## Acknowledgements 
+Based on [SnappySnippet](https://github.com/kdzwinel/SnappySnippet).
