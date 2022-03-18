@@ -9,7 +9,7 @@ build-job:
     - docker
   stage: build
   variables:
-    JS_PATH: "./project/extension/js"
+    JS_PATH: "./extension/js"
   script:
     - echo "Hello world!"
     - npm install
